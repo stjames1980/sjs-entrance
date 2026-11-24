@@ -120,19 +120,164 @@ tr.chg td{background:var(--amberS)}
 @media(prefers-reduced-motion:no-preference){.bar .t i{transition:width .5s ease}}
 @media(max-width:600px){.brand h1{font-size:19px}.brand p{font-size:12px}.logo{width:42px;height:42px}table{font-size:13px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px;border-bottom:1px solid var(--line)}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;color:var(--mute);font-size:12px}.stack td:empty{display:none}.bar{grid-template-columns:62px minmax(0,1fr) 52px}.sync{display:none}.a4{padding:16px}}
 @media print{.hero,.tools,.noprint,#toast{display:none!important}main{padding:0}.a4wrap{background:none;padding:0}.a4{box-shadow:none;max-width:none}@page{size:A4;margin:12mm}}
+
+/* ===== DESIGN v2: sidebar (laptop) · top bar + bottom bar + More panel (mobile) ===== */
+:root{--side:258px;--shadow:0 1px 2px rgb(15 27 77/.05),0 8px 24px -12px rgb(15 27 77/.16);--ring:color-mix(in srgb,var(--blue) 24%,transparent)}
+body{background:var(--bg);-webkit-font-smoothing:antialiased}
+.side{position:fixed;inset:0 auto 0 0;width:var(--side);background:radial-gradient(120% 60% at 0% 0%,#2a4fd6 0%,transparent 60%),linear-gradient(180deg,#0d1b58 0%,#132a86 60%,#1a38a8 100%);color:#fff;display:flex;flex-direction:column;z-index:15;padding:18px 14px 14px;box-shadow:4px 0 24px -12px #0d1b5866}
+.sbrand{display:flex;gap:12px;align-items:center;padding:2px 6px 16px;margin-bottom:4px;border-bottom:1px solid #ffffff1c}
+.sbrand .logo,.sbrand .crest{width:46px;height:46px;flex:none}
+.sbrand b{display:block;font:700 17px/1.15 Outfit,Inter,sans-serif;letter-spacing:.005em}
+.sbrand small{display:block;font-size:11.5px;line-height:1.35;opacity:.72;margin-top:3px}
+.side nav{flex:1;overflow:auto;scrollbar-width:none;margin:0 -4px;padding:0 4px}
+.side nav::-webkit-scrollbar{display:none}
+.ng{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;opacity:.5;padding:12px 12px 4px}
+.side nav a{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none;padding:8px 12px;margin:1px 0;border-radius:12px;font-weight:500;font-size:14.2px;opacity:.84;position:relative;transition:background .15s,opacity .15s}
+.side nav a svg{width:19px;height:19px;flex:none}
+.side nav a:hover{background:#ffffff14;opacity:1}
+.side nav a.on{background:#fff;color:#132a86;opacity:1;font-weight:700;box-shadow:0 8px 18px -8px #000a}
+.side nav a.on::before{content:"";position:absolute;left:-14px;top:9px;bottom:9px;width:4px;border-radius:0 4px 4px 0;background:var(--red)}
+.sfoot{border-top:1px solid #ffffff1c;padding-top:12px;display:grid;gap:8px}
+.sfoot a{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-size:13.5px;font-weight:600;padding:9px 12px;border-radius:12px;background:#ffffff14}
+.sfoot a:hover{background:#ffffff24}.sfoot svg{width:17px;height:17px}
+.sfoot small{font-size:11px;opacity:.55;padding:0 12px}
+.mainwrap{margin-left:var(--side);min-height:100vh;display:flex;flex-direction:column}
+.topbar{position:sticky;top:0;z-index:12;display:flex;align-items:center;gap:12px;padding:12px clamp(16px,3vw,36px);background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line)}
+.tt{min-width:0}
+.tt small{display:block;font-size:12px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tt h1{font-size:21px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sync{margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;background:var(--card);border:1px solid var(--line);color:var(--ink);text-decoration:none;padding:7px 12px;border-radius:99px;white-space:nowrap;box-shadow:var(--shadow);max-width:46vw;overflow:hidden;text-overflow:ellipsis}
+.sync::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 22%,transparent)}
+.m-only{display:none!important}
+main{width:100%;max-width:1320px;margin:0;padding:24px clamp(16px,3vw,36px) 64px}
+.bnav,#sheet{display:none}
+/* cards, KPI tiles, tables, buttons, forms */
+.card{border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:20px}
+.card h3{font-size:17px;letter-spacing:-.005em}
+.lede{margin-bottom:18px}
+.lede h2{font-size:clamp(22px,2.6vw,32px);letter-spacing:-.02em}
+.lede p{max-width:75ch}
+.kpis{gap:12px;grid-template-columns:repeat(auto-fill,minmax(152px,1fr))}
+.kpi{position:relative;overflow:hidden;border-radius:16px;box-shadow:var(--shadow);padding:15px 16px 14px 19px;transition:transform .15s}
+.kpi::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:4px;border-radius:0 4px 4px 0;background:var(--blue)}
+.kpi.g::before{background:var(--green)}.kpi.a::before{background:var(--amber)}.kpi.r::before{background:var(--red)}
+.kpi span{font-weight:500}
+@media(hover:hover){.kpi:hover{transform:translateY(-2px)}}
+.banner{border-radius:14px;border:1px solid color-mix(in srgb,currentColor 18%,transparent);padding:11px 15px}
+table{font-size:14px}
+th{background:var(--soft);font-size:12px;letter-spacing:.02em;padding:10px 9px}
+thead th:first-child{border-radius:10px 0 0 10px}thead th:last-child{border-radius:0 10px 10px 0}
+td{padding:9px}
+@media(hover:hover){tbody tr:hover td{background:color-mix(in srgb,var(--soft) 60%,transparent)}}
+.btn{border-radius:12px;transition:background .15s,box-shadow .15s,transform .08s,filter .15s;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none}
+.btn:active{transform:translateY(1px)}
+@media(hover:hover){.btn:hover{filter:brightness(.96)}}
+.btn.pri{background:linear-gradient(180deg,#2a4ed4,#1d3fb8);color:#fff;box-shadow:0 8px 16px -8px #1d3fb8cc}
+.btn.sm{border-radius:10px}
+input,select,textarea{border-radius:12px;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px var(--ring)}
+button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.pill{letter-spacing:.01em}
+input[type=checkbox],input[type=radio]{min-height:0!important;width:20px!important;height:20px;padding:0;accent-color:var(--blue);cursor:pointer;flex:none}
+input.chk{width:22px!important;height:22px}
+.topbar>.m-only{flex:none}
+.k-m{display:none}
+.sync[data-st=live]::before{background:var(--green)}.sync[data-st=busy]::before{background:#f0a020;box-shadow:0 0 0 3px #f0a02033}.sync[data-st=off]::before{background:#9aa3bb;box-shadow:0 0 0 3px #9aa3bb33}
+.row:has(> .btn[data-ex]){background:var(--card);border:1px solid var(--line);border-radius:15px;padding:5px;gap:4px;width:fit-content;max-width:100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;box-shadow:var(--shadow)}
+.row > .btn[data-ex]{flex:none;background:transparent;min-height:40px;border-radius:11px;color:var(--mute)}
+.row > .btn.pri[data-ex]{background:linear-gradient(180deg,#2a4ed4,#1d3fb8);color:#fff}
+#modal{background:#0a1020a0;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+#modal .box{border-radius:22px;padding:22px;box-shadow:0 30px 80px -20px #000a;border:1px solid var(--line)}
+#modal .box h3{font-size:20px;margin-bottom:14px}
+#toast{border-radius:14px;box-shadow:0 12px 30px -10px #0009;font-weight:500}
+.a4wrap{border-radius:18px}
+/* ---- tablets and phones ---- */
+@media(max-width:1023px){
+  .side{display:none}
+  .mainwrap{margin-left:0}
+  .m-only{display:flex!important}
+  .topbar{background:linear-gradient(135deg,#0f2070 0%,#1a36a6 60%,#2248cf 100%);color:#fff;border:0;padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top));gap:10px;box-shadow:0 8px 24px -14px #0d1b58}
+  .topbar::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--red)}
+  .topbar .logo,.topbar .crest{width:38px;height:38px;flex:none}
+  .topbar .crest{font-size:15px}
+  .tt small{color:#ffffffbf;font-size:11.5px}
+  .tt h1{font-size:18px;color:#fff}
+  .topbar .back{flex:none;width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:#ffffff1f;color:#fff}
+  .topbar .back svg{width:20px;height:20px}
+  .sync{background:#ffffff1f;border:0;color:#fff;box-shadow:none;font-size:11.5px;padding:7px 10px;max-width:38vw}
+  .k-d{display:none}.k-m{display:inline}
+  main{padding:16px 14px calc(96px + env(safe-area-inset-bottom))}
+  .bnav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;z-index:16;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-top:1px solid var(--line);padding:6px 6px max(8px,env(safe-area-inset-bottom));box-shadow:0 -10px 30px -18px #0d1b5866}
+  .bnav a,.bnav button{display:grid;justify-items:center;gap:2px;font:600 11px/1.2 Inter,system-ui,sans-serif;color:var(--mute);text-decoration:none;background:none;border:0;padding:4px 2px;min-height:54px;cursor:pointer}
+  .bnav .ic{display:grid;place-items:center;width:54px;height:30px;border-radius:99px;transition:background .15s}
+  .bnav svg{width:22px;height:22px}
+  .bnav .on{color:var(--blueD)}.bnav .on .ic{background:var(--soft)}
+  #sheet{position:fixed;inset:0;z-index:26;background:#0a102099;align-items:flex-end;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+  #sheet.on{display:flex}
+  .sheetbox{background:var(--card);width:100%;border-radius:24px 24px 0 0;padding:8px 16px max(18px,env(safe-area-inset-bottom));max-height:88vh;overflow:auto;box-shadow:0 -20px 60px -20px #000a}
+  .grip{width:42px;height:5px;border-radius:9px;background:var(--line);margin:6px auto 10px}
+  .sheethd{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}.sheethd h3{font-size:19px}
+  .sgrid .ng{color:var(--mute);opacity:1;padding:12px 2px 7px}
+  .gi{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+  .sgrid a{display:grid;justify-items:center;align-content:start;gap:7px;text-align:center;font-size:11.5px;line-height:1.25;font-weight:600;color:var(--ink);text-decoration:none;padding:13px 4px 11px;border-radius:16px;background:var(--soft);min-height:78px}
+  .sgrid a svg{width:23px;height:23px;color:var(--blueD)}
+  .sgrid a.on{background:linear-gradient(180deg,#2a4ed4,#1d3fb8);color:#fff}.sgrid a.on svg{color:#fff}
+  .sheetback{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;padding:13px;border-radius:14px;background:var(--soft);color:var(--blueD);font-weight:700;text-decoration:none}
+  .sheetback svg{width:18px;height:18px}
+  #toast{bottom:calc(84px + env(safe-area-inset-bottom))}
+}
+@media(max-width:600px){
+  .kpis{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .kpi{padding:11px 9px 10px 13px;border-radius:14px}.kpi::before{top:10px;bottom:10px;width:3px}
+  .kpi b{font-size:21px!important}.kpi span{font-size:11.2px;line-height:1.25;display:block;margin-top:2px}
+  .card{padding:16px;border-radius:16px}
+  .lede h2{font-size:22px}
+  #modal{place-items:end center;padding:0}
+  #modal .box{width:100%;border-radius:22px 22px 0 0;max-height:94vh;padding:18px 16px max(20px,env(safe-area-inset-bottom))}
+  .tools label{flex:1 1 140px}
+}
+@media(max-width:480px){.sync{font-size:0;gap:0;width:34px;height:34px;padding:0;justify-content:center}.sync::before{width:10px;height:10px}}
+@media(max-width:360px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media print{.side,.topbar,.bnav,#sheet{display:none!important}.mainwrap{margin:0}}
 </style>
 <script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
 </head>
 <body>
-<header class="hero">
-  <div class="brand"><a class="backapp" href="https://stjames1980.github.io/sjs-school/" aria-label="Back to SJS App" title="Back to SJS App"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a><img class="logo" id="hLogo" alt="St. James H.S. School logo"><div><h1 id="hName">SJS Entrance Test</h1><p id="hSub">St. James H.S. School</p></div><a class="sync" id="sync" href="#backup">This device only</a></div>
-  <nav class="tabs" id="tabs">
-    <a href="#dashboard">Dashboard</a><a href="#candidates">Candidates</a><a href="#forms">Online Forms</a><a href="#admit">Admit Cards</a><a href="#examday">Exam Day</a><a href="#marks">Marks Entry</a><a href="#results">Results</a><a href="#review">Review &amp; Publish</a><a href="#notice">Notice Board</a><a href="#scorecards">Score Cards</a><a href="#setup">Setup</a><a href="#backup">Online &amp; Backup</a>
-  </nav>
-</header>
-<main id="app"></main>
+<div class="shell">
+<aside class="side" aria-label="Main menu">
+  <div class="sbrand"><img class="logo" id="hLogo" alt="St. James H.S. School logo"><div><b id="hName">SJS Entrance Test</b><small id="hSub"></small></div></div>
+  <nav class="navl" id="tabs"><div class="ng">Overview</div><a href="#dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.6"/><rect x="14" y="3" width="7" height="5" rx="1.6"/><rect x="14" y="12" width="7" height="9" rx="1.6"/><rect x="3" y="16" width="7" height="5" rx="1.6"/></svg><span>Dashboard</span></a><div class="ng">Before the test</div><a href="#candidates"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.4"/><path d="M2.8 20c.8-3.5 3.3-5.4 6.2-5.4s5.4 1.9 6.2 5.4"/><path d="M15.8 4.8a3.4 3.4 0 0 1 0 6.5M18 14.9c1.9.8 3 2.5 3.4 5.1"/></svg><span>Candidates</span></a><a href="#forms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg><span>Online Forms</span></a><a href="#admit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.2"/><circle cx="9" cy="11" r="2.2"/><path d="M5.8 16.2c.6-1.4 1.8-2.2 3.2-2.2s2.6.8 3.2 2.2M14.5 10h4M14.5 13.5h3"/></svg><span>Admit Cards</span></a><a href="#examday"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="2.2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4M9 15l2 2 4-4"/></svg><span>Exam Day</span></a><div class="ng">Results</div><a href="#marks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg><span>Marks Entry</span></a><a href="#results"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V11M10 20V5M16 20v-6M21 20H3"/></svg><span>Results</span></a><a href="#review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3.5h6v3H9z"/><path d="M15 5h2a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2"/><path d="M9 14l2 2 4-4"/></svg><span>Review &amp; Publish</span></a><div class="ng">Print &amp; share</div><a href="#notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2.2"/><path d="M8 21l4-4 4 4M7 9h10M7 12.5h6"/></svg><span>Notice Board</span></a><a href="#scorecards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5.5"/><path d="M8.6 13.4L7 21l5-2.5 5 2.5-1.6-7.6"/></svg><span>Score Cards</span></a><div class="ng">Settings</div><a href="#setup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h9M19 6h1M4 12h3M13 12h7M4 18h11M21 18h-1"/><circle cx="16" cy="6" r="2.2"/><circle cx="10" cy="12" r="2.2"/><circle cx="18" cy="18" r="2.2"/></svg><span>Setup</span></a><a href="#backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 8.5a4.8 4.8 0 0 1-.5 9.5z"/><path d="M12 11v5M9.8 13.2L12 11l2.2 2.2"/></svg><span>Online &amp; Backup</span></a></nav>
+  <div class="sfoot"><a href="https://stjames1980.github.io/sjs-school/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Back to SJS App</a></div>
+</aside>
+<div class="mainwrap">
+  <header class="topbar"><a class="back m-only" href="https://stjames1980.github.io/sjs-school/" aria-label="Back to SJS App"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><span class="m-only"><img class="logo" id="mLogo" alt=""></span><div class="tt"><small><span class="k-d" id="pgKick"></span><span class="k-m" id="pgKickM"></span></small><h1 id="pgTitle">Dashboard</h1></div><a class="sync" id="sync" href="#backup">This device only</a></header>
+  <main id="app"></main>
+</div>
+</div>
+<nav class="bnav navl" aria-label="Quick menu"><a href="#dashboard"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10.5L12 3.5l8.5 7"/><path d="M5.5 9v11h13V9"/><path d="M10 20v-6h4v6"/></svg></span>Home</a><a href="#candidates"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.4"/><path d="M2.8 20c.8-3.5 3.3-5.4 6.2-5.4s5.4 1.9 6.2 5.4"/><path d="M15.8 4.8a3.4 3.4 0 0 1 0 6.5M18 14.9c1.9.8 3 2.5 3.4 5.1"/></svg></span>Candidates</a><a href="#marks"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></span>Marks</a><a href="#results"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V11M10 20V5M16 20v-6M21 20H3"/></svg></span>Results</a><button type="button" id="moreBtn"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/></svg></span>More</button></nav>
+<div id="sheet" role="dialog" aria-label="All sections"><div class="sheetbox"><div class="grip" data-shx></div><div class="sheethd"><h3>All sections</h3><button class="btn sm" data-shx type="button">Close</button></div><nav class="sgrid navl"><div class="ng">Overview</div><div class="gi"><a href="#dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.6"/><rect x="14" y="3" width="7" height="5" rx="1.6"/><rect x="14" y="12" width="7" height="9" rx="1.6"/><rect x="3" y="16" width="7" height="5" rx="1.6"/></svg><span>Dashboard</span></a></div><div class="ng">Before the test</div><div class="gi"><a href="#candidates"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.4"/><path d="M2.8 20c.8-3.5 3.3-5.4 6.2-5.4s5.4 1.9 6.2 5.4"/><path d="M15.8 4.8a3.4 3.4 0 0 1 0 6.5M18 14.9c1.9.8 3 2.5 3.4 5.1"/></svg><span>Candidates</span></a><a href="#forms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg><span>Online Forms</span></a><a href="#admit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.2"/><circle cx="9" cy="11" r="2.2"/><path d="M5.8 16.2c.6-1.4 1.8-2.2 3.2-2.2s2.6.8 3.2 2.2M14.5 10h4M14.5 13.5h3"/></svg><span>Admit Cards</span></a><a href="#examday"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="2.2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4M9 15l2 2 4-4"/></svg><span>Exam Day</span></a></div><div class="ng">Results</div><div class="gi"><a href="#marks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg><span>Marks Entry</span></a><a href="#results"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V11M10 20V5M16 20v-6M21 20H3"/></svg><span>Results</span></a><a href="#review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3.5h6v3H9z"/><path d="M15 5h2a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2"/><path d="M9 14l2 2 4-4"/></svg><span>Review &amp; Publish</span></a></div><div class="ng">Print &amp; share</div><div class="gi"><a href="#notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2.2"/><path d="M8 21l4-4 4 4M7 9h10M7 12.5h6"/></svg><span>Notice Board</span></a><a href="#scorecards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5.5"/><path d="M8.6 13.4L7 21l5-2.5 5 2.5-1.6-7.6"/></svg><span>Score Cards</span></a></div><div class="ng">Settings</div><div class="gi"><a href="#setup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h9M19 6h1M4 12h3M13 12h7M4 18h11M21 18h-1"/><circle cx="16" cy="6" r="2.2"/><circle cx="10" cy="12" r="2.2"/><circle cx="18" cy="18" r="2.2"/></svg><span>Setup</span></a><a href="#backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 8.5a4.8 4.8 0 0 1-.5 9.5z"/><path d="M12 11v5M9.8 13.2L12 11l2.2 2.2"/></svg><span>Online &amp; Backup</span></a></div></nav><a class="sheetback" href="https://stjames1980.github.io/sjs-school/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Back to SJS App</a></div></div>
 <div id="modal"><div class="box" id="mbox"></div></div>
 <div id="toast"></div>
+<script>
+(function(){
+  var B=["dashboard", "candidates", "marks", "results"];
+  window.navUpdate=function(view){
+    document.querySelectorAll('.navl a[href^="#"]').forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+view);});
+    var m=document.getElementById('moreBtn');if(m)m.classList.toggle('on',B.indexOf(view)<0);
+    var a=document.querySelector('.side a[href="#'+view+'"] span'),t=document.getElementById('pgTitle');if(a&&t)t.textContent=a.textContent;
+    var k=document.getElementById('pgKick'),s=document.getElementById('hSub');if(k&&s)k.textContent=s.textContent;var km=document.getElementById('pgKickM'),hn=document.getElementById('hName');if(km&&hn)km.textContent=hn.textContent+(s&&/Session\s*(\S+)/.test(s.textContent)?' · '+s.textContent.match(/Session\s*(\S+)/)[1]:'');syncSt();
+    var sh=document.getElementById('sheet');if(sh)sh.classList.remove('on');
+    document.title=(a?a.textContent+' · ':'')+'SJS Entrance Test';
+  };
+  document.addEventListener('click',function(e){
+    if(e.target.closest('#moreBtn')){document.getElementById('sheet').classList.add('on');return;}
+    var sh=document.getElementById('sheet');if(sh&&sh.classList.contains('on')&&(e.target===sh||e.target.closest('[data-shx]')))sh.classList.remove('on');
+  });
+  function syncSt(){var el=document.getElementById('sync');if(!el)return;var t=el.textContent||'';el.dataset.st=/Saving|Connecting/i.test(t)?'busy':/Live|Saved to your account/i.test(t)?'live':'off';el.title=t;el.setAttribute('aria-label',t);}
+  window.addEventListener('DOMContentLoaded',function(){var el=document.getElementById('sync');if(el){new MutationObserver(syncSt).observe(el,{childList:true,characterData:true,subtree:true});syncSt();}});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var sh=document.getElementById('sheet');if(sh)sh.classList.remove('on');}});
+})();
+</script>
 <script>
 var LOGO_B64="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";
 /* ===== CORE: data model, result engine, sample data, PDF writer, XLSX writer ===== */
@@ -162,7 +307,7 @@ function defaultState(){
 function normalize(st){
   var d=defaultState();
   st=st||{};
-  var o={rooms:(st.rooms||[]).filter(function(r){return r&&r.id;}).map(function(r){return {id:String(r.id),name:String(r.name||''),cap:Math.max(0,parseInt(r.cap,10)||0),cols:Math.max(1,Math.min(8,parseInt(r.cols,10)||5)),inv:Math.max(0,parseInt(r.inv,10)||0)};}),staff:(st.staff||[]).filter(function(t){return t&&t.id;}).map(function(t){return {id:String(t.id),name:String(t.name||''),phone:String(t.phone||'')};}),sched:(st.sched&&typeof st.sched==='object')?st.sched:{},duty:(st.duty&&typeof st.duty==='object')?st.duty:{},exam:(st.exam&&typeof st.exam==='object')?st.exam:{},seatFix:(st.seatFix&&typeof st.seatFix==='object')?st.seatFix:null,apply:(st.apply&&typeof st.apply==='object')?st.apply:{},v:1,savedAt:st.savedAt||0,sample:!!st.sample,teachersMarks:!!st.teachersMarks,pub:(st.pub&&typeof st.pub==='object')?st.pub:{},school:Object.assign(d.school,st.school||{}),test:Object.assign(d.test,st.test||{}),classes:[],cands:[],seq:st.seq||{}};
+  var o={rooms:(st.rooms||[]).filter(function(r){return r&&r.id;}).map(function(r){return {id:String(r.id),name:String(r.name||''),cap:Math.max(0,parseInt(r.cap,10)||0),cols:Math.max(1,Math.min(8,parseInt(r.cols,10)||5)),inv:Math.max(0,parseInt(r.inv,10)||0)};}),staff:(st.staff||[]).filter(function(t){return t&&t.id;}).map(function(t){return {id:String(t.id),name:String(t.name||''),phone:String(t.phone||'')};}),sched:(st.sched&&typeof st.sched==='object')?st.sched:{},duty:(st.duty&&typeof st.duty==='object')?st.duty:{},jobs:(Array.isArray(st.jobs)?st.jobs:[]).filter(function(j){return j&&j.id;}).map(function(j){return {id:String(j.id),name:String(j.name||''),cls:String(j.cls||''),date:String(j.date||''),time:String(j.time||''),place:String(j.place||''),note:String(j.note||''),t:(Array.isArray(j.t)?j.t:[]).map(String),lead:String(j.lead||''),noInv:!!j.noInv};}),exam:(st.exam&&typeof st.exam==='object')?st.exam:{},seatFix:(st.seatFix&&typeof st.seatFix==='object')?st.seatFix:null,apply:(st.apply&&typeof st.apply==='object')?st.apply:{},v:1,savedAt:st.savedAt||0,sample:!!st.sample,teachersMarks:!!st.teachersMarks,pub:(st.pub&&typeof st.pub==='object')?st.pub:{},school:Object.assign(d.school,st.school||{}),test:Object.assign(d.test,st.test||{}),classes:[],cands:[],seq:st.seq||{}};
   d.classes.forEach(function(dc){
     var sc=(st.classes||[]).filter(function(x){return x.code===dc.code;})[0]||{};
     var c=Object.assign({},dc,sc);
@@ -646,15 +791,16 @@ function seatPlan(S,R){
 }
 function dutyPlan(S,plan){
   var staff=(S.staff||[]).filter(function(t){return t&&t.name;}),count={},dmap=S.duty||{},cfg=examCfg(S);
+  var keep={};(S.jobs||[]).forEach(function(j){if(j.noInv)(j.t||[]).forEach(function(id){keep[id]=1;});});
   staff.forEach(function(t){count[t.id]=0;});
   plan.sessions.forEach(function(s){var used={},slots=[];
     s.rooms.forEach(function(x){var n=Math.max(1,+x.room.inv||cfg.inv);for(var i=0;i<n;i++)slots.push({key:s.key+'|'+x.room.id+'|'+i,x:x,i:i,t:null,man:false});});
     slots.forEach(function(sl){var m=dmap[sl.key];if(m&&count[m]!==undefined&&!used[m]){sl.t=m;sl.man=true;used[m]=1;count[m]++;}});
-    slots.forEach(function(sl){if(sl.t||dmap[sl.key]==='-')return;var best=null;staff.forEach(function(t){if(used[t.id])return;if(best===null||count[t.id]<count[best])best=t.id;});if(best){sl.t=best;used[best]=1;count[best]++;}});
-    s.slots=slots;s.reserve=staff.filter(function(t){return !used[t.id];});s.short=slots.filter(function(sl){return !sl.t;}).length;
+    slots.forEach(function(sl){if(sl.t||dmap[sl.key]==='-')return;var best=null;staff.forEach(function(t){if(used[t.id]||keep[t.id])return;if(best===null||count[t.id]<count[best])best=t.id;});if(best){sl.t=best;used[best]=1;count[best]++;}});
+    s.slots=slots;s.reserve=staff.filter(function(t){return !used[t.id]&&!keep[t.id];});s.short=slots.filter(function(sl){return !sl.t;}).length;
   });
   var name={};staff.forEach(function(t){name[t.id]=t.name;});
-  return {count:count,staff:staff,name:name};
+  return {count:count,staff:staff,name:name,keep:keep};
 }
 function paperPlan(S,R,plan){
   var cfg=examCfg(S),sp=function(n){return Math.ceil(n*(1+cfg.spare/100));},classes=[],packets=[];
@@ -795,6 +941,64 @@ function dutyPDF(S,R,plan,D,p){
   signatures(p,S,y);
   return p;
 }
+/* ===== OTHER DUTIES: interview, evaluation, result compilation ... ===== */
+var JOB_COMMON=['Application forms & registration','Admit card issue','Question paper setting','Question paper printing & packing','Room arrangement & seat labels','Help desk & parents\' waiting area','Discipline & gate duty','Water & refreshment','Answer sheet collection & packing','Evaluation of answer scripts','Oral test / Interview','Marks entry','Result compilation & checking','Result display (notice board)','Admission desk'];
+function jobPlan(S,D){
+  var per={},jobs=(S.jobs||[]);D.staff.forEach(function(t){per[t.id]=[];});
+  jobs.forEach(function(j){(j.t||[]).forEach(function(id){if(per[id])per[id].push(j);});});
+  var free=D.staff.filter(function(t){return !(D.count[t.id]||0)&&!per[t.id].length;});
+  var busy=D.staff.filter(function(t){return per[t.id].length;}).length;
+  var empty=jobs.filter(function(j){return !(j.t||[]).some(function(id){return D.name[id];});}).length;
+  return {jobs:jobs,per:per,free:free,busy:busy,empty:empty};
+}
+function jobTeachers(j,D){var ids=(j.t||[]).filter(function(id){return D.name[id];}),lead=ids.indexOf(j.lead)>=0?j.lead:'';
+  return {lead:lead?D.name[lead]:'',others:ids.filter(function(id){return id!==lead;}).map(function(id){return D.name[id];}),n:ids.length};}
+function jobCls(S,j){if(!j.cls)return '';for(var i=0;i<S.classes.length;i++)if(S.classes[i].code===j.cls)return S.classes[i].name;return j.cls;}
+function jobWhen(j){return [j.date?fmtDate(j.date):'',j.time,j.place].filter(Boolean).join('  |  ');}
+/* table whose rows grow to fit wrapped text; a cell is a string or {seg:[{t,b,c,s}]} */
+function vTable(p,S,y,cols,rows,o){
+  o=o||{};var fs=o.fs||8.5,bottom=p.H-56,tW=cols.reduce(function(a,c){return a+c.w;},0),headH=21,pad=6;
+  function head(){p.rect(ML,y,tW,headH,{fill:C.blue});var x=ML;cols.forEach(function(c){p.text(c.h,c.a==='c'?x+c.w/2:x+5,y+headH/2+2.8,{size:7.8,bold:true,color:'#ffffff',align:c.a==='c'?'center':'left'});x+=c.w;});y+=headH;}
+  head();
+  rows.forEach(function(row,ri){
+    var cells=cols.map(function(c,ci){var v=row[ci];if(v==null)v='';var seg=typeof v==='object'?v.seg:[{t:String(v)}],L=[];
+      seg.forEach(function(g){if(!g||!g.t)return;var sz=g.s||fs;String(g.t).split('\n').forEach(function(part){wrapText(part,sz,!!g.b,c.w-10).forEach(function(l){L.push({t:l,b:g.b,c:g.c,s:sz});});});});
+      var h=L.reduce(function(a,l){return a+l.s*1.32;},0);return {L:L,h:h};});
+    var h=Math.max(o.minH||20,Math.max.apply(null,cells.map(function(c){return c.h;}))+pad*2);
+    if(y+h>bottom){p.add();y=pdfHeader(p,S,o.contTitle||'continued',null,true);head();}
+    if(ri%2)p.rect(ML,y,tW,h,{fill:'#f6f8fd'});
+    var x=ML;cells.forEach(function(c,ci){var col=cols[ci],tx=col.a==='c'?x+col.w/2:x+5,ty=y+pad+(c.L[0]?c.L[0].s*0.92:fs);
+      if(col.a==='c'&&c.L.length===1)ty=y+h/2+c.L[0].s*0.35;
+      c.L.forEach(function(l){p.text(l.t,tx,ty,{size:l.s,bold:!!l.b,color:l.c||C.ink,align:col.a==='c'?'center':'left'});ty+=l.s*1.32;});x+=col.w;});
+    p.line(ML,y+h,ML+tW,y+h,C.line,0.5);y+=h;});
+  if(!rows.length){p.rect(ML,y,tW,24,{fill:'#f6f8fd'});p.text(o.empty||'Nothing yet',ML+tW/2,y+15,{size:8.5,italic:true,color:C.mute,align:'center'});y+=24;}
+  return y;
+}
+function jobsPDF(S,D,J,p){
+  p=p||new PDF();p.wm='';p.add();var ct='Exam duties (continued)';
+  var y=pdfHeader(p,S,'EXAM DUTY CHART',S.test.title+' '+S.test.session+'   |   '+J.jobs.length+' duties   |   '+D.staff.length+' teachers');
+  var inv=D.staff.filter(function(t){return D.count[t.id];}).length;
+  y=statBoxes(p,y,[['Duties',J.jobs.length],['Teachers on these duties',J.busy],['Teachers on invigilation',inv],['Teachers with no duty',J.free.length,C.greenS,C.green]]);
+  y=sectionLabel(p,y,'DUTY LIST',C.blue);
+  var rows=J.jobs.map(function(j,i){var T=jobTeachers(j,D),cl=jobCls(S,j);
+    return [String(i+1),{seg:[{t:j.name||'(no name)',b:true},{t:cl?'Class: '+cl:'',s:7.5,c:C.mute},{t:j.note,s:7.5,c:C.mute}]},{seg:[{t:j.date?fmtDate(j.date):'',b:true},{t:j.time},{t:j.place,c:C.mute}]},
+      T.n?{seg:[{t:T.lead?'In-charge: '+T.lead:'',b:true,c:C.blueD},{t:T.others.join(',  ')}]}:{seg:[{t:'Not assigned yet',b:true,c:C.red}]}];});
+  y=vTable(p,S,y,[{h:'#',w:22,a:'c'},{h:'Duty',w:150},{h:'Date / Time / Place',w:110},{h:'Teachers',w:241}],rows,{contTitle:ct,empty:'No duties added yet'});
+  y=ensure(p,S,y+16,90,ct);
+  y=sectionLabel(p,y,'TEACHER-WISE DUTIES (with invigilation)',C.red);
+  var tr=D.staff.map(function(t,i){var L=J.per[t.id]||[],n=D.count[t.id]||0;
+    return [String(i+1),{seg:[{t:t.name,b:true},{t:D.keep[t.id]?'Kept free from invigilation':'',s:7,c:C.amber}]},n?String(n):'-',
+      L.length?{seg:[{t:L.map(function(j){var cl=jobCls(S,j);return j.name+(cl?' ('+cl+')':'')+(j.lead===t.id?' - In-charge':'');}).join(';  ')}]}:(n?'-':{seg:[{t:'No duty',b:true,c:C.green}]}),''];});
+  y=vTable(p,S,y,[{h:'#',w:22,a:'c'},{h:'Teacher',w:130},{h:'Invigilation',w:58,a:'c'},{h:'Other duties',w:233},{h:'Signature',w:80,a:'c'}],tr,{contTitle:ct,minH:24,empty:'No teachers added yet'});
+  signatures(p,S,y);
+  return p;
+}
+function jobsSheets(S,D,J){
+  var t1=J.jobs.map(function(j,i){var T=jobTeachers(j,D);return [{v:i+1,s:6},{v:j.name,s:7},{v:jobCls(S,j)||'All',s:6},{v:j.date?fmtDMY(j.date):'',s:6},{v:j.time,s:6},j.place,T.lead,T.others.join(', '),j.note];});
+  var t2=D.staff.map(function(t,i){var L=J.per[t.id]||[],n=D.count[t.id]||0;return [{v:i+1,s:6},{v:t.name,s:7},{v:n,s:6},L.map(function(j){var cl=jobCls(S,j);return j.name+(cl?' ('+cl+')':'')+(j.lead===t.id?' - In-charge':'');}).join('; ')||(n?'':'No duty'),{v:n+L.length,s:6},''];});
+  return [{name:'Duty List',title:titleLines(S,('Exam Duties - '+S.test.title+' '+S.test.session).toUpperCase()),redLast:true,header:['#','Duty','Class','Date','Time','Place','In-charge','Teachers','Note'],widths:[5,30,11,12,16,16,22,44,24],rows:t1,landscape:true,footer:S.school.name},
+    {name:'Teacher-wise',title:titleLines(S,('Teacher-wise Duties - '+S.test.session).toUpperCase()),redLast:true,header:['#','Teacher','Invigilation','Other duties','Total','Signature'],widths:[5,26,12,60,8,18],rows:t2,landscape:true,footer:S.school.name}];
+}
 /* ---------- Question paper requirement ---------- */
 function papersPDF(S,R,plan,P,p){
   p=p||new PDF();p.wm='';p.add();
@@ -812,12 +1016,12 @@ function papersPDF(S,R,plan,P,p){
   return p;
 }
 
-if(typeof module!=='undefined'&&typeof window==='undefined')module.exports={seatPlan:seatPlan,dutyPlan:dutyPlan,paperPlan:paperPlan,seatChartPDF:seatChartPDF,attendancePDF:attendancePDF,dutyPDF:dutyPDF,papersPDF:papersPDF,schedOf:schedOf,setPhotos:function(o){PHOTOS=o;},isPub:isPub,defaultState:defaultState,normalize:normalize,sampleState:sampleState,compute:compute,noticePDF:noticePDF,resultPDF:resultPDF,scoreCardPDF:scoreCardPDF,admitPDF:admitPDF,awardPDF:awardPDF,summaryPDF:summaryPDF,pdfFooter:pdfFooter,PDF:PDF,makeXlsx:makeXlsx,classResultSheet:classResultSheet,meritSheet:meritSheet,summarySheet:summarySheet,candidatesSheet:candidatesSheet,STATUS:STATUS};
+if(typeof module!=='undefined'&&typeof window==='undefined')module.exports={seatPlan:seatPlan,dutyPlan:dutyPlan,paperPlan:paperPlan,seatChartPDF:seatChartPDF,attendancePDF:attendancePDF,dutyPDF:dutyPDF,papersPDF:papersPDF,jobsPDF:jobsPDF,jobPlan:jobPlan,jobsSheets:jobsSheets,schedOf:schedOf,setPhotos:function(o){PHOTOS=o;},isPub:isPub,defaultState:defaultState,normalize:normalize,sampleState:sampleState,compute:compute,noticePDF:noticePDF,resultPDF:resultPDF,scoreCardPDF:scoreCardPDF,admitPDF:admitPDF,awardPDF:awardPDF,summaryPDF:summaryPDF,pdfFooter:pdfFooter,PDF:PDF,makeXlsx:makeXlsx,classResultSheet:classResultSheet,meritSheet:meritSheet,summarySheet:summarySheet,candidatesSheet:candidatesSheet,STATUS:STATUS};
 
 LOGO_JPG=atob(LOGO_B64);
 </script>
 <script>
-document.getElementById("hLogo").src="data:image/jpeg;base64,"+LOGO_B64;
+document.getElementById("hLogo").src=document.getElementById("mLogo").src="data:image/jpeg;base64,"+LOGO_B64;
 {
 const KEY='sjs_entrance_gh_v1';
 let S=null,R=null;
@@ -852,7 +1056,7 @@ function save(o){
 }
 const mainRef=()=>Live.fs.collection('entrance').doc('main');
 const plain=o=>JSON.parse(JSON.stringify(o));
-function metaObj(){return plain({v:1,school:S.school,test:S.test,classes:S.classes,seq:S.seq,sample:!!S.sample,teachersMarks:!!S.teachersMarks,pub:S.pub||{},rooms:S.rooms||[],staff:S.staff||[],sched:S.sched||{},duty:S.duty||{},exam:S.exam||{},seatFix:S.seatFix||null,apply:S.apply||{},savedAt:Date.now(),by:Live.user?Live.user.email:''});}
+function metaObj(){return plain({v:1,school:S.school,test:S.test,classes:S.classes,seq:S.seq,sample:!!S.sample,teachersMarks:!!S.teachersMarks,pub:S.pub||{},rooms:S.rooms||[],staff:S.staff||[],sched:S.sched||{},duty:S.duty||{},jobs:S.jobs||[],exam:S.exam||{},seatFix:S.seatFix||null,apply:S.apply||{},savedAt:Date.now(),by:Live.user?Live.user.email:''});}
 function candsMap(code){const m={};S.cands.filter(k=>k.cls===code).forEach(k=>m[k.id]=plain(k));return m;}
 async function flush(){
   if(!Live.on||Live.busy)return;Live.busy=true;
@@ -933,7 +1137,7 @@ function unsubAll(){Live.unsub.forEach(f=>{try{f();}catch(e){}});Live.unsub=[];L
 function subscribe(){
   unsubAll();const main=mainRef();
   Live.unsub.push(main.onSnapshot(d=>{if(!d.exists||Live.meta||Live.full)return;const m=d.data()||{};
-    const n=normalize(Object.assign({},m,{cands:[]}));S.rooms=n.rooms;S.staff=n.staff;S.sched=n.sched;S.duty=n.duty;S.exam=n.exam;S.seatFix=n.seatFix;S.apply=n.apply;
+    const n=normalize(Object.assign({},m,{cands:[]}));S.rooms=n.rooms;S.staff=n.staff;S.sched=n.sched;S.duty=n.duty;S.jobs=n.jobs;S.exam=n.exam;S.seatFix=n.seatFix;S.apply=n.apply;
     S.school=n.school;S.test=n.test;S.classes=n.classes;S.seq=m.seq||{};S.sample=!!m.sample;S.teachersMarks=!!m.teachersMarks;S.pub=(m.pub&&typeof m.pub==='object')?m.pub:{};afterRemote();},e=>liveFail(e)));
   Live.unsub.push(main.collection('p').onSnapshot(snap=>{snap.docChanges().forEach(c=>{if(c.type==='removed')delete PHOTOS[c.doc.id];else PHOTOS[c.doc.id]=(c.doc.data()||{}).d;});photosLocal();},()=>{}));
   Live.unsub.push(main.collection('c').onSnapshot(snap=>{if(Live.full)return;let ch=false;
@@ -1022,7 +1226,7 @@ function vDashboard(){
     <div class="legend" style="display:grid;margin:0">${parts.map(p=>`<span><i style="background:${p[2]}"></i>${p[0]}: <b>${p[1]}</b></span>`).join('')}</div></div>
     <h3 style="margin-top:18px">Grade distribution</h3><div class="bars">${grades}</div></div></div>
   ${(()=>{const plan=seatPlan(S,R),Dp=dutyPlan(S,plan),uns=plan.sessions.reduce((a,x)=>a+x.unseated.length,0),short=plan.sessions.reduce((a,x)=>a+(x.short||0),0),ph=S.cands.filter(k=>PHOTOS[k.id]).length,pubN=R.order.filter(c=>R.by[c].stats.pub).length,appN=R.order.filter(c=>R.by[c].stats.applied).length;
-    const it=[[(S.rooms||[]).length&&!uns,'Rooms & seats',(S.rooms||[]).length?plan.cap+' seats for '+S.cands.length+' candidates'+(uns?' · '+uns+' without seat':''):'No rooms yet'],[!!S.seatFix,'Seat numbers',S.seatFix?'Frozen':'Not frozen yet'],[Dp.staff.length&&!short,'Invigilation',Dp.staff.length?Dp.staff.length+' teachers'+(short?' · '+short+' places empty':' · all rooms covered'):'No teachers added'],[ph===S.cands.length&&ph>0,'Photos',ph+' of '+S.cands.length+' candidates'],[T.pending===0&&T.applied>0,'Marks',T.pending?T.pending+' pending':'All entered'],[pubN===appN&&appN>0,'Results published',pubN+' of '+appN+' classes']];
+    const it=[[(S.rooms||[]).length&&!uns,'Rooms & seats',(S.rooms||[]).length?plan.cap+' seats for '+S.cands.length+' candidates'+(uns?' · '+uns+' without seat':''):'No rooms yet'],[!!S.seatFix,'Seat numbers',S.seatFix?'Frozen':'Not frozen yet'],[Dp.staff.length&&!short,'Invigilation',Dp.staff.length?Dp.staff.length+' teachers'+(short?' · '+short+' places empty':' · all rooms covered'):'No teachers added'],[(S.jobs||[]).length&&!jobPlan(S,Dp).empty,'Other duties',(S.jobs||[]).length?(S.jobs.length+' duties'+(jobPlan(S,Dp).empty?' · '+jobPlan(S,Dp).empty+' without teacher':' · all assigned')):'Not set yet'],[ph===S.cands.length&&ph>0,'Photos',ph+' of '+S.cands.length+' candidates'],[T.pending===0&&T.applied>0,'Marks',T.pending?T.pending+' pending':'All entered'],[pubN===appN&&appN>0,'Results published',pubN+' of '+appN+' classes']];
     return `<div class="card"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Entrance test checklist</h3><button class="btn sm" data-go="examday">Exam Day</button></div><div class="kpis" style="margin:12px 0 0;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))">${it.map(x=>`<div class="kpi ${x[0]?'g':'a'}" style="padding:10px 12px"><span style="font-weight:700;color:${x[0]?'var(--green)':'var(--amber)'}">${x[0]?'✓':'•'} ${esc(x[1])}</span><div style="font-size:13px;margin-top:2px">${esc(x[2])}</div></div>`).join('')}</div></div>`;})()}
   <div class="card"><h3>Class summary</h3><div class="scroll"><table class="stack"><thead><tr><th>Class</th><th class="n">Seats</th><th class="n">Applied</th><th class="n">Appeared</th><th class="n">Absent</th><th class="n">Qualified</th><th class="n">Selected</th><th class="n">Waiting</th><th class="n">Vacant</th><th class="n">Avg %</th><th>Topper</th><th>Result</th></tr></thead><tbody>${rows}</tbody></table></div></div>
   <div class="grid2"><div class="card"><h3>Top 10 candidates (all classes)</h3><ol class="top10">${top}</ol></div>
@@ -1297,12 +1501,12 @@ function copyText(t){const done=()=>toast('Copied');try{if(navigator.clipboard&&
 function fallbackCopy(t){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');toast('Copied');}catch(e){toast('Select the text and copy it');}a.remove();}
 function textModal(title,text,wa){modal(`<h3>${esc(title)}</h3><textarea id="txOut" style="min-height:260px;font-size:14px" readonly>${esc(text)}</textarea><div class="row" style="justify-content:flex-end;margin-top:10px"><button class="btn" data-x="close">Close</button>${wa?`<a class="btn" href="${esc(wa)}" target="_blank" rel="noopener">Open WhatsApp</a>`:''}<button class="btn pri" id="txCopy">Copy text</button></div>`);$('#txCopy').onclick=()=>copyText($('#txOut').value);}
 function vExam(){
-  const tabs=[['sched','Schedule'],['rooms','Rooms & seat plan'],['duty','Invigilation'],['papers','Question papers']];
+  const tabs=[['sched','Schedule'],['rooms','Rooms & seat plan'],['duty','Invigilation'],['jobs','Other duties'],['papers','Question papers']];
   if(!ui.ex)ui.ex='sched';
   const plan=seatPlan(S,R);
-  const head=sampleBanner()+`<div class="lede"><div><h2>Exam day</h2><p>Everything for a smooth test day: timings, rooms and seat numbers, invigilation duty and question paper count. All of it updates by itself from the candidate list.</p></div></div>
+  const head=sampleBanner()+`<div class="lede"><div><h2>Exam day</h2><p>Everything for a smooth test day: timings, rooms and seat numbers, invigilation, other duties (interview, result compilation…) and question paper count. All of it updates by itself from the candidate list.</p></div></div>
   <div class="row" style="margin-bottom:14px">${tabs.map(t=>`<button class="btn ${ui.ex===t[0]?'pri':''}" data-ex="${t[0]}">${t[1]}</button>`).join('')}</div>`;
-  return head+({sched:exSched,rooms:exRooms,duty:exDuty,papers:exPapers}[ui.ex])(plan);
+  return head+({sched:exSched,rooms:exRooms,duty:exDuty,jobs:exJobs,papers:exPapers}[ui.ex])(plan);
 }
 function exSched(plan){
   const D=canEdit()?'':' disabled';
@@ -1343,7 +1547,7 @@ function exDuty(plan){
   return `<div class="grid2"><div class="card"><h3>Teachers for duty (${Dp.staff.length})</h3>
     ${Dp.staff.length?`<div class="scroll"><table><thead><tr><th>Teacher</th><th class="n">Duties</th><th></th></tr></thead><tbody>${Dp.staff.map((t,i)=>`<tr><td>${esc(t.name)}</td><td class="n"><b>${Dp.count[t.id]||0}</b></td><td class="n">${ed?`<button class="btn sm red" data-stdel="${esc(t.id)}">Remove</button>`:''}</td></tr>`).join('')}</tbody></table></div>`:'<p class="muted">No teachers yet.</p>'}
     ${ed?`<label style="display:grid;gap:4px;margin-top:12px;font-size:13px;color:var(--mute)">Add teachers — one name per line<textarea id="stAdd" placeholder="Sir Lalramenga&#10;Pi Lalrinpuii"></textarea></label><div class="row" style="margin-top:8px"><button class="btn pri" data-a="stadd">Add teachers</button>${typeof loadSjsTeachers==='function'?'<button class="btn" data-a="stsjs">Load teachers from SJS App</button>':''}</div>`:''}</div>
-   <div class="card"><h3>How duty is given</h3><p class="muted">Each room gets ${cfg.inv} invigilator(s) unless you set another number in Rooms. Teachers are shared out evenly — nobody gets two rooms in one session. Choose a name in any box to fix it by hand; “— none —” leaves the place empty.</p>
+   <div class="card"><h3>How duty is given</h3><p class="muted">Each room gets ${cfg.inv} invigilator(s) unless you set another number in Rooms. Teachers are shared out evenly — nobody gets two rooms in one session. Choose a name in any box to fix it by hand; “— none —” leaves the place empty.</p>${Object.keys(Dp.keep).length?`<p class="muted"><b>${Object.keys(Dp.keep).filter(id=>Dp.name[id]).length} teacher(s)</b> are kept free for other duties (interview, help desk…). <button class="btn sm" data-ex="jobs" style="margin-left:6px">Other duties</button></p>`:''}
     <label>Invigilators per room<input id="exinv" inputmode="numeric" value="${cfg.inv}" style="width:80px;margin-left:8px"${ed?'':' disabled'}></label>
     <div class="row" style="margin-top:14px"><button class="btn pri" data-a="dutypdf">Duty chart PDF</button><button class="btn" data-a="dutywa">WhatsApp text</button>${ed?'<button class="btn" data-a="dutyreset">Clear manual changes</button>':''}</div></div></div>${sess}`;
 }
@@ -1386,6 +1590,75 @@ const examActions={
   notwa:()=>{const code=ui.ncls||R.order.find(c=>R.by[c].stats.applied)||'NUR';if(!isPub(S,code))toast('Note: this class is not published yet — text says PROVISIONAL');const t=resultText(code);textModal('Result — WhatsApp text ('+clsName(code)+')',t,waLink(t));},
   scwa:()=>{const r=R.by[ui.scls].list.find(x=>x.k.id===ui.scand);if(!r)return;const t=parentText(r);textModal('Message for parent',t,waLink(t,r.k.phone));}
 };
+/* ---------- OTHER DUTIES: interview, evaluation, result compilation and more ---------- */
+function exJobs(plan){
+  const D=dutyPlan(S,plan),J=jobPlan(S,D),ed=canEdit();
+  const chips=j=>{const ids=(j.t||[]).filter(id=>D.name[id]);if(!ids.length)return '<span class="pill p-nq">No teacher yet</span>';
+    const lead=ids.includes(j.lead)?j.lead:'';return [lead,...ids.filter(id=>id!==lead)].filter(Boolean).map(id=>`<span class="pill ${id===lead?'p-sel':'p-q'}" style="margin:2px 4px 2px 0">${id===lead?'★ ':''}${esc(D.name[id])}${id===lead?' (In-charge)':''}</span>`).join('');};
+  const list=J.jobs.map((j,i)=>{const cl=jobCls(S,j),w=jobWhen(j);return `<tr><td class="n">${i+1}</td><td><b>${esc(j.name||'(no name)')}</b>${cl?` <span class="pill p-pen">${esc(cl)}</span>`:''}${j.noInv?' <span class="pill p-wl">Free from invigilation</span>':''}${j.note?`<div class="muted" style="font-size:12.5px">${esc(j.note)}</div>`:''}</td>
+    <td style="white-space:nowrap">${w?esc(w).replace(/ {2}\| {2}/g,'<br>'):'<span class="muted">—</span>'}</td><td style="min-width:200px">${chips(j)}</td>
+    <td class="n" style="white-space:nowrap">${ed?`<button class="btn sm" data-jobed="${esc(j.id)}">Edit</button> <button class="btn sm red" data-jobdel="${esc(j.id)}" aria-label="Remove duty">✕</button>`:''}</td></tr>`;}).join('');
+  const load=D.staff.map(t=>{const L=J.per[t.id]||[],n=D.count[t.id]||0;return `<tr><td>${esc(t.name)}${D.keep[t.id]?' <span class="pill p-wl">no invigilation</span>':''}</td><td class="n">${n||'–'}</td>
+    <td>${L.length?L.map(j=>esc(j.name)+(jobCls(S,j)?' ('+esc(jobCls(S,j))+')':'')+(j.lead===t.id?' <b style="color:var(--green)">★</b>':'')).join('; '):(n?'<span class="muted">—</span>':'<span class="pill p-sel">Free</span>')}</td><td class="n"><b>${n+L.length}</b></td></tr>`;}).join('');
+  return `<div class="card"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Other duties (${J.jobs.length})</h3>
+    <div class="row">${ed?'<button class="btn pri" data-a="jobadd">+ Add duty</button><button class="btn" data-a="jobcommon">Add usual duties</button>':''}<button class="btn" data-a="jobpdf">Duty chart PDF</button><button class="btn" data-a="jobxls">Excel</button><button class="btn" data-a="jobwa">WhatsApp text</button></div></div>
+    <p class="muted" style="margin:8px 0 12px">Interview, evaluation, result compilation, help desk, discipline — any work besides invigilation. Tap <b>Edit</b> to choose teachers and the in-charge. Teachers with the fewest duties are shown first.</p>
+    ${D.staff.length?'':`<div class="banner"><span>No teachers yet. Add them in <b>Invigilation</b> (or load them from SJS App) first.</span><button class="btn sm" data-ex="duty">Go to Invigilation</button></div>`}
+    ${J.jobs.length?`<div class="scroll"><table><thead><tr><th class="n">#</th><th>Duty</th><th>When &amp; where</th><th>Teachers</th><th></th></tr></thead><tbody>${list}</tbody></table></div>`:'<p class="muted">No duties yet. Tap <b>Add usual duties</b> to start with a ready list, then remove what you don\'t need.</p>'}
+    ${J.empty?`<div class="banner" style="background:var(--redS);color:var(--red);margin-top:10px"><span><b>${J.empty} duty(s)</b> still have no teacher.</span></div>`:''}</div>
+  <div class="card"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Teacher-wise duties</h3><span class="pill ${J.free.length?'p-sel':'p-q'}">${J.free.length} teacher(s) with no duty</span></div>
+    ${J.free.length?`<p class="muted" style="margin:8px 0">No duty yet: <b>${J.free.map(t=>esc(t.name)).join(', ')}</b></p>`:''}
+    ${D.staff.length?`<div class="scroll"><table><thead><tr><th>Teacher</th><th class="n">Invigilation</th><th>Other duties</th><th class="n">Total</th></tr></thead><tbody>${load}</tbody></table></div>`:'<p class="muted">No teachers yet.</p>'}</div>`;
+}
+function jobForm(id,draft){
+  const plan=seatPlan(S,R),D=dutyPlan(S,plan),J=jobPlan(S,D);
+  const j=draft||(id?S.jobs.find(x=>x.id===id):null)||{name:'',cls:'',date:'',time:'',place:'',note:'',t:[],lead:'',noInv:false};if(!j)return;
+  const sel=new Set(j.t||[]),tot=t=>(D.count[t.id]||0)+(J.per[t.id]||[]).filter(x=>x.id!==j.id).length;
+  const order=D.staff.slice().sort((a,b)=>(sel.has(b.id)-sel.has(a.id))||tot(a)-tot(b));
+  const row=t=>{const L=(J.per[t.id]||[]).filter(x=>x.id!==j.id),n=D.count[t.id]||0,info=[n?'Invigilation '+n:'',...L.map(x=>x.name)].filter(Boolean).join(' · ')||'No duty yet';
+    return `<div class="jt" data-nm="${esc(t.name.toLowerCase())}" style="display:flex;align-items:center;gap:10px;padding:7px 4px;border-bottom:1px solid var(--line)">
+      <input type="checkbox" class="chk" name="jt" value="${esc(t.id)}" ${sel.has(t.id)?'checked':''} aria-label="${esc(t.name)}">
+      <div style="flex:1;min-width:0"><b>${esc(t.name)}</b><div class="muted" style="font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(info)}</div></div>
+      <label style="display:flex;align-items:center;gap:5px;font-size:12px;white-space:nowrap"><input type="radio" name="jlead" value="${esc(t.id)}" ${j.lead===t.id?'checked':''}> In-charge</label></div>`;};
+  modal(`<h3>${id?'Edit duty':'New duty'}</h3><form id="jform" class="form">
+    <label class="wide">Duty *<input name="name" required list="jobList" value="${esc(j.name)}" placeholder="e.g. Oral test / Interview"></label>
+    <datalist id="jobList">${JOB_COMMON.map(x=>`<option value="${esc(x)}">`).join('')}</datalist>
+    <label>Class<select name="cls"><option value="">All classes</option>${S.classes.map(c=>`<option value="${c.code}"${c.code===j.cls?' selected':''}>${esc(c.name)}</option>`).join('')}</select></label>
+    <label>Date<input type="date" name="date" value="${esc(j.date)}"></label>
+    <label>Time<input name="time" value="${esc(j.time)}" placeholder="e.g. 9:00 AM – 12:00 PM"></label>
+    <label>Place<input name="place" value="${esc(j.place)}" placeholder="e.g. Library, Office"></label>
+    <label class="wide">Note (optional)<input name="note" value="${esc(j.note)}" placeholder="e.g. Bring marks register"></label>
+    <label class="wide" style="display:flex;align-items:center;gap:10px;color:var(--ink)"><input type="checkbox" class="chk" name="noInv" ${j.noInv?'checked':''}> <span><b>Keep these teachers free from invigilation</b><br><span class="muted">Use for work on the test day itself, like interview or help desk. Invigilation is shared among the other teachers.</span></span></label>
+    <div class="wide" style="grid-column:1/-1"><div class="row" style="justify-content:space-between;margin-bottom:6px"><b>Teachers <span id="jcount" class="muted"></span></b><input id="jfind" placeholder="Search teacher" style="max-width:200px"></div>
+      <div style="max-height:300px;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:0 8px">${order.map(row).join('')||'<p class="muted">No teachers yet — add one below.</p>'}</div>
+      <div class="row" style="margin-top:8px"><input id="jnew" placeholder="Add a new teacher's name" style="flex:1;min-width:160px"><button type="button" class="btn sm" id="jnewBtn">Add teacher</button></div></div>
+    <p id="jfErr" class="wide" style="grid-column:1/-1;color:var(--red);margin:0;min-height:1.2em"></p>
+    <div class="row wide" style="grid-column:1/-1;justify-content:flex-end"><button type="button" class="btn" data-x="close">Cancel</button><button class="btn pri" type="submit">Save duty</button></div></form>`);
+  const F=$('#jform'),cnt=()=>{$('#jcount').textContent='('+F.querySelectorAll('input[name=jt]:checked').length+' chosen)';};cnt();
+  F.addEventListener('change',e=>{if(e.target.name==='jlead'){const c=F.querySelector('input[name=jt][value="'+CSS.escape(e.target.value)+'"]');if(c)c.checked=true;}
+    if(e.target.name==='jt'&&!e.target.checked){const r=F.querySelector('input[name=jlead][value="'+CSS.escape(e.target.value)+'"]');if(r)r.checked=false;}cnt();});
+  $('#jfind').oninput=e=>{const q=e.target.value.toLowerCase().trim();F.querySelectorAll('.jt').forEach(d=>d.style.display=!q||d.dataset.nm.includes(q)?'':'none');};
+  const collect=()=>{const fd=new FormData(F);return {id:j.id||(j.id=rid()),name:String(fd.get('name')||'').trim(),cls:fd.get('cls')||'',date:fd.get('date')||'',time:String(fd.get('time')||'').trim(),place:String(fd.get('place')||'').trim(),note:String(fd.get('note')||'').trim(),t:fd.getAll('jt').map(String),lead:String(fd.get('jlead')||''),noInv:!!fd.get('noInv')};};
+  const store=d=>{if(d.lead&&!d.t.includes(d.lead))d.t.push(d.lead);S.jobs=S.jobs||[];const i=S.jobs.findIndex(x=>x.id===d.id);if(i>=0)S.jobs[i]=d;else S.jobs.push(d);};
+  $('#jnewBtn').onclick=()=>{const v=$('#jnew').value.trim();if(!v)return;S.staff=S.staff||[];let t=S.staff.find(x=>nm(x.name)===nm(v));if(!t){t={id:rid(),name:v,phone:''};S.staff.push(t);}
+    persist({meta:true});const d=collect();if(!d.t.includes(t.id))d.t.push(t.id);jobForm(id,d);toast(v+' added');};
+  F.onsubmit=e=>{e.preventDefault();const d=collect();if(!d.name){$('#jfErr').textContent='Type the duty name.';return;}store(d);persist({meta:true});closeModal();route();toast('Duty saved');};
+}
+function jobsText(){const D=dutyPlan(S,seatPlan(S,R)),J=jobPlan(S,D);let t=`*${S.school.name}*\n*Exam duties — ${S.test.title} ${S.test.session}*\n`;
+  J.jobs.forEach((j,i)=>{const T=jobTeachers(j,D),cl=jobCls(S,j),w=jobWhen(j);t+=`\n*${i+1}. ${j.name}${cl?' ('+cl+')':''}*\n`;if(w)t+=`🗓 ${w.replace(/ {2}\| {2}/g,' · ')}\n`;
+    if(T.lead)t+=`👤 In-charge: ${T.lead}\n`;t+=T.others.length?`👥 ${T.others.join(', ')}\n`:(T.lead?'':'👥 (not assigned yet)\n');if(j.note)t+=`📝 ${j.note}\n`;});
+  return t+`\nKindly do your duty sincerely. — Exam In-charge`;}
+const jobActions={
+  jobadd:()=>jobForm(null),
+  jobcommon:()=>{S.jobs=S.jobs||[];const have=new Set(S.jobs.map(j=>nm(j.name)));let n=0;JOB_COMMON.forEach((x,i)=>{if(!have.has(nm(x))){S.jobs.push({id:rid()+i,name:x,cls:'',date:'',time:'',place:'',note:'',t:[],lead:'',noInv:false});n++;}});persist({meta:true});route();toast(n?n+' duties added — remove any you don\'t need':'All usual duties are already in the list');},
+  jobpdf:()=>{const D=dutyPlan(S,seatPlan(S,R));pdfOut(jobsPDF(S,D,jobPlan(S,D)),'Exam_Duty_Chart.pdf');},
+  jobxls:()=>{const D=dutyPlan(S,seatPlan(S,R));xlsOut(jobsSheets(S,D,jobPlan(S,D)),'Exam_Duties_'+String(S.test.session).replace(/[^0-9A-Za-z-]/g,'')+'.xlsx');},
+  jobwa:()=>{const t=jobsText();textModal('Exam duties — WhatsApp',t,waLink(t));}
+};
+document.addEventListener('click',e=>{const t=e.target.closest('[data-jobed],[data-jobdel]');if(!t||!canEdit())return;
+  if(t.dataset.jobed){jobForm(t.dataset.jobed);return;}
+  const j=(S.jobs||[]).find(x=>x.id===t.dataset.jobdel);if(j)ask('Remove the duty “'+j.name+'”?',()=>{S.jobs=S.jobs.filter(x=>x.id!==j.id);persist({meta:true});route();},'Remove');
+});
 document.addEventListener('click',e=>{const t=e.target.closest('[data-ex],[data-rmdel],[data-stdel]');if(!t)return;
   if(t.dataset.ex){ui.ex=t.dataset.ex;route();return;}
   if(!canEdit())return;
@@ -1601,8 +1874,7 @@ const curView=()=>{const v=(location.hash||'#dashboard').slice(1);return VIEWS[v
 const VIEWS={dashboard:vDashboard,candidates:vCandidates,marks:vMarks,results:vResults,review:vReview,examday:vExam,forms:vForms,notice:vNotice,scorecards:vScore,admit:vAdmit,setup:vSetup,backup:vBackup};
 function route(){
   const v=(location.hash||'#dashboard').slice(1);const view=VIEWS[v]?v:'dashboard';
-  document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+view));
-  header();$('#app').innerHTML=VIEWS[view]();if(view==='marks')refreshMarks();
+  header();if(window.navUpdate)navUpdate(view);$('#app').innerHTML=VIEWS[view]();if(view==='marks')refreshMarks();
 }
 window.addEventListener('hashchange',()=>{ui.q='';route();window.scrollTo(0,0);});
 
@@ -1632,7 +1904,7 @@ const actions={
   clear:()=>ask('Delete all '+S.cands.length+' candidates and their marks'+(Live.on?' for everyone in SJS App':'')+'? Download a backup first if you may need them.',()=>{S.cands=[];S.seq={};S.sample=false;save({all:true});route();toast('All candidates cleared');},'Delete all candidates'),
   sample:()=>ask('Replace current data with sample candidates'+(Live.on?' for everyone in SJS App':'')+'?',()=>{const tm=!!S.teachersMarks;S=sampleState();PHOTOS={};photosLocal();S.teachersMarks=tm;S.pub={};save({all:true});route();toast('Sample data loaded');},'Load sample')
 };
-Object.assign(actions,reviewActions,examActions,formsActions);
+Object.assign(actions,reviewActions,examActions,jobActions,formsActions);
 document.addEventListener('click',e=>{
   const t=e.target.closest('[data-a],[data-go],[data-edit],[data-del],[data-x],[data-adm1]');
   if(e.target.id==='modal'){closeModal();return;}
