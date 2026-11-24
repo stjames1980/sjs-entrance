@@ -127,7 +127,7 @@ tr.chg td{background:var(--amberS)}
 <header class="hero">
   <div class="brand"><a class="backapp" href="https://stjames1980.github.io/sjs-school/" aria-label="Back to SJS App" title="Back to SJS App"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a><img class="logo" id="hLogo" alt="St. James H.S. School logo"><div><h1 id="hName">SJS Entrance Test</h1><p id="hSub">St. James H.S. School</p></div><a class="sync" id="sync" href="#backup">This device only</a></div>
   <nav class="tabs" id="tabs">
-    <a href="#dashboard">Dashboard</a><a href="#candidates">Candidates</a><a href="#marks">Marks Entry</a><a href="#results">Results</a><a href="#review">Review &amp; Publish</a><a href="#notice">Notice Board</a><a href="#scorecards">Score Cards</a><a href="#admit">Admit Cards</a><a href="#setup">Setup</a><a href="#backup">Online &amp; Backup</a>
+    <a href="#dashboard">Dashboard</a><a href="#candidates">Candidates</a><a href="#forms">Online Forms</a><a href="#admit">Admit Cards</a><a href="#examday">Exam Day</a><a href="#marks">Marks Entry</a><a href="#results">Results</a><a href="#review">Review &amp; Publish</a><a href="#notice">Notice Board</a><a href="#scorecards">Score Cards</a><a href="#setup">Setup</a><a href="#backup">Online &amp; Backup</a>
   </nav>
 </header>
 <main id="app"></main>
@@ -136,7 +136,7 @@ tr.chg td{background:var(--amberS)}
 <script>
 var LOGO_B64="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";
 /* ===== CORE: data model, result engine, sample data, PDF writer, XLSX writer ===== */
-var LOGO_JPG=null,LOGO_W=200; /* set to a binary string of a JPEG to print the school logo */
+var LOGO_JPG=null,LOGO_W=200,PHOTOS={},PHOTO_W=120,PHOTO_H=150; /* set to a binary string of a JPEG to print the school logo */
 var GRADES=[[91,'A1'],[81,'A2'],[71,'B1'],[61,'B2'],[51,'C1'],[41,'C2'],[33,'D'],[0,'E']];
 function gradeOf(p){for(var i=0;i<GRADES.length;i++){if(p>=GRADES[i][0])return GRADES[i][1];}return 'E';}
 var CLASS_LIST=[['NUR','Nursery'],['LKG','LKG'],['UKG','UKG'],['I','Class I'],['II','Class II'],['III','Class III'],['IV','Class IV'],['V','Class V'],['VI','Class VI'],['VII','Class VII'],['VIII','Class VIII'],['IX','Class IX'],['X','Class X'],['XI','Class XI']];
@@ -162,7 +162,7 @@ function defaultState(){
 function normalize(st){
   var d=defaultState();
   st=st||{};
-  var o={v:1,savedAt:st.savedAt||0,sample:!!st.sample,teachersMarks:!!st.teachersMarks,pub:(st.pub&&typeof st.pub==='object')?st.pub:{},school:Object.assign(d.school,st.school||{}),test:Object.assign(d.test,st.test||{}),classes:[],cands:[],seq:st.seq||{}};
+  var o={rooms:(st.rooms||[]).filter(function(r){return r&&r.id;}).map(function(r){return {id:String(r.id),name:String(r.name||''),cap:Math.max(0,parseInt(r.cap,10)||0),cols:Math.max(1,Math.min(8,parseInt(r.cols,10)||5)),inv:Math.max(0,parseInt(r.inv,10)||0)};}),staff:(st.staff||[]).filter(function(t){return t&&t.id;}).map(function(t){return {id:String(t.id),name:String(t.name||''),phone:String(t.phone||'')};}),sched:(st.sched&&typeof st.sched==='object')?st.sched:{},duty:(st.duty&&typeof st.duty==='object')?st.duty:{},exam:(st.exam&&typeof st.exam==='object')?st.exam:{},seatFix:(st.seatFix&&typeof st.seatFix==='object')?st.seatFix:null,apply:(st.apply&&typeof st.apply==='object')?st.apply:{},v:1,savedAt:st.savedAt||0,sample:!!st.sample,teachersMarks:!!st.teachersMarks,pub:(st.pub&&typeof st.pub==='object')?st.pub:{},school:Object.assign(d.school,st.school||{}),test:Object.assign(d.test,st.test||{}),classes:[],cands:[],seq:st.seq||{}};
   d.classes.forEach(function(dc){
     var sc=(st.classes||[]).filter(function(x){return x.code===dc.code;})[0]||{};
     var c=Object.assign({},dc,sc);
@@ -313,7 +313,13 @@ PDF.prototype.line=function(x1,y1,x2,y2,color,lw,dash){this.op('q '+(lw||0.5)+' 
 PDF.prototype.circle=function(cx,cy,r,o){o=o||{};var k=r*0.5523,Y=this.H-cy,s='q '+(o.lw||1)+' w '+(o.fill?hex(o.fill)+' rg ':'')+(o.stroke?hex(o.stroke)+' RG ':'');
   s+=(cx+r)+' '+Y+' m '+(cx+r)+' '+(Y+k)+' '+(cx+k)+' '+(Y+r)+' '+cx+' '+(Y+r)+' c '+(cx-k)+' '+(Y+r)+' '+(cx-r)+' '+(Y+k)+' '+(cx-r)+' '+Y+' c '+(cx-r)+' '+(Y-k)+' '+(cx-k)+' '+(Y-r)+' '+cx+' '+(Y-r)+' c '+(cx+k)+' '+(Y-r)+' '+(cx+r)+' '+(Y-k)+' '+(cx+r)+' '+Y+' c h ';
   s+=(o.fill&&o.stroke)?'B':o.fill?'f':'S';this.op(s+' Q');};
-PDF.prototype.image=function(x,y,w,h){if(!LOGO_JPG)return false;this.useImg=true;this.op('q '+w.toFixed(2)+' 0 0 '+h.toFixed(2)+' '+x.toFixed(2)+' '+(this.H-y-h).toFixed(2)+' cm /Im1 Do Q');return true;};
+PDF.prototype.image=function(x,y,w,h,key,bin,pw,ph){key=key||'logo';
+  if(key==='logo'){if(!LOGO_JPG)return false;bin=LOGO_JPG;pw=ph=LOGO_W;}
+  if(!bin)return false;this.imgs=this.imgs||{};
+  if(!this.imgs[key])this.imgs[key]={bin:bin,pw:pw,ph:ph,n:'Im'+(Object.keys(this.imgs).length+1)};
+  this.op('q '+w.toFixed(2)+' 0 0 '+h.toFixed(2)+' '+x.toFixed(2)+' '+(this.H-y-h).toFixed(2)+' cm /'+this.imgs[key].n+' Do Q');return true;};
+function photoBin(id){var d=PHOTOS&&PHOTOS[id];if(!d)return null;try{var b=d.split(',')[1];return typeof atob==='function'?atob(b):Buffer.from(b,'base64').toString('latin1');}catch(e){return null;}}
+PDF.prototype.photo=function(id,x,y,w,h){var b=photoBin(id);if(!b)return false;return this.image(x,y,w,h,'ph_'+id,b,PHOTO_W,PHOTO_H);};
 PDF.prototype.text=function(str,x,y,o){o=o||{};var size=o.size||10,bold=!!o.bold,s=pdfSafe(str);if(o.maxW)s=fitText(s,size,bold,o.maxW);if(!s)return;var w=tw(s,size,bold);
   if(o.align==='center')x-=w/2;else if(o.align==='right')x-=w;
   var f=bold?'F2':o.italic?'F3':'F1';
@@ -326,10 +332,10 @@ PDF.prototype.output=function(){
   var f1=add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>');
   var f2=add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>');
   var f3=add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Oblique /Encoding /WinAnsiEncoding >>');
-  var kids=[],img=0;
-  if(this.useImg&&LOGO_JPG){img=add('<< /Type /XObject /Subtype /Image /Width '+LOGO_W+' /Height '+LOGO_W+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+LOGO_JPG.length+' >>\nstream\n'+LOGO_JPG+'\nendstream');}
+  var kids=[],xo='';
+  Object.keys(this.imgs||{}).forEach(function(k){var im=self.imgs[k];var n=add('<< /Type /XObject /Subtype /Image /Width '+im.pw+' /Height '+im.ph+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+im.bin.length+' >>\nstream\n'+im.bin+'\nendstream');xo+=' /'+im.n+' '+n+' 0 R';});
   this.pages.forEach(function(p){var c=p.join('\n');var ci=add('<< /Length '+c.length+' >>\nstream\n'+c+'\nendstream');
-    var pi=add('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+self.W+' '+self.H+'] /Resources << /Font << /F1 '+f1+' 0 R /F2 '+f2+' 0 R /F3 '+f3+' 0 R >>'+(img?' /XObject << /Im1 '+img+' 0 R >>':'')+' >> /Contents '+ci+' 0 R >>');kids.push(pi+' 0 R');});
+    var pi=add('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+self.W+' '+self.H+'] /Resources << /Font << /F1 '+f1+' 0 R /F2 '+f2+' 0 R /F3 '+f3+' 0 R >>'+(xo?' /XObject <<'+xo+' >>':'')+' >> /Contents '+ci+' 0 R >>');kids.push(pi+' 0 R');});
   objs[1]='<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+kids.length+' >>';
   var out='%PDF-1.4\n%\xE2\xE3\xCF\xD3\n',offs=[];
   objs.forEach(function(o,i){offs.push(out.length);out+=(i+1)+' 0 obj\n'+o+'\nendobj\n';});
@@ -457,7 +463,7 @@ function scoreCardPDF(S,R,list,p){
     p.rect(x,y,W,132,{fill:'#ffffff',stroke:C.line,lw:0.8,r:8});
     var kv=[['Roll No.',k.roll],['Form No.',k.form],["Candidate's Name",k.name],['Class applied for',c.name+(k.stream?' ('+k.stream+')':'')],["Father's Name",k.father],["Mother's Name",k.mother],['Date of Birth',fmtDMY(k.dob)],['Gender / Category',(k.gender||'-')+' / '+(k.category||'-')]];
     kv.forEach(function(e,i){var col=i%2,row=Math.floor(i/2),cx=x+14+col*205,cy=y+22+row*29;p.text(e[0].toUpperCase(),cx,cy,{size:6.8,color:C.mute,bold:true});p.text(e[1]||'-',cx,cy+12,{size:10,bold:i===2,maxW:195});});
-    p.rect(x+W-100,y+14,84,104,{stroke:C.line,lw:0.8,dash:'3 2',r:4});p.text('Photograph',x+W-58,y+70,{size:8,color:C.mute,align:'center'});
+    if(!p.photo(k.id,x+W-96,y+12,80,100)){p.rect(x+W-100,y+14,84,104,{stroke:C.line,lw:0.8,dash:'3 2',r:4});p.text('Photograph',x+W-58,y+70,{size:8,color:C.mute,align:'center'});}
     y+=148;
     y=sectionLabel(p,y,'MARKS OBTAINED',C.blue);
     var rows=[],n=0;c.subjects.forEach(function(s,i){if(!s.n||!(s.m>0))return;n++;var v=k.marks[i];rows.push([String(n),s.n,String(s.m),k.absent?'AB':v==null?'-':String(v),(k.absent||v==null)?'-':gradeOf(v*100/s.m)]);});
@@ -480,34 +486,6 @@ function scoreCardPDF(S,R,list,p){
     var gw=523/8;GRADES.forEach(function(g,i){var hi=i===0?100:GRADES[i-1][0]-1;p.rect(ML+i*gw,y,gw-4,30,{fill:C.greyS,r:5});p.text(g[1],ML+i*gw+gw/2-2,y+13,{size:9.5,bold:true,align:'center',color:C.blueD});p.text(g[0]+'-'+hi+'%',ML+i*gw+gw/2-2,y+24,{size:7,align:'center',color:C.mute});});
     y+=36;
     signatures(p,S,y);
-  });
-  return p;
-}
-function admitPDF(S,R,list,p){
-  p=p||new PDF();
-  list.forEach(function(r,i){
-    if(i%2===0){p.wm='';p.add();}
-    var k=r.k,c=r.cls,top=i%2===0?28:440,W=p.W,x=ML,w=523,h=372;
-    if(i%2===1)p.line(14,421,W-14,421,'#9aa3bb',0.8,'4 3');
-    p.rect(x,top,w,h,{stroke:C.blue,lw:1.2,r:10});
-    p.rect(x,top,w,58,{fill:C.blue,r:10});p.rect(x,top+40,w,18,{fill:C.blue});
-    crest(p,x+30,top+29,22);
-    p.text(S.school.name,x+w/2+14,top+24,{size:15,bold:true,color:'#ffffff',align:'center'});
-    p.text(S.school.address,x+w/2+14,top+38,{size:7.8,color:'#dfe6ff',align:'center',maxW:w-90});
-    p.text('ADMIT CARD  |  '+S.test.title.toUpperCase()+' '+S.test.session,x+w/2+14,top+51,{size:9,bold:true,color:'#ffffff',align:'center'});
-    var y=top+76;
-    var kv=[['Roll No.',k.roll],['Form No.',k.form],["Candidate's Name",k.name],['Class applied for',c.name+(k.stream?' ('+k.stream+')':'')],["Father's Name",k.father],['Date of Birth',fmtDMY(k.dob)]];
-    kv.forEach(function(e,j){var col=j%2,row=Math.floor(j/2),cx=x+16+col*190,cy=y+row*30;p.text(e[0].toUpperCase(),cx,cy,{size:6.6,bold:true,color:C.mute});p.text(e[1]||'-',cx,cy+13,{size:j===0?13:10,bold:j<3,maxW:180,color:j===0?C.red:C.ink});});
-    p.rect(x+w-104,y-8,86,100,{stroke:C.line,lw:0.8,dash:'3 2',r:4});p.text('Affix recent',x+w-61,y+38,{size:7.5,color:C.mute,align:'center'});p.text('photograph',x+w-61,y+49,{size:7.5,color:C.mute,align:'center'});
-    y+=100;
-    var sch=[['Date of Test',fmtDate(S.test.date)],['Reporting Time',S.test.reporting],['Test Timing',S.test.time],['Venue',S.test.venue]];
-    var fr=[1,1,1.25,1.75],bu=(w-32-18)/5,bxs=x+16;sch.forEach(function(e,j){var bw=bu*fr[j],bx=bxs;bxs+=bw+6;p.rect(bx,y,bw,40,{fill:C.soft,r:6});p.text(e[0].toUpperCase(),bx+8,y+14,{size:6.5,bold:true,color:C.mute});p.text(e[1],bx+8,y+29,{size:9,bold:true,maxW:bw-14,color:C.blueD});});
-    y+=54;
-    p.text('INSTRUCTIONS',x+16,y,{size:8,bold:true,color:C.blue});
-    ['Bring this admit card on the day of the test; candidates without it may not be allowed.','Report at the venue by the reporting time with pencil, eraser, sharpener and crayons (Nursery - UKG).','Mobile phones, calculators and written material are not allowed in the examination hall.','Parents / guardians must wait outside the examination area till the test is over.'].forEach(function(t,j){p.text((j+1)+'. '+t,x+16,y+13+j*12,{size:7.8,maxW:w-32});});
-    y+=74;
-    p.line(x+16,y+18,x+170,y+18,C.ink,0.6);p.text("Candidate / Guardian's Signature",x+93,y+29,{size:7.5,align:'center',color:C.mute});
-    p.line(x+w-170,y+18,x+w-16,y+18,C.ink,0.6);p.text('Exam In-charge',x+w-93,y+29,{size:7.5,align:'center',bold:true});
   });
   return p;
 }
@@ -640,7 +618,200 @@ function candidatesSheet(S,R){
   var rows=R.all.slice().sort(function(a,b){return R.order.indexOf(a.cls.code)-R.order.indexOf(b.cls.code)||a.k.roll.localeCompare(b.k.roll);}).map(function(r){var k=r.k;return [{v:k.roll,s:6},{v:k.form,s:6},{v:r.cls.name,s:6},{v:k.name,s:7},k.father,k.mother,{v:k.gender,s:6},{v:fmtDMY(k.dob),s:6},{v:k.category,s:6},k.phone,k.address,k.prev,{v:r.rank?r.tot:'-',s:6},{v:r.rank?Math.round(r.pct*100)/100:'-',s:11},{v:statusShort(r),s:stStyle(r.status)}];});
   return {name:'All Candidates',title:titleLines(S,'REGISTER OF CANDIDATES - '+S.test.session),redLast:true,header:['Roll No.','Form No.','Class','Name',"Father's Name","Mother's Name",'Gender','Date of Birth','Category','Contact','Address','Previous School','Total','%','Result'],widths:[10,9,10,24,22,22,8,12,9,13,16,22,8,8,14],rows:rows,landscape:true,footer:S.school.name};
 }
-if(typeof module!=='undefined'&&typeof window==='undefined')module.exports={isPub:isPub,defaultState:defaultState,normalize:normalize,sampleState:sampleState,compute:compute,noticePDF:noticePDF,resultPDF:resultPDF,scoreCardPDF:scoreCardPDF,admitPDF:admitPDF,awardPDF:awardPDF,summaryPDF:summaryPDF,pdfFooter:pdfFooter,PDF:PDF,makeXlsx:makeXlsx,classResultSheet:classResultSheet,meritSheet:meritSheet,summarySheet:summarySheet,candidatesSheet:candidatesSheet,STATUS:STATUS};
+/* ===== EXAM DAY: schedule, seat plan, invigilation, question papers ===== */
+function schedOf(S,code){var d=(S.sched||{})[code]||{},early=['NUR','LKG','UKG'].indexOf(code)>=0;
+  return {date:d.date||S.test.date,report:d.report||S.test.reporting,time:d.time||S.test.time,type:d.type||(early?'Written & Oral':'Written')};}
+function tmin(t){var m=String(t||'').match(/(\d{1,2})[:.](\d{2})\s*(am|pm)?/i);if(!m)return 0;var h=+m[1]%12;if(m[3]&&/pm/i.test(m[3]))h+=12;else if(!m[3]&&h<7)h+=12;return h*60+(+m[2]);}
+function sessLabel(s){return fmtDate(s.date)+', '+s.time;}
+function examCfg(S){var e=S.exam||{};return {spare:isNaN(+e.spare)||e.spare===''||e.spare==null?10:+e.spare,mix:e.mix!==false,inv:Math.max(1,+e.inv||2)};}
+function seatPlan(S,R){
+  var sess={},keys=[];
+  R.order.forEach(function(code){var g=R.by[code];if(!g.list.length)return;var sc=schedOf(S,code),key=sc.date+'|'+sc.time;
+    if(!sess[key]){sess[key]={key:key,date:sc.date,time:sc.time,classes:[],lists:[],rooms:[],unseated:[],total:0};keys.push(key);}
+    sess[key].classes.push(code);sess[key].lists.push(g.list.slice().sort(function(a,b){return a.k.roll.localeCompare(b.k.roll);}));});
+  keys.sort(function(a,b){var x=sess[a],y=sess[b];return x.date<y.date?-1:x.date>y.date?1:tmin(x.time)-tmin(y.time);});
+  var rooms=(S.rooms||[]).filter(function(r){return r&&r.name&&+r.cap>0;}),fix=S.seatFix||null,by={},cfg=examCfg(S);
+  keys.forEach(function(key){var s=sess[key],seq=[];
+    if(cfg.mix){var mx=Math.max.apply(null,s.lists.map(function(l){return l.length;}).concat([0]));for(var i=0;i<mx;i++)s.lists.forEach(function(l){if(l[i])seq.push(l[i]);});}
+    else s.lists.forEach(function(l){seq=seq.concat(l);});
+    s.total=seq.length;
+    var grid={};rooms.forEach(function(rm){grid[rm.id]=[];for(var i=0;i<+rm.cap;i++)grid[rm.id].push(null);});
+    var rest=[];
+    seq.forEach(function(r){var f=fix&&fix[r.k.id];if(f&&grid[f[0]]&&f[1]>=1&&f[1]<=grid[f[0]].length&&!grid[f[0]][f[1]-1])grid[f[0]][f[1]-1]=r;else rest.push(r);});
+    rest.forEach(function(r){for(var i=0;i<rooms.length;i++){var gr=grid[rooms[i].id],j=gr.indexOf(null);if(j>=0){gr[j]=r;return;}}s.unseated.push(r);});
+    rooms.forEach(function(rm){var gr=grid[rm.id],n=gr.filter(Boolean).length;if(!n)return;var cc={};gr.forEach(function(r,j){if(r){cc[r.cls.code]=(cc[r.cls.code]||0)+1;by[r.k.id]={room:rm,seat:j+1,sess:s};}});s.rooms.push({room:rm,seats:gr,n:n,cc:cc});});
+  });
+  return {sessions:keys.map(function(k){return sess[k];}),by:by,rooms:rooms,cap:rooms.reduce(function(a,r){return a+(+r.cap);},0)};
+}
+function dutyPlan(S,plan){
+  var staff=(S.staff||[]).filter(function(t){return t&&t.name;}),count={},dmap=S.duty||{},cfg=examCfg(S);
+  staff.forEach(function(t){count[t.id]=0;});
+  plan.sessions.forEach(function(s){var used={},slots=[];
+    s.rooms.forEach(function(x){var n=Math.max(1,+x.room.inv||cfg.inv);for(var i=0;i<n;i++)slots.push({key:s.key+'|'+x.room.id+'|'+i,x:x,i:i,t:null,man:false});});
+    slots.forEach(function(sl){var m=dmap[sl.key];if(m&&count[m]!==undefined&&!used[m]){sl.t=m;sl.man=true;used[m]=1;count[m]++;}});
+    slots.forEach(function(sl){if(sl.t||dmap[sl.key]==='-')return;var best=null;staff.forEach(function(t){if(used[t.id])return;if(best===null||count[t.id]<count[best])best=t.id;});if(best){sl.t=best;used[best]=1;count[best]++;}});
+    s.slots=slots;s.reserve=staff.filter(function(t){return !used[t.id];});s.short=slots.filter(function(sl){return !sl.t;}).length;
+  });
+  var name={};staff.forEach(function(t){name[t.id]=t.name;});
+  return {count:count,staff:staff,name:name};
+}
+function paperPlan(S,R,plan){
+  var cfg=examCfg(S),sp=function(n){return Math.ceil(n*(1+cfg.spare/100));},classes=[],packets=[];
+  R.order.forEach(function(code){var n=R.by[code].list.length;if(!n)return;var sc=schedOf(S,code),subs=R.by[code].cls.subjects.filter(function(x){return x.n&&x.m>0;});
+    classes.push({code:code,name:R.by[code].cls.name,type:sc.type,n:n,books:sp(n),subs:subs.map(function(x){return x.n;}).join(', ')});});
+  plan.sessions.forEach(function(s){s.rooms.forEach(function(x){Object.keys(x.cc).forEach(function(code){packets.push({s:s,room:x.room,code:code,name:R.by[code].cls.name,n:x.cc[code],pk:sp(x.cc[code])});});});});
+  return {spare:cfg.spare,classes:classes,packets:packets,total:classes.reduce(function(a,c){return a+c.books;},0),cands:classes.reduce(function(a,c){return a+c.n;},0)};
+}
+
+/* ---------- Admit card: 2 per A4 portrait ---------- */
+function admitPDF(S,R,list,p,plan,per){
+  p=p||new PDF();plan=plan||seatPlan(S,R);per=per===1?1:2;
+  list.forEach(function(r,i){
+    var second=per===2&&i%2===1;
+    if(!second){p.wm='';p.add();}
+    var k=r.k,c=r.cls,sc=schedOf(S,c.code),st=plan.by[k.id],W=p.W,x=ML,w=W-2*ML,top=second?432:26,h=384;
+    if(second||per===1){p.line(14,421,W-14,421,'#9aa3bb',0.7,'5 4');p.text('cut here',W/2,418,{size:6.5,color:'#9aa3bb',align:'center'});}
+    if(per===1)officeCopy(p,S,r,sc,st);
+    p.rect(x,top,w,h,{fill:'#ffffff',stroke:'#cdd5ea',lw:1,r:12});
+    p.rect(x,top,w,64,{fill:C.blue,r:12});p.rect(x,top+46,w,18,{fill:C.blue});p.rect(x,top+64,w,3,{fill:C.red});
+    p.circle(x+36,top+32,24,{fill:'#ffffff'});if(!p.image(x+36-17,top+32-17,34,34)){p.text('SJ',x+36,top+38,{size:16,bold:true,color:C.blue,align:'center'});}
+    p.text(S.school.name,x+70,top+27,{size:15.5,bold:true,color:'#ffffff'});
+    p.text(S.school.address,x+70,top+41,{size:7.6,color:'#dfe6ff',maxW:w-190});
+    p.text('Motto: '+S.school.motto,x+70,top+53,{size:7.2,italic:true,color:'#dfe6ff'});
+    p.rect(x+w-118,top+18,104,28,{fill:'#ffffff',r:14});p.text('ADMIT CARD',x+w-66,top+36.5,{size:11,bold:true,color:C.blue,align:'center',cs:0.5});
+    p.text((S.test.title+' for admission  |  Session '+S.test.session).toUpperCase(),x+16,top+84,{size:8,bold:true,color:C.mute,cs:0.3});
+    // details
+    var dx=x+16,dw=w-16-16-104,cw=dw/2;
+    p.rect(dx,top+94,dw,40,{fill:C.soft,r:8});
+    p.text('ROLL NO.',dx+12,top+109,{size:6.8,bold:true,color:C.mute});p.text(k.roll,dx+12,top+127,{size:17,bold:true,color:C.red});
+    p.text('CLASS APPLIED FOR',dx+cw+6,top+109,{size:6.8,bold:true,color:C.mute});p.text(c.name+(k.stream?' ('+k.stream+')':''),dx+cw+6,top+127,{size:13,bold:true,color:C.blueD,maxW:cw-12});
+    var kv=[["CANDIDATE'S NAME",k.name,2],["FATHER'S NAME",k.father,1],['FORM NO.',k.form||'-',1],['DATE OF BIRTH',fmtDMY(k.dob)||'-',1],['GENDER',k.gender||'-',1]];
+    var yy=top+150,col=0;
+    kv.forEach(function(e){var cx=dx+(e[2]===2?0:col*cw);p.text(e[0],cx+2,yy,{size:6.6,bold:true,color:C.mute});p.text(e[1]||'-',cx+2,yy+13,{size:e[2]===2?11.5:9.8,bold:e[2]===2,maxW:(e[2]===2?dw:cw)-8});
+      if(e[2]===2){yy+=30;col=0;}else{col++;if(col>1){col=0;yy+=30;}}});
+    // photo
+    var px=x+w-16-96,py=top+94;
+    p.rect(px-4,py-4,104,124,{fill:'#ffffff',stroke:C.line,lw:0.8,r:6});
+    if(!p.photo(k.id,px,py,96,116)){p.rect(px,py,96,116,{stroke:'#b9c2da',lw:0.8,dash:'3 2',r:4});p.text('Affix recent',px+48,py+54,{size:7.5,color:C.mute,align:'center'});p.text('passport photo',px+48,py+65,{size:7.5,color:C.mute,align:'center'});}
+    // info strip
+    var sy=top+232,boxes=[['DATE',fmtDate(sc.date)],['REPORTING',sc.report],['TEST TIME',sc.time],['TEST TYPE',sc.type],['ROOM',st?st.room.name:'-'],['SEAT NO.',st?String(st.seat):'-']];
+    var fr=[1.05,0.85,1.3,1.05,0.9,0.75],tot=fr.reduce(function(a,b){return a+b;},0),gap=6,uw=(w-32-gap*5)/tot,bx=x+16;
+    boxes.forEach(function(b,j){var bw=uw*fr[j],hi=j>=4;p.rect(bx,sy,bw,42,{fill:hi?C.redS:C.soft,r:7});p.text(b[0],bx+8,sy+14,{size:6.4,bold:true,color:hi?C.red:C.mute});p.text(b[1],bx+8,sy+31,{size:hi?13:9,bold:true,color:hi?C.red:C.blueD,maxW:bw-12});bx+=bw+gap;});
+    p.text('Venue: '+S.test.venue,x+16,sy+55,{size:8,color:C.mute,maxW:w-32});
+    // instructions
+    var iy=sy+71;p.text('INSTRUCTIONS',x+16,iy,{size:7.8,bold:true,color:C.blue});
+    ['Bring this admit card on the test day; keep it safe until admission is complete.','Report by the reporting time. Bring pencil, eraser, sharpener'+(['NUR','LKG','UKG'].indexOf(c.code)>=0?' and crayons.':' and a blue/black pen.'),'Mobile phones, calculators and written material are not allowed in the examination room.','Parents / guardians must wait outside the examination area until the test is over.'].forEach(function(t,j){p.text((j+1)+'.  '+t,x+16,iy+13+j*11.5,{size:7.6,maxW:w-32});});
+    var gy=top+h-18;
+    p.line(x+16,gy,x+176,gy,C.ink,0.6);p.text("Signature of Candidate / Guardian",x+96,gy+11,{size:7,align:'center',color:C.mute});
+    p.line(x+w-176,gy,x+w-16,gy,C.ink,0.6);p.text('Exam In-charge',x+w-96,gy+11,{size:7.4,align:'center',bold:true});
+  });
+  return p;
+}
+
+function officeCopy(p,S,r,sc,st){
+  var k=r.k,c=r.cls,x=ML,w=p.W-2*ML,top=432,h=384;
+  p.rect(x,top,w,h,{fill:'#ffffff',stroke:'#cdd5ea',lw:1,r:12});
+  p.rect(x,top,w,40,{fill:C.greyS,r:12});p.rect(x,top+28,w,12,{fill:C.greyS});p.rect(x,top+40,w,2,{fill:C.blue});
+  p.text('OFFICE COPY',x+16,top+25,{size:12,bold:true,color:C.blue,cs:0.6});
+  p.text(S.school.name+'  |  '+S.test.title+' '+S.test.session,x+w-16,top+25,{size:8.5,bold:true,color:C.mute,align:'right'});
+  var dx=x+16,cw=(w-32-104)/2,y=top+64;
+  var kv=[['ROLL NO.',k.roll],['CLASS APPLIED FOR',c.name+(k.stream?' ('+k.stream+')':'')],["CANDIDATE'S NAME",k.name],['FORM NO.',k.form||'-'],["FATHER'S NAME",k.father],["MOTHER'S NAME",k.mother],['DATE OF BIRTH',fmtDMY(k.dob)||'-'],['CONTACT',k.phone||'-'],['TEST',fmtDate(sc.date)+', '+sc.time],['ROOM / SEAT',st?st.room.name+' / '+st.seat:'-']];
+  kv.forEach(function(e,j){var cx=dx+(j%2)*cw,cy=y+Math.floor(j/2)*29;p.text(e[0],cx,cy,{size:6.6,bold:true,color:C.mute});p.text(e[1]||'-',cx,cy+13,{size:j===0?12:9.6,bold:j<3,color:j===0?C.red:C.ink,maxW:cw-10});});
+  var px=x+w-16-88,py=top+56;p.rect(px-3,py-3,94,112,{stroke:C.line,lw:0.8,r:5});
+  if(!p.photo(k.id,px,py,88,106)){p.rect(px,py,88,106,{stroke:'#b9c2da',lw:0.8,dash:'3 2',r:4});p.text('Photo',px+44,py+56,{size:7.5,color:C.mute,align:'center'});}
+  var dy=top+214;p.text('DOCUMENTS CHECKED (tick)',x+16,dy,{size:7.6,bold:true,color:C.blue});
+  ['Birth certificate','Transfer certificate','Last report card','Aadhaar card','Passport photos'].forEach(function(t,j){var bx=x+16+j*100;p.rect(bx,dy+9,10,10,{stroke:C.ink,lw:0.7,r:2});p.text(t,bx+15,dy+17.5,{size:7.8});});
+  p.rect(x+16,dy+34,w-32,40,{fill:C.soft,r:6});
+  p.text('Received the admit card. I confirm the details above are correct.',x+28,dy+50,{size:8.2});
+  p.text('Parent / guardian name & phone: ____________________________________________',x+28,dy+65,{size:8.2});
+  var gy=top+h-24;
+  p.line(x+16,gy,x+176,gy,C.ink,0.6);p.text('Signature of Parent / Guardian',x+96,gy+11,{size:7,align:'center',color:C.mute});
+  p.line(x+w/2-70,gy,x+w/2+70,gy,C.ink,0.6);p.text('Date',x+w/2,gy+11,{size:7,align:'center',color:C.mute});
+  p.line(x+w-176,gy,x+w-16,gy,C.ink,0.6);p.text('Received by (office)',x+w-96,gy+11,{size:7.4,align:'center',bold:true});
+}
+/* ---------- Seat plan room charts ---------- */
+function seatChartPDF(S,R,plan,p){
+  p=p||new PDF();
+  plan.sessions.forEach(function(s){s.rooms.forEach(function(x){
+    p.wm='';p.add();
+    var y=pdfHeader(p,S,'SEAT PLAN  -  '+x.room.name.toUpperCase(),S.test.title+' '+S.test.session+'   |   '+sessLabel(s)+'   |   '+x.n+' candidates');
+    var cc=Object.keys(x.cc).map(function(code){return R.by[code].cls.name+': '+x.cc[code];}).join('     ');
+    p.text('Classes in this room:  '+cc,ML,y,{size:8.5,color:C.mute,maxW:523});y+=12;
+    p.rect(ML+150,y,223,16,{fill:C.greyS,r:4});p.text('FRONT  /  BLACKBOARD',ML+261.5,y+11,{size:7.5,bold:true,color:C.mute,align:'center',cs:0.6});y+=24;
+    var cols=Math.max(1,Math.min(8,+x.room.cols||4)),rows=Math.ceil(x.seats.length/cols),gap=6,bw=(523-gap*(cols-1))/cols;
+    var avail=p.H-56-y-6,bh=Math.max(30,Math.min(62,(avail-gap*(rows-1))/rows));
+    if(rows*(bh+gap)>avail){bh=30;}
+    x.seats.forEach(function(r,j){var row=Math.floor(j/cols),col=j%cols,bx=ML+col*(bw+gap),by=y+row*(bh+gap);
+      if(by+bh>p.H-56){return;}
+      p.rect(bx,by,bw,bh,{fill:r?'#ffffff':C.greyS,stroke:r?'#c5cde3':C.greyS,lw:0.8,r:5});
+      p.text(String(j+1),bx+6,by+11,{size:7,bold:true,color:C.mute});
+      if(r){p.text(r.k.roll,bx+bw-6,by+11,{size:8.5,bold:true,color:C.red,align:'right'});
+        if(bh>=40){p.text(r.k.name,bx+6,by+bh/2+5,{size:8.2,bold:true,maxW:bw-10});p.text(r.cls.name,bx+6,by+bh-7,{size:6.8,color:C.mute,maxW:bw-10});}
+        else p.text(r.k.name,bx+6,by+bh-7,{size:7,maxW:bw-10});}
+      else p.text('empty',bx+bw/2,by+bh/2+3,{size:7,color:'#a7afc4',align:'center'});});
+  });});
+  if(!p.pages.length){p.add();var y=pdfHeader(p,S,'SEAT PLAN','');p.text('No rooms or candidates yet.',ML,y+10,{size:10});}
+  return p;
+}
+/* ---------- Room attendance sheets ---------- */
+function attendancePDF(S,R,plan,p){
+  p=p||new PDF();
+  plan.sessions.forEach(function(s){s.rooms.forEach(function(x){
+    p.wm='';p.add();
+    var y=pdfHeader(p,S,'ATTENDANCE SHEET  -  '+x.room.name.toUpperCase(),S.test.title+' '+S.test.session+'   |   '+sessLabel(s)+'   |   '+x.n+' candidates');
+    var cols=[{h:'Seat',w:34,a:'c'},{h:'Roll No.',w:58,a:'c'},{h:"Candidate's Name",w:140,a:'l'},{h:'Class',w:60,a:'l'},{h:'Booklet No.',w:62,a:'c'},{h:'Signature of Candidate',w:126,a:'c'},{h:'P / AB',w:43,a:'c'}];
+    var rows=[];x.seats.forEach(function(r,j){if(r)rows.push([String(j+1),r.k.roll,r.k.name,r.cls.name,'','','']);});
+    y=pdfTable(p,S,y,cols,rows,{rowH:22,fs:8.5,contTitle:'Attendance - '+x.room.name+' (continued)',cellStyle:function(row,ci){return ci===1?{bold:true}:null;}});
+    y=ensure(p,S,y+14,90,'Attendance - '+x.room.name+' (continued)');
+    p.rect(ML,y,523,30,{fill:C.soft,r:6});
+    p.text('Total: '+x.n+'      Present: ________      Absent: ________      Absent Roll Nos.: ______________________________',ML+12,y+19,{size:8.8});
+    y+=62;
+    p.line(ML,y,ML+170,y,C.ink,0.6);p.text('Invigilator 1 (name & signature)',ML+85,y+11,{size:7.5,align:'center',color:C.mute});
+    p.line(ML+200,y,ML+370,y,C.ink,0.6);p.text('Invigilator 2 (name & signature)',ML+285,y+11,{size:7.5,align:'center',color:C.mute});
+    p.line(ML+400,y,ML+523,y,C.ink,0.6);p.text('Exam In-charge',ML+461,y+11,{size:7.5,align:'center',bold:true});
+  });});
+  if(!p.pages.length){p.add();var y=pdfHeader(p,S,'ATTENDANCE SHEET','');p.text('No rooms or candidates yet.',ML,y+10,{size:10});}
+  return p;
+}
+/* ---------- Invigilation duty chart ---------- */
+function dutyPDF(S,R,plan,D,p){
+  p=p||new PDF();p.wm='';p.add();
+  var y=pdfHeader(p,S,'INVIGILATION DUTY CHART',S.test.title+' '+S.test.session+'   |   '+plan.sessions.length+' session(s)   |   '+D.staff.length+' teachers');
+  plan.sessions.forEach(function(s){
+    y=ensure(p,S,y,80,'Invigilation duty (continued)');
+    y=sectionLabel(p,y,sessLabel(s).toUpperCase()+'   -   '+s.classes.map(function(c){return R.by[c].cls.name;}).join(', '),C.blue);
+    var cols=[{h:'Room',w:80,a:'l'},{h:'Cand.',w:40,a:'c'},{h:'Classes',w:120,a:'l'},{h:'Invigilators',w:203,a:'l'},{h:'Signature',w:80,a:'c'}];
+    var rows=s.rooms.map(function(x){var names=s.slots.filter(function(sl){return sl.x===x;}).map(function(sl){return sl.t?D.name[sl.t]:'(not assigned)';});
+      return [x.room.name,String(x.n),Object.keys(x.cc).map(function(c){return R.by[c].cls.name;}).join(', '),names.join(',  '),''];});
+    y=pdfTable(p,S,y,cols,rows,{rowH:22,fs:8.5,contTitle:'Invigilation duty (continued)',cellStyle:function(row,ci){return ci===3?{bold:true}:ci===0?{bold:true}:null;}});
+    if(s.reserve.length){y=p.para('Reserve / relief: '+s.reserve.map(function(t){return t.name;}).join(', '),ML,y+12,523,{size:8.5,color:C.mute,lh:12});}
+    y+=12;
+  });
+  y=ensure(p,S,y+6,120,'Invigilation duty (continued)');
+  y=sectionLabel(p,y,'DUTIES PER TEACHER',C.red);
+  var tc=[{h:'#',w:30,a:'c'},{h:'Teacher',w:200,a:'l'},{h:'Duties',w:60,a:'c'},{h:'Signature',w:233,a:'c'}];
+  y=pdfTable(p,S,y,tc,D.staff.map(function(t,i){return [String(i+1),t.name,String(D.count[t.id]||0),''];}),{rowH:20,fs:8.5,contTitle:'Invigilation duty (continued)'});
+  signatures(p,S,y);
+  return p;
+}
+/* ---------- Question paper requirement ---------- */
+function papersPDF(S,R,plan,P,p){
+  p=p||new PDF();p.wm='';p.add();
+  var y=pdfHeader(p,S,'QUESTION PAPER REQUIREMENT',S.test.title+' '+S.test.session+'   |   Spare '+P.spare+'%   |   '+P.cands+' candidates   |   '+P.total+' booklets');
+  y=sectionLabel(p,y,'CLASS-WISE (one question booklet per candidate)',C.blue);
+  var cols=[{h:'Class',w:70,a:'l'},{h:'Test type',w:80,a:'l'},{h:'Subjects',w:203,a:'l'},{h:'Candidates',w:60,a:'c'},{h:'Spare',w:45,a:'c'},{h:'Booklets to print',w:65,a:'c'}];
+  var rows=P.classes.map(function(c){return [c.name,c.type,c.subs,String(c.n),'+'+(c.books-c.n),String(c.books)];});
+  rows.push(['TOTAL','','',String(P.cands),'+'+(P.total-P.cands),String(P.total)]);
+  y=pdfTable(p,S,y,cols,rows,{rowH:20,fs:8.2,cellStyle:function(row,ci,ri){if(ri===rows.length-1)return {bold:true,color:C.blueD};return ci===5?{bold:true,color:C.red}:null;}});
+  y=ensure(p,S,y+16,80,'Question papers (continued)');
+  y=sectionLabel(p,y,'ROOM-WISE PACKETS',C.red);
+  var pc=[{h:'Session',w:150,a:'l'},{h:'Room',w:90,a:'l'},{h:'Class',w:90,a:'l'},{h:'Candidates',w:63,a:'c'},{h:'Packet (with spare)',w:80,a:'c'},{h:'Checked',w:50,a:'c'}];
+  y=pdfTable(p,S,y,pc,P.packets.map(function(k){return [sessLabel(k.s),k.room.name,k.name,String(k.n),String(k.pk),''];}),{rowH:19,fs:8.2,contTitle:'Question papers (continued)',empty:'Add rooms in Exam Day to get room-wise packets',cellStyle:function(row,ci){return ci===4?{bold:true}:null;}});
+  signatures(p,S,y);
+  return p;
+}
+
+if(typeof module!=='undefined'&&typeof window==='undefined')module.exports={seatPlan:seatPlan,dutyPlan:dutyPlan,paperPlan:paperPlan,seatChartPDF:seatChartPDF,attendancePDF:attendancePDF,dutyPDF:dutyPDF,papersPDF:papersPDF,schedOf:schedOf,setPhotos:function(o){PHOTOS=o;},isPub:isPub,defaultState:defaultState,normalize:normalize,sampleState:sampleState,compute:compute,noticePDF:noticePDF,resultPDF:resultPDF,scoreCardPDF:scoreCardPDF,admitPDF:admitPDF,awardPDF:awardPDF,summaryPDF:summaryPDF,pdfFooter:pdfFooter,PDF:PDF,makeXlsx:makeXlsx,classResultSheet:classResultSheet,meritSheet:meritSheet,summarySheet:summarySheet,candidatesSheet:candidatesSheet,STATUS:STATUS};
 
 LOGO_JPG=atob(LOGO_B64);
 </script>
@@ -680,15 +851,17 @@ function save(o){
 }
 const mainRef=()=>Live.fs.collection('entrance').doc('main');
 const plain=o=>JSON.parse(JSON.stringify(o));
-function metaObj(){return plain({v:1,school:S.school,test:S.test,classes:S.classes,seq:S.seq,sample:!!S.sample,teachersMarks:!!S.teachersMarks,pub:S.pub||{},savedAt:Date.now(),by:Live.user?Live.user.email:''});}
+function metaObj(){return plain({v:1,school:S.school,test:S.test,classes:S.classes,seq:S.seq,sample:!!S.sample,teachersMarks:!!S.teachersMarks,pub:S.pub||{},rooms:S.rooms||[],staff:S.staff||[],sched:S.sched||{},duty:S.duty||{},exam:S.exam||{},seatFix:S.seatFix||null,apply:S.apply||{},savedAt:Date.now(),by:Live.user?Live.user.email:''});}
 function candsMap(code){const m={};S.cands.filter(k=>k.cls===code).forEach(k=>m[k.id]=plain(k));return m;}
 async function flush(){
   if(!Live.on||Live.busy)return;Live.busy=true;
   try{
     const main=mainRef();
     if(Live.full){Live.full=false;Live.meta=false;Live.dirty={};Live.del={};
-      await main.set(metaObj());for(const c of S.classes)await main.collection('c').doc(c.code).set({cands:candsMap(c.code)});}
-    if(Live.meta){Live.meta=false;await main.set(metaObj());}
+      await main.set(metaObj());await pushPublic();for(const c of S.classes)await main.collection('c').doc(c.code).set({cands:candsMap(c.code)});
+      try{const ps=await main.collection('p').get();for(const d of ps.docs)if(!PHOTOS[d.id])await d.ref.delete();}catch(e){}
+      for(const pid of Object.keys(PHOTOS))if(S.cands.some(k=>k.id===pid))await main.collection('p').doc(pid).set({d:PHOTOS[pid]});}
+    if(Live.meta){Live.meta=false;await main.set(metaObj());await pushPublic();}
     for(const code of Object.keys(Live.dirty)){const ids=[...Live.dirty[code]];delete Live.dirty[code];const upd={};
       ids.forEach(id=>{const k=S.cands.find(x=>x.id===id&&x.cls===code);if(k)upd[id]=plain(k);});
       if(Object.keys(upd).length)await main.collection('c').doc(code).set({cands:upd},{merge:true});}
@@ -748,19 +921,20 @@ async function liveStart(interactive){
     const opts=S.sample?[['upload','Upload sample too'],['empty','Start with no candidates']]:[['upload','Upload and share']];
     const ch=await choose('Start online sharing?','No shared entrance-test data exists yet. Upload the setup'+(S.sample?' (school, test, seats, subjects)':' and candidates')+' from this device so every SJS App login sees the same results?',opts);
     if(!ch){Live.state='off';paintLive();return;}
-    if(ch==='empty'){S.cands=[];S.seq={};S.sample=false;}
+    if(ch==='empty'){S.cands=[];S.seq={};S.sample=false;S.seatFix=null;PHOTOS={};photosLocal();}
     Live.on=true;Live.full=true;await flush();
   }else{try{localStorage.setItem(KEY+'_before_live',JSON.stringify(S));}catch(e){}}
   Live.on=true;Live.state='live';try{localStorage.setItem(LIVE_KEY,'1');}catch(e){}
   subscribe();paintLive();route();
   if(interactive)toast('Live · '+loginName(u.email)+' · '+roleLabel()+' ('+accessLabel()+')');
 }
-function unsubAll(){Live.unsub.forEach(f=>{try{f();}catch(e){}});Live.unsub=[];}
+function unsubAll(){Live.unsub.forEach(f=>{try{f();}catch(e){}});Live.unsub=[];Live.appsOn=false;}
 function subscribe(){
   unsubAll();const main=mainRef();
   Live.unsub.push(main.onSnapshot(d=>{if(!d.exists||Live.meta||Live.full)return;const m=d.data()||{};
-    const n=normalize({school:m.school,test:m.test,classes:m.classes,cands:[]});
+    const n=normalize(Object.assign({},m,{cands:[]}));S.rooms=n.rooms;S.staff=n.staff;S.sched=n.sched;S.duty=n.duty;S.exam=n.exam;S.seatFix=n.seatFix;S.apply=n.apply;
     S.school=n.school;S.test=n.test;S.classes=n.classes;S.seq=m.seq||{};S.sample=!!m.sample;S.teachersMarks=!!m.teachersMarks;S.pub=(m.pub&&typeof m.pub==='object')?m.pub:{};afterRemote();},e=>liveFail(e)));
+  Live.unsub.push(main.collection('p').onSnapshot(snap=>{snap.docChanges().forEach(c=>{if(c.type==='removed')delete PHOTOS[c.doc.id];else PHOTOS[c.doc.id]=(c.doc.data()||{}).d;});photosLocal();},()=>{}));
   Live.unsub.push(main.collection('c').onSnapshot(snap=>{if(Live.full)return;let ch=false;
     snap.docChanges().forEach(c=>{applyClass(c.doc.id,c.type==='removed'?{}:((c.doc.data()||{}).cands||{}));ch=true;});if(ch)afterRemote();},e=>liveFail(e)));
 }
@@ -846,6 +1020,9 @@ function vDashboard(){
    <div class="card"><h3>Result status</h3><div class="donut"><svg viewBox="0 0 150 150" role="img" aria-label="Result status">${arcs}<text x="75" y="72" text-anchor="middle" font-family="Outfit,Inter,Arial,sans-serif" font-size="26" font-weight="700" fill="currentColor">${T.applied}</text><text x="75" y="92" text-anchor="middle" font-size="11" font-family="Inter,Arial,sans-serif" fill="currentColor" opacity=".6">applicants</text></svg>
     <div class="legend" style="display:grid;margin:0">${parts.map(p=>`<span><i style="background:${p[2]}"></i>${p[0]}: <b>${p[1]}</b></span>`).join('')}</div></div>
     <h3 style="margin-top:18px">Grade distribution</h3><div class="bars">${grades}</div></div></div>
+  ${(()=>{const plan=seatPlan(S,R),Dp=dutyPlan(S,plan),uns=plan.sessions.reduce((a,x)=>a+x.unseated.length,0),short=plan.sessions.reduce((a,x)=>a+(x.short||0),0),ph=S.cands.filter(k=>PHOTOS[k.id]).length,pubN=R.order.filter(c=>R.by[c].stats.pub).length,appN=R.order.filter(c=>R.by[c].stats.applied).length;
+    const it=[[(S.rooms||[]).length&&!uns,'Rooms & seats',(S.rooms||[]).length?plan.cap+' seats for '+S.cands.length+' candidates'+(uns?' · '+uns+' without seat':''):'No rooms yet'],[!!S.seatFix,'Seat numbers',S.seatFix?'Frozen':'Not frozen yet'],[Dp.staff.length&&!short,'Invigilation',Dp.staff.length?Dp.staff.length+' teachers'+(short?' · '+short+' places empty':' · all rooms covered'):'No teachers added'],[ph===S.cands.length&&ph>0,'Photos',ph+' of '+S.cands.length+' candidates'],[T.pending===0&&T.applied>0,'Marks',T.pending?T.pending+' pending':'All entered'],[pubN===appN&&appN>0,'Results published',pubN+' of '+appN+' classes']];
+    return `<div class="card"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Entrance test checklist</h3><button class="btn sm" data-go="examday">Exam Day</button></div><div class="kpis" style="margin:12px 0 0;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))">${it.map(x=>`<div class="kpi ${x[0]?'g':'a'}" style="padding:10px 12px"><span style="font-weight:700;color:${x[0]?'var(--green)':'var(--amber)'}">${x[0]?'✓':'•'} ${esc(x[1])}</span><div style="font-size:13px;margin-top:2px">${esc(x[2])}</div></div>`).join('')}</div></div>`;})()}
   <div class="card"><h3>Class summary</h3><div class="scroll"><table class="stack"><thead><tr><th>Class</th><th class="n">Seats</th><th class="n">Applied</th><th class="n">Appeared</th><th class="n">Absent</th><th class="n">Qualified</th><th class="n">Selected</th><th class="n">Waiting</th><th class="n">Vacant</th><th class="n">Avg %</th><th>Topper</th><th>Result</th></tr></thead><tbody>${rows}</tbody></table></div></div>
   <div class="grid2"><div class="card"><h3>Top 10 candidates (all classes)</h3><ol class="top10">${top}</ol></div>
    <div class="card"><h3>Applicants profile</h3><div class="bars">${[['Boys',T.gender.Male],['Girls',T.gender.Female]].concat(T.gender.Other?[['Not set',T.gender.Other]]:[]).map(x=>`<div class="bar"><span>${x[0]}</span><div class="t"><i style="width:${x[1]*100/gsum}%;background:var(--blue)"></i></div><span class="n">${x[1]}</span></div>`).join('')}</div>
@@ -858,7 +1035,7 @@ function vCandidates(){
   const list=R.all.filter(r=>(!ui.ccls||r.cls.code===ui.ccls)&&(!q||(r.k.name+' '+r.k.roll+' '+r.k.father+' '+r.k.form).toLowerCase().includes(q))).sort((a,b)=>R.order.indexOf(a.cls.code)-R.order.indexOf(b.cls.code)||a.k.roll.localeCompare(b.k.roll));
   const shown=list.slice(0,400);
   return sampleBanner()+`<div class="lede"><div><h2>Candidates</h2><p>${S.cands.length} registered · roll numbers are given automatically by class</p></div>${canEdit()?'<div class="row"><button class="btn pri" data-a="add">+ Add candidate</button><button class="btn" data-a="bulk">Paste from Excel</button></div>':''}</div>
-  <div class="tools"><label>Class<select id="ccls">${clsOpts(ui.ccls,true)}</select></label><label style="flex:1;min-width:200px">Search<input id="q" placeholder="Name, roll no., father's name" value="${esc(ui.q)}"></label><button class="btn" data-a="candxls">Register Excel</button></div>
+  ${(()=>{const dp=dupPairs();return dp.length?`<div class="banner"><span><b>${dp.length} possible duplicate${dp.length>1?'s':''}</b> (same name and father's name): ${dp.slice(0,6).map(x=>esc(x[0].roll+' / '+x[1].roll+' '+x[1].name)).join(' · ')}</span></div>`:''})()}<div class="tools"><label>Class<select id="ccls">${clsOpts(ui.ccls,true)}</select></label><label style="flex:1;min-width:200px">Search<input id="q" placeholder="Name, roll no., father's name" value="${esc(ui.q)}"></label><button class="btn" data-a="candxls">Register Excel</button></div>
   <div class="card scroll" style="padding:6px 10px"><table class="stack"><thead><tr><th>Roll No.</th><th>Name</th><th>Class</th><th>Father's name</th><th>Gender</th><th>Contact</th><th>Result</th><th></th></tr></thead><tbody>
   ${shown.map(r=>`<tr><td><b>${esc(r.k.roll)}</b></td><td>${esc(r.k.name)}</td><td>${esc(r.cls.name)}</td><td>${esc(r.k.father)}</td><td>${esc(r.k.gender)}</td><td>${esc(r.k.phone)}</td><td>${pill(r)}</td><td class="n">${canEdit()?`<button class="btn sm" data-edit="${esc(r.k.id)}">Edit</button> <button class="btn sm red" data-del="${esc(r.k.id)}">Delete</button>`:''}</td></tr>`).join('')||'<tr><td colspan="8" class="muted">No candidates yet. Tap “Add candidate”.</td></tr>'}
   </tbody></table>${list.length>400?`<p class="muted">Showing first 400 of ${list.length}. Use search or class filter.</p>`:''}</div>`;
@@ -874,15 +1051,20 @@ function candForm(id){
    ${f('dob','Date of birth',k.dob,'date')}${f('father',"Father's name",k.father)}${f('mother',"Mother's name",k.mother)}${f('phone','Contact number',k.phone,'tel')}
    <label>Category<select name="category">${['General','ST','SC','OBC','Other'].map(g=>`<option${g===k.category?' selected':''}>${g}</option>`).join('')}</select></label>
    ${f('address','Address / Village',k.address)}${f('prev','Previous school',k.prev)}
+   <div class="wide" style="grid-column:1/-1;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><img id="phPrev" alt="" src="${esc(id&&PHOTOS[id]||'')}" style="width:64px;height:80px;object-fit:cover;border-radius:8px;background:var(--greyS);${id&&PHOTOS[id]?'':'display:none'}"><label style="display:grid;gap:4px;font-size:13px;color:var(--mute)">Photo (optional, prints on admit card and score card)<input type="file" id="phIn" accept="image/*"></label><button type="button" class="btn sm red" id="phDel">Remove photo</button></div>
    <label>Stream (Class XI)<select name="stream">${['','Science','Arts','Commerce'].map(g=>`<option${g===k.stream?' selected':''}>${g}</option>`).join('')}</select></label>
-   <div class="row wide" style="grid-column:1/-1;justify-content:flex-end"><button type="button" class="btn" data-x="close">Cancel</button><button class="btn pri" type="submit">Save candidate</button></div></form>`);
+   <p id="cfErr" class="wide" style="grid-column:1/-1;color:var(--red);margin:0;min-height:1.2em"></p><div class="row wide" style="grid-column:1/-1;justify-content:flex-end"><button type="button" class="btn" data-x="close">Cancel</button><button class="btn pri" type="submit">Save candidate</button></div></form>`);
+  let PH_NEW;
+  $('#phIn').onchange=e=>{const f=e.target.files[0];if(f)readPhoto(f,d=>{PH_NEW=d;const im=$('#phPrev');im.src=d;im.style.display='';});};
+  $('#phDel').onclick=()=>{PH_NEW=null;const im=$('#phPrev');im.removeAttribute('src');im.style.display='none';};
   $('#cform').onsubmit=e=>{e.preventDefault();const d=Object.fromEntries(new FormData(e.target).entries());d.name=d.name.trim();if(!d.name){toast('Enter the candidate name');return;}
     const roll=d.roll.trim();
     if(roll&&S.cands.some(x=>x.roll===roll&&x.id!==id)){toast('Roll No. '+roll+' is already used');return;}
+    const dup=dupOf(d,id),cf=e.target;if(dup&&cf.dataset.force!=='1'){cf.dataset.force='1';$('#cfErr').textContent='Possible duplicate: '+dup.name+' ('+dup.roll+', '+clsName(dup.cls)+') has the same name and '+(d.father&&nm(dup.father)===nm(d.father)?"father's name":'date of birth')+'. Tap Save again to save anyway.';return;}
     let old=null,c;
     if(id){c=S.cands.find(x=>x.id===id);old=c.cls;Object.assign(c,d,{roll:roll||(old===d.cls?c.roll:nextRoll(S,d.cls))});if(old!==d.cls)c.marks=[null,null,null,null,null];}
     else{c=Object.assign({id:uid(),absent:false,marks:[null,null,null,null,null]},d,{roll:roll||nextRoll(S,d.cls)});S.cands.push(c);}
-    ui.cls=d.cls;save({meta:true,cands:[c],del:old&&old!==d.cls?[[old,c.id]]:[]});closeModal();route();toast('Candidate saved');};
+    ui.cls=d.cls;save({meta:true,cands:[c],del:old&&old!==d.cls?[[old,c.id]]:[]});if(PH_NEW!==undefined)photoSet(c.id,PH_NEW);closeModal();route();toast('Candidate saved');};
 }
 function bulkForm(){
   modal(`<h3>Paste candidates from Excel</h3><p class="muted">Copy rows from Excel and paste below. Column order: <b>Name, Father's name, Mother's name, Gender, Date of birth (dd-mm-yyyy), Contact, Address, Category</b>. Only the name is required.</p>
@@ -937,7 +1119,7 @@ function vNotice(){
   const th=f=>`<tr><th class="c">${f}</th><th class="c">Roll No.</th><th>Candidate's name</th>${ui.nfather?"<th>Father's name</th>":''}${ui.nmarks?'<th class="c">Marks</th><th class="c">%</th><th class="c">Grade</th>':''}</tr>`;
   const sel=g.appeared.filter(r=>r.status===STATUS.SEL),wl=g.appeared.filter(r=>r.status===STATUS.WL);
   return sampleBanner()+`<div class="lede"><div><h2>Notice board result</h2><p>A4 merit list for the notice board and file copy — selected candidates in order of merit, then the waiting list.</p></div>
-  <div class="row"><button class="btn pri" data-a="notpdf">Download PDF</button><button class="btn" data-a="notxls">Download Excel</button>${window.print&&!window.claude?'<button class="btn" data-a="print">Print</button>':''}</div></div>
+  <div class="row"><button class="btn pri" data-a="notpdf">Download PDF</button><button class="btn" data-a="notxls">Download Excel</button><button class="btn" data-a="notwa">WhatsApp text</button>${window.print&&!window.claude?'<button class="btn" data-a="print">Print</button>':''}</div></div>
   <div class="tools"><label>Class<select id="ncls">${clsOpts(ui.ncls,true)}</select></label>
    <label class="row" style="color:var(--ink)"><input type="checkbox" class="chk" id="nmarks" ${ui.nmarks?'checked':''}> Show marks</label>
    <label class="row" style="color:var(--ink)"><input type="checkbox" class="chk" id="nfather" ${ui.nfather?'checked':''}> Father's name</label>
@@ -960,21 +1142,22 @@ function vScore(){
   let prev='<p class="muted">No candidates in this class.</p>';
   if(r){const k=r.k,c=r.cls;const sc={[STATUS.SEL]:['#e3f5ed','#12805c'],[STATUS.WL]:['#fff1d6','#a35f00'],[STATUS.NQ]:['#fde7e5','#d8342b'],[STATUS.Q]:['#eef2fc','#1d3fb8']}[r.status]||['#f1f3f8','#5a6584'];
     prev=`<div class="a4wrap"><div class="a4">${a4Head((isPub(S,c.code)?'':'PROVISIONAL ')+'ENTRANCE TEST SCORE CARD','Session '+S.test.session)}
-    <div class="kv">${[['Roll No.',k.roll],['Form No.',k.form],["Candidate's name",k.name],['Class applied for',c.name+(k.stream?' ('+k.stream+')':'')],["Father's name",k.father],["Mother's name",k.mother],['Date of birth',fmtDMY(k.dob)],['Gender / Category',(k.gender||'–')+' / '+(k.category||'–')]].map(e=>`<div><small>${e[0]}</small>${esc(e[1]||'–')}</div>`).join('')}</div>
+    ${PHOTOS[k.id]?`<img src="${PHOTOS[k.id]}" alt="" style="float:right;width:72px;height:90px;object-fit:cover;border-radius:6px;margin:4px 0 4px 10px">`:''}<div class="kv">${[['Roll No.',k.roll],['Form No.',k.form],["Candidate's name",k.name],['Class applied for',c.name+(k.stream?' ('+k.stream+')':'')],["Father's name",k.father],["Mother's name",k.mother],['Date of birth',fmtDMY(k.dob)],['Gender / Category',(k.gender||'–')+' / '+(k.category||'–')]].map(e=>`<div><small>${e[0]}</small>${esc(e[1]||'–')}</div>`).join('')}</div>
     <table><thead><tr><th>S.No.</th><th>Subject</th><th class="c">Max</th><th class="c">Obtained</th></tr></thead><tbody>${activeSubs(c).map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x[0].n)}</td><td class="c">${x[0].m}</td><td class="c"><b>${k.absent?'AB':k.marks[x[1]]==null?'–':k.marks[x[1]]}</b></td></tr>`).join('')}<tr><td></td><td><b>GRAND TOTAL</b></td><td class="c"><b>${r.max}</b></td><td class="c"><b>${r.rank?r.tot:'–'}</b></td></tr></tbody></table>
     <p style="margin:10px 0 0">Percentage <b>${r.rank?fix2(r.pct)+'%':'–'}</b> · Grade <b>${r.rank?r.grade:'–'}</b> · Merit rank <b>${r.rank?r.rank+' of '+g.appeared.length:'–'}</b></p>
     <div class="res" style="background:${sc[0]};color:${sc[1]};border:1.5px solid ${sc[1]}">${esc(r.status===STATUS.WL?'WAITING LIST No. '+r.wl:r.status===STATUS.SEL?'SELECTED FOR ADMISSION':r.status)}<div style="font:500 12px Inter">${esc(remarkOf(r,S))}</div></div>
     <div class="sig"><span>Exam In-charge</span><span>Principal</span></div></div></div>`;}
-  return sampleBanner()+`<div class="lede"><div><h2>Score cards</h2><p>One A4 score card per candidate — for parents and the school file.</p></div><div class="row"><button class="btn pri" data-a="onesc">This candidate PDF</button><button class="btn" data-a="allsc">Whole class PDF</button></div></div>
+  return sampleBanner()+`<div class="lede"><div><h2>Score cards</h2><p>One A4 score card per candidate — for parents and the school file.</p></div><div class="row"><button class="btn pri" data-a="onesc">This candidate PDF</button><button class="btn" data-a="allsc">Whole class PDF</button><button class="btn" data-a="scwa">WhatsApp to parent</button></div></div>
   <div class="tools"><label>Class<select id="scls">${clsOpts(ui.scls)}</select></label><label style="flex:1;min-width:200px">Candidate<select id="scand">${list.map(x=>`<option value="${esc(x.k.id)}"${x.k.id===ui.scand?' selected':''}>${esc(x.k.roll+' · '+x.k.name)}</option>`).join('')}</select></label></div>${prev}`;
 }
 
 /* ---------- ADMIT CARDS ---------- */
 function vAdmit(){
-  const g=R.by[ui.acls],list=g.list.slice().sort((a,b)=>a.k.roll.localeCompare(b.k.roll));
-  return sampleBanner()+`<div class="lede"><div><h2>Admit cards</h2><p>Two admit cards per A4 sheet with test date, timing, venue and instructions. Cut along the dotted line.</p></div><div class="row"><button class="btn pri" data-a="admpdf">${esc(clsName(ui.acls))} admit cards PDF</button><button class="btn" data-a="admall">All classes PDF</button></div></div>
-  <div class="tools"><label>Class<select id="acls">${clsOpts(ui.acls)}</select></label><span class="muted">${list.length} candidate${list.length===1?'':'s'} · test on ${esc(fmtDate(S.test.date))}, reporting ${esc(S.test.reporting)}, ${esc(S.test.venue)}</span></div>
-  <div class="card scroll" style="padding:6px 10px"><table class="stack"><thead><tr><th>Roll No.</th><th>Name</th><th>Father's name</th><th>Date of birth</th><th></th></tr></thead><tbody>${list.map(r=>`<tr><td><b>${esc(r.k.roll)}</b></td><td>${esc(r.k.name)}</td><td>${esc(r.k.father)}</td><td>${esc(fmtDMY(r.k.dob))}</td><td class="n"><button class="btn sm" data-adm1="${esc(r.k.id)}">Admit card PDF</button></td></tr>`).join('')||'<tr><td colspan="5" class="muted">No candidates.</td></tr>'}</tbody></table></div>`;
+  const g=R.by[ui.acls],list=g.list.slice().sort((a,b)=>a.k.roll.localeCompare(b.k.roll)),plan=seatPlan(S,R),noRooms=!(S.rooms||[]).length;
+  return sampleBanner()+`<div class="lede"><div><h2>Admit cards</h2><p>A4 portrait. <b>2 per page</b>: two candidates on one sheet (saves paper). <b>1 per page</b>: candidate copy on top, office copy below with document checklist and parent's signature.</p></div><div class="row"><button class="btn pri" data-a="admpdf">${esc(clsName(ui.acls))} admit cards PDF</button><button class="btn" data-a="admall">All classes PDF</button></div></div>
+  <div class="tools"><label>Class<select id="acls">${clsOpts(ui.acls)}</select></label><div style="display:grid;gap:3px;font-size:12.5px;color:var(--mute)">Layout<div class="row" style="color:var(--ink)"><label class="row"><input type="radio" class="chk" name="aper" value="2" ${admitPer()===2?'checked':''}> 2 per page</label><label class="row"><input type="radio" class="chk" name="aper" value="1" ${admitPer()===1?'checked':''}> 1 per page + office copy</label></div></div><span class="muted">${list.length} candidate${list.length===1?'':'s'} · test on ${esc(fmtDate(S.test.date))}, reporting ${esc(S.test.reporting)}, ${esc(S.test.venue)}</span></div>
+  ${noRooms?'<div class="banner"><span>No rooms yet, so admit cards print without room and seat numbers. Add rooms in <b>Exam Day → Rooms &amp; seat plan</b>.</span><button class="btn sm" data-go="examday">Exam Day</button></div>':S.seatFix?'':'<div class="banner" style="background:var(--soft);color:var(--blueD)"><span>Tip: <b>freeze seat numbers</b> in Exam Day before printing, so seats never change after the cards are given out.</span></div>'}
+  <div class="card scroll" style="padding:6px 10px"><table class="stack"><thead><tr><th>Roll No.</th><th>Name</th><th>Father's name</th><th>Date of birth</th><th>Room · Seat</th><th></th></tr></thead><tbody>${list.map(r=>`<tr><td><b>${esc(r.k.roll)}</b></td><td>${esc(r.k.name)}</td><td>${esc(r.k.father)}</td><td>${esc(fmtDMY(r.k.dob))}</td><td>${plan.by[r.k.id]?'<b style="color:var(--red)">'+esc(plan.by[r.k.id].room.name)+' · '+plan.by[r.k.id].seat+'</b>':'<span class="muted">–</span>'}</td><td class="n"><button class="btn sm" data-adm1="${esc(r.k.id)}">Admit card PDF</button></td></tr>`).join('')||'<tr><td colspan="5" class="muted">No candidates.</td></tr>'}</tbody></table></div>`;
 }
 
 /* ---------- SETUP ---------- */
@@ -1005,7 +1188,29 @@ const RULES_TXT=`    // ===== SJS Entrance Test (admission entrance test results
         && get(/databases/$(database)/documents/entrance/main).data.get('teachersMarks', false) == true;
     }
     match /entrance/main         { allow read: if isStaff(); allow write: if enManager(); }
-    match /entrance/main/c/{cls} { allow read: if isStaff(); allow write: if enManager() || (isStaff() && enTeachersMarks()); }`;
+    match /entrance/main/{coll}/{doc} { allow read: if isStaff(); allow write: if enManager() || (coll == 'c' && isStaff() && enTeachersMarks()); }
+    // ===== SJS Entrance Test — online application forms (parents, no login) =====
+    function enApplyOpen() {
+      return exists(/databases/$(database)/documents/entrance_public/info)
+        && get(/databases/$(database)/documents/entrance_public/info).data.get('open', false) == true;
+    }
+    function enStr(v, mx) { return v is string && v.size() <= mx; }
+    match /entrance_public/{doc} { allow read: if true; allow write: if enManager(); }
+    match /entrance_apply/{id} {
+      allow get: if true;
+      allow list: if isStaff();
+      allow update, delete: if enManager();
+      allow create: if enApplyOpen()
+        && request.resource.data.keys().hasOnly(['name','cls','gender','dob','father','mother','phone','address','category','prev','stream','photo','status','at'])
+        && request.resource.data.status == 'new' && request.resource.data.at == request.time
+        && enStr(request.resource.data.name, 80) && request.resource.data.name.size() > 1
+        && enStr(request.resource.data.cls, 6) && enStr(request.resource.data.phone, 15) && request.resource.data.phone.size() >= 10
+        && enStr(request.resource.data.get('father', ''), 80) && enStr(request.resource.data.get('mother', ''), 80)
+        && enStr(request.resource.data.get('address', ''), 200) && enStr(request.resource.data.get('prev', ''), 100)
+        && enStr(request.resource.data.get('gender', ''), 10) && enStr(request.resource.data.get('dob', ''), 10)
+        && enStr(request.resource.data.get('category', ''), 12) && enStr(request.resource.data.get('stream', ''), 12)
+        && enStr(request.resource.data.get('photo', ''), 60000);
+    }`;
 function vBackup(){
   const st=Live.on?`<p><span class="pill p-sel">LIVE</span> Signed in as <b>${esc(loginName(Live.user.email))}</b>${Live.name?' ('+esc(Live.name)+')':''} · ${esc(roleLabel())} · ${esc(accessLabel())}. Every SJS App login sees the same candidates, marks and results.</p>`
     :Live.state==='connecting'?'<p class="muted">Connecting…</p>'
@@ -1019,7 +1224,7 @@ function vBackup(){
    ${Live.on&&Live.mgr?`<label class="row" style="margin-top:14px"><input type="checkbox" class="chk" id="tmarks" ${S.teachersMarks?'checked':''}> <span><b>Teachers can enter marks</b> — every confirmed SJS App teacher may type marks (only the Admin and Exam In-Charge change setup and candidates).</span></label>`:''}
    <p class="muted" style="font-size:13px;margin-bottom:0">Uses the same logins as SJS App (Staff ID or email + password). If you are already signed in to SJS App on this phone, it connects by itself. Admin and Exam In-Charge: full access · Principal and teachers: view only (or marks entry when allowed).</p></div>
   ${!Live.on||Live.admin?`<details class="card"><summary><b>One-time Firebase setup (Admin)</b></summary><p class="muted">In Firebase console → Firestore Database → Rules, paste this block just above the last two closing braces <code>}</code> <code>}</code>, then Publish.</p><pre style="background:var(--soft);padding:12px;border-radius:10px;overflow:auto;font-size:12px">${esc(RULES_TXT)}</pre><button class="btn" data-a="copyrules">Copy rules</button></details>`:''}
-  <div class="grid2"><div class="card"><h3>How it works</h3><ol class="steps"><li><span><b>Setup</b> — check school details, test date, seats, waiting list, qualifying % and subjects for each class.</span></li><li><span><b>Candidates</b> — add each applicant (or paste a list from Excel). Roll numbers like NUR-001 are given automatically.</span></li><li><span><b>Admit cards</b> — print two per A4 sheet before the test; print a blank award list for examiners.</span></li><li><span><b>Marks entry</b> — type marks or tick Absent. Total, %, grade, rank, selection and waiting list are worked out at once.</span></li><li><span><b>Review &amp; Publish</b> — check each class, change Select / Waiting list / Not selected where needed, then publish. Until then printouts say PROVISIONAL.</span></li><li><span><b>Notice board / Results / Score cards</b> — download A4 PDF or Excel for the notice board, file copy and parents.</span></li></ol></div>
+  <div class="grid2"><div class="card"><h3>How it works</h3><ol class="steps"><li><span><b>Setup</b> — check school details, test date, seats, waiting list, qualifying % and subjects for each class.</span></li><li><span><b>Candidates</b> — add each applicant (or paste a list from Excel). Roll numbers like NUR-001 are given automatically.</span></li><li><span><b>Exam Day</b> — set class timings, add rooms (seat plan is automatic), freeze seat numbers, share invigilation duty and count question booklets.</span></li><li><span><b>Admit cards</b> — print two per A4 sheet with photo, room and seat; print room seat charts, attendance sheets and blank award lists.</span></li><li><span><b>Marks entry</b> — type marks or tick Absent. Total, %, grade, rank, selection and waiting list are worked out at once.</span></li><li><span><b>Review &amp; Publish</b> — check each class, change Select / Waiting list / Not selected where needed, then publish. Until then printouts say PROVISIONAL.</span></li><li><span><b>Notice board / Results / Score cards</b> — download A4 PDF or Excel for the notice board, file copy and parents.</span></li></ol></div>
   <div class="card"><h3>Keep your data safe</h3><p class="muted">Download a backup file regularly, especially before clearing data or changing devices.</p>
    <div class="row"><button class="btn pri" data-a="bkp">Download backup (.json)</button>${canEdit()?'<label class="btn" style="display:inline-flex;align-items:center">Restore backup<input type="file" id="restore" accept=".json,application/json" hidden></label>':''}</div>
    ${canEdit()?`<h3 style="margin-top:20px">Start fresh</h3><div class="row"><button class="btn red" data-a="clear">Clear all candidates</button><button class="btn" data-a="sample">Load sample data</button></div>
@@ -1072,9 +1277,203 @@ document.addEventListener('change',e=>{const t=e.target;
 document.addEventListener('input',e=>{const t=e.target;if(t.dataset&&t.dataset.note!==undefined){const k=S.cands.find(x=>x.id===t.dataset.note);if(!k||!canEdit()||isPub(S,k.cls))return;k.note=t.value;clearTimeout(t._h);t._h=setTimeout(()=>persist({cands:[k]}),500);}});
 document.addEventListener('click',e=>{const tr=e.target.closest('[data-vc]');if(tr){ui.vcls=tr.dataset.vc;route();}});
 
+const PHKEY=KEY+'_ph';
+function photosLocal(){try{localStorage.setItem(PHKEY,JSON.stringify(PHOTOS));}catch(e){toast('Phone storage is full - photo kept online only');}}
+function photoSet(id,data){if(data)PHOTOS[id]=data;else delete PHOTOS[id];photosLocal();
+  if(Live.on){const ref=mainRef().collection('p').doc(id);(data?ref.set({d:data}):ref.delete()).catch(e=>{e._write=true;liveFail(e);});}}
+async function loadSjsTeachers(){
+  try{if(!await fbInit())throw {message:Live.err};const u=firebase.auth().currentUser;if(!u){toast('Sign in first (Online & Backup) to load teachers from SJS App');return;}
+    const snap=await Live.fs.collection('att_teachers').get();
+    const list=snap.docs.map(d=>Object.assign({id:d.id},d.data())).filter(t=>t.active!==false&&t.name).sort((a,b)=>(a.order||0)-(b.order||0));
+    S.staff=S.staff||[];const have=new Set(S.staff.map(t=>nm(t.name)));let n=0;
+    list.forEach(t=>{if(!have.has(nm(t.name))){S.staff.push({id:'sjs_'+t.id,name:t.name,phone:''});have.add(nm(t.name));n++;}});
+    persist({meta:true});route();toast(n+' teacher(s) loaded from SJS App');
+  }catch(e){toast('Could not read SJS App teachers: '+((e&&(e.code||e.message))||''));}}
+/* ---------- EXAM DAY: schedule, rooms & seat plan, invigilation, question papers ---------- */
+const TYPES=['Written','Written & Oral','Oral & Interview'];
+const rid=()=>'r'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+function copyText(t){const done=()=>toast('Copied');try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,()=>fallbackCopy(t));return;}}catch(e){}fallbackCopy(t);}
+function fallbackCopy(t){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');toast('Copied');}catch(e){toast('Select the text and copy it');}a.remove();}
+function textModal(title,text,wa){modal(`<h3>${esc(title)}</h3><textarea id="txOut" style="min-height:260px;font-size:14px" readonly>${esc(text)}</textarea><div class="row" style="justify-content:flex-end;margin-top:10px"><button class="btn" data-x="close">Close</button>${wa?`<a class="btn" href="${esc(wa)}" target="_blank" rel="noopener">Open WhatsApp</a>`:''}<button class="btn pri" id="txCopy">Copy text</button></div>`);$('#txCopy').onclick=()=>copyText($('#txOut').value);}
+function vExam(){
+  const tabs=[['sched','Schedule'],['rooms','Rooms & seat plan'],['duty','Invigilation'],['papers','Question papers']];
+  if(!ui.ex)ui.ex='sched';
+  const plan=seatPlan(S,R);
+  const head=sampleBanner()+`<div class="lede"><div><h2>Exam day</h2><p>Everything for a smooth test day: timings, rooms and seat numbers, invigilation duty and question paper count. All of it updates by itself from the candidate list.</p></div></div>
+  <div class="row" style="margin-bottom:14px">${tabs.map(t=>`<button class="btn ${ui.ex===t[0]?'pri':''}" data-ex="${t[0]}">${t[1]}</button>`).join('')}</div>`;
+  return head+({sched:exSched,rooms:exRooms,duty:exDuty,papers:exPapers}[ui.ex])(plan);
+}
+function exSched(plan){
+  const D=canEdit()?'':' disabled';
+  const rows=R.order.map(code=>{const sc=schedOf(S,code),n=R.by[code].list.length;return `<tr><td><b>${esc(clsName(code))}</b></td><td class="n">${n}</td>
+   <td><input type="date" data-sch="${code}.date" value="${esc(sc.date)}"${D}></td><td><input data-sch="${code}.report" value="${esc(sc.report)}" style="width:110px"${D}></td>
+   <td><input data-sch="${code}.time" value="${esc(sc.time)}" style="width:170px"${D}></td><td><select data-sch="${code}.type"${D}>${TYPES.map(t=>`<option${t===sc.type?' selected':''}>${t}</option>`).join('')}</select></td></tr>`;}).join('');
+  return `<div class="card"><h3>Class-wise test timing</h3><p class="muted" style="margin-top:-6px">Printed on each admit card. Classes with the same date and test time sit in the same session and share the rooms; different times can reuse the same rooms.</p>
+   <div class="scroll"><table><thead><tr><th>Class</th><th class="n">Candidates</th><th>Date</th><th>Reporting</th><th>Test time</th><th>Test type</th></tr></thead><tbody>${rows}</tbody></table></div></div>
+   <div class="card"><h3>Sessions</h3>${plan.sessions.length?plan.sessions.map(s=>`<p style="margin:6px 0"><b>${esc(sessLabel(s))}</b> — ${s.total} candidates · ${s.classes.map(clsName).map(esc).join(', ')}</p>`).join(''):'<p class="muted">No candidates yet.</p>'}</div>`;
+}
+function exRooms(plan){
+  const D=canEdit()?'':' disabled',cfg=examCfg(S);
+  const rooms=(S.rooms||[]).map((r,i)=>`<tr><td><input data-room="${i}.name" value="${esc(r.name)}" style="width:140px"${D}></td><td><input data-room="${i}.cap" inputmode="numeric" value="${r.cap}" style="width:70px"${D}></td>
+    <td><input data-room="${i}.cols" inputmode="numeric" value="${r.cols}" style="width:60px"${D}></td><td><input data-room="${i}.inv" inputmode="numeric" value="${r.inv||''}" placeholder="${cfg.inv}" style="width:60px"${D}></td>
+    <td class="n">${canEdit()?`<button class="btn sm red" data-rmdel="${i}">Remove</button>`:''}</td></tr>`).join('');
+  const sess=plan.sessions.map(s=>{const need=s.total,cap=plan.cap;return `<div class="card"><div class="row" style="justify-content:space-between"><h3 style="margin:0">${esc(sessLabel(s))}</h3><span class="pill ${s.unseated.length?'p-nq':'p-sel'}">${s.total} candidates · ${cap} seats${s.unseated.length?' · '+s.unseated.length+' WITHOUT SEAT':''}</span></div>
+    <p class="muted" style="margin:6px 0 10px">${s.classes.map(clsName).map(esc).join(', ')}</p>
+    ${s.rooms.length?`<div class="scroll"><table><thead><tr><th>Room</th><th class="n">Candidates</th><th>Classes (count)</th><th>Seats used</th></tr></thead><tbody>${s.rooms.map(x=>{const nums=x.seats.map((r,j)=>r?j+1:0).filter(Boolean);return `<tr><td><b>${esc(x.room.name)}</b></td><td class="n">${x.n}</td><td>${Object.keys(x.cc).map(c=>esc(clsName(c))+' ('+x.cc[c]+')').join(', ')}</td><td>${nums[0]}–${nums[nums.length-1]}</td></tr>`;}).join('')}</tbody></table></div>`:'<p class="muted">Add rooms above to make the seat plan.</p>'}
+    ${s.unseated.length?`<div class="banner" style="background:var(--redS);color:var(--red);margin-top:10px"><span><b>${s.unseated.length} candidates have no seat.</b> Add another room or increase seats.</span></div>`:''}</div>`;}).join('');
+  return `<div class="card"><h3>Rooms</h3><p class="muted" style="margin-top:-6px">Seats = how many candidates the room holds. Columns = benches across, for the door chart. Invigilators = teachers needed in that room (blank = ${cfg.inv}).</p>
+   <div class="scroll"><table><thead><tr><th>Room name</th><th>Seats</th><th>Columns</th><th>Invigilators</th><th></th></tr></thead><tbody>${rooms||'<tr><td colspan="5" class="muted">No rooms yet.</td></tr>'}</tbody></table></div>
+   ${canEdit()?`<div class="row" style="margin-top:12px"><button class="btn pri" data-a="roomadd">+ Add room</button><button class="btn" data-a="room5">Add 5 rooms of 30</button></div>`:''}</div>
+  <div class="card"><h3>Seat plan</h3>
+   <label class="row" style="margin-bottom:8px"><input type="checkbox" class="chk" id="exmix" ${cfg.mix?'checked':''}${D}> <span><b>Mix classes</b> — seat children of different classes side by side (stops copying). Off = one class after another.</span></label>
+   <p class="muted" style="margin:6px 0">${S.seatFix?'<b style="color:var(--green)">Seat numbers are frozen</b> — admit cards keep their room and seat. New candidates get the free seats.':'Seat numbers follow the candidate list. <b>Freeze</b> them before printing admit cards so nobody\'s seat changes later.'}</p>
+   <div class="row">${canEdit()?(S.seatFix?'<button class="btn red" data-a="unfreeze">Unfreeze seat plan</button>':'<button class="btn pri" data-a="freeze">Freeze seat numbers</button>'):''}<button class="btn" data-a="seatpdf">Room seat charts PDF</button><button class="btn" data-a="attpdf">Room attendance sheets PDF</button></div>
+   <div class="tools" style="margin-top:14px;margin-bottom:0"><label style="flex:1;min-width:220px">Find a candidate's seat<input id="seatq" placeholder="Name or roll no." value="${esc(ui.seatq||'')}"></label></div><div id="seatres">${seatFind(plan)}</div></div>
+  ${sess}`;
+}
+function seatFind(plan){const q=(ui.seatq||'').toLowerCase().trim();if(!q)return '';const hits=R.all.filter(r=>(r.k.name+' '+r.k.roll).toLowerCase().includes(q)).slice(0,8);
+  return hits.length?'<table style="margin-top:8px"><tbody>'+hits.map(r=>{const st=plan.by[r.k.id];return `<tr><td><b>${esc(r.k.roll)}</b></td><td>${esc(r.k.name)}</td><td>${esc(r.cls.name)}</td><td>${st?'<b style="color:var(--red)">'+esc(st.room.name)+' · Seat '+st.seat+'</b>':'<span class="muted">no seat</span>'}</td></tr>`;}).join('')+'</tbody></table>':'<p class="muted">No match.</p>';}
+function exDuty(plan){
+  const Dp=dutyPlan(S,plan),cfg=examCfg(S),ed=canEdit();
+  const opts=sel=>`<option value="">Auto</option><option value="-"${sel==='-'?' selected':''}>— none —</option>`+Dp.staff.map(t=>`<option value="${esc(t.id)}"${t.id===sel?' selected':''}>${esc(t.name)}</option>`).join('');
+  const sess=plan.sessions.map(s=>`<div class="card"><h3>${esc(sessLabel(s))}</h3>${s.short?`<div class="banner" style="background:var(--redS);color:var(--red)"><span>${s.short} invigilator place(s) empty — add more teachers.</span></div>`:''}
+    ${s.rooms.length?`<div class="scroll"><table><thead><tr><th>Room</th><th class="n">Cand.</th><th>Invigilators</th></tr></thead><tbody>${s.rooms.map(x=>`<tr><td><b>${esc(x.room.name)}</b></td><td class="n">${x.n}</td><td><div class="row">${s.slots.filter(sl=>sl.x===x).map(sl=>ed?`<select data-duty="${esc(sl.key)}" style="min-width:150px;${sl.man?'border-color:var(--amber)':''}" aria-label="Invigilator">${opts(sl.man?sl.t:(S.duty||{})[sl.key]==='-'?'-':'').replace('<option value="">Auto</option>',`<option value="">Auto: ${esc(sl.t&&!sl.man?Dp.name[sl.t]:'—')}</option>`)}</select>`:`<span class="pill p-q">${esc(sl.t?Dp.name[sl.t]:'—')}</span>`).join('')}</div></td></tr>`).join('')}</tbody></table></div>`:'<p class="muted">Add rooms in Rooms &amp; seat plan first.</p>'}
+    ${s.reserve.length?`<p class="muted" style="margin:10px 0 0">Reserve / relief: ${s.reserve.map(t=>esc(t.name)).join(', ')}</p>`:''}</div>`).join('');
+  return `<div class="grid2"><div class="card"><h3>Teachers for duty (${Dp.staff.length})</h3>
+    ${Dp.staff.length?`<div class="scroll"><table><thead><tr><th>Teacher</th><th class="n">Duties</th><th></th></tr></thead><tbody>${Dp.staff.map((t,i)=>`<tr><td>${esc(t.name)}</td><td class="n"><b>${Dp.count[t.id]||0}</b></td><td class="n">${ed?`<button class="btn sm red" data-stdel="${esc(t.id)}">Remove</button>`:''}</td></tr>`).join('')}</tbody></table></div>`:'<p class="muted">No teachers yet.</p>'}
+    ${ed?`<label style="display:grid;gap:4px;margin-top:12px;font-size:13px;color:var(--mute)">Add teachers — one name per line<textarea id="stAdd" placeholder="Sir Lalramenga&#10;Pi Lalrinpuii"></textarea></label><div class="row" style="margin-top:8px"><button class="btn pri" data-a="stadd">Add teachers</button>${typeof loadSjsTeachers==='function'?'<button class="btn" data-a="stsjs">Load teachers from SJS App</button>':''}</div>`:''}</div>
+   <div class="card"><h3>How duty is given</h3><p class="muted">Each room gets ${cfg.inv} invigilator(s) unless you set another number in Rooms. Teachers are shared out evenly — nobody gets two rooms in one session. Choose a name in any box to fix it by hand; “— none —” leaves the place empty.</p>
+    <label>Invigilators per room<input id="exinv" inputmode="numeric" value="${cfg.inv}" style="width:80px;margin-left:8px"${ed?'':' disabled'}></label>
+    <div class="row" style="margin-top:14px"><button class="btn pri" data-a="dutypdf">Duty chart PDF</button><button class="btn" data-a="dutywa">WhatsApp text</button>${ed?'<button class="btn" data-a="dutyreset">Clear manual changes</button>':''}</div></div></div>${sess}`;
+}
+function exPapers(plan){
+  const P=paperPlan(S,R,plan),ed=canEdit();
+  return `<div class="card"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Question booklets: ${P.total} to print</h3><div class="row"><label>Spare %<input id="exspare" inputmode="numeric" value="${P.spare}" style="width:70px;margin-left:8px"${ed?'':' disabled'}></label><button class="btn pri" data-a="paperpdf">Requirement PDF</button></div></div>
+   <p class="muted">One booklet per registered candidate plus ${P.spare}% spare, rounded up. Room packets are counted from the seat plan.</p>
+   <div class="scroll"><table><thead><tr><th>Class</th><th>Test type</th><th>Subjects</th><th class="n">Candidates</th><th class="n">Spare</th><th class="n">Print</th></tr></thead><tbody>${P.classes.map(c=>`<tr><td><b>${esc(c.name)}</b></td><td>${esc(c.type)}</td><td class="muted">${esc(c.subs)}</td><td class="n">${c.n}</td><td class="n">+${c.books-c.n}</td><td class="n"><b style="color:var(--red)">${c.books}</b></td></tr>`).join('')}<tr><td><b>Total</b></td><td></td><td></td><td class="n"><b>${P.cands}</b></td><td class="n">+${P.total-P.cands}</td><td class="n"><b>${P.total}</b></td></tr></tbody></table></div></div>
+  <div class="card"><h3>Room-wise packets</h3>${P.packets.length?`<div class="scroll"><table><thead><tr><th>Session</th><th>Room</th><th>Class</th><th class="n">Candidates</th><th class="n">Packet</th></tr></thead><tbody>${P.packets.map(k=>`<tr><td>${esc(sessLabel(k.s))}</td><td><b>${esc(k.room.name)}</b></td><td>${esc(k.name)}</td><td class="n">${k.n}</td><td class="n"><b>${k.pk}</b></td></tr>`).join('')}</tbody></table></div>`:'<p class="muted">Add rooms in Rooms &amp; seat plan to get room-wise packets.</p>'}</div>`;
+}
+function dutyText(){const plan=seatPlan(S,R),Dp=dutyPlan(S,plan);let t=`*${S.school.name}*\n*Invigilation duty — ${S.test.title} ${S.test.session}*\n`;
+  plan.sessions.forEach(s=>{t+=`\n*${sessLabel(s)}*\n`;s.rooms.forEach(x=>{t+=`• ${x.room.name} (${x.n}): ${s.slots.filter(sl=>sl.x===x).map(sl=>sl.t?Dp.name[sl.t]:'—').join(', ')}\n`;});if(s.reserve.length)t+=`Reserve: ${s.reserve.map(r=>r.name).join(', ')}\n`;});
+  return t+`\nPlease report 30 minutes before the test. — Exam In-charge`;}
+function resultText(code){const g=R.by[code],c=g.cls,sel=g.appeared.filter(r=>r.status===STATUS.SEL),wl=g.appeared.filter(r=>r.status===STATUS.WL);
+  let t=`*${S.school.name}*\n*${isPub(S,code)?'':'PROVISIONAL '}${S.test.title} Result ${S.test.session}*\n*Class: ${c.name}*\n\n✅ *Selected (${sel.length})*\n${sel.map((r,i)=>(i+1)+'. '+r.k.roll+(ui.nfather!==false?' – '+r.k.name:'')).join('\n')||'—'}\n`;
+  if(wl.length)t+=`\n⏳ *Waiting list*\n${wl.map(r=>'WL-'+r.wl+'. '+r.k.roll+(ui.nfather!==false?' – '+r.k.name:'')).join('\n')}\n`;
+  return t+`\nAdmission: ${fmtDate(S.test.admFrom)} to ${fmtDate(S.test.admTo)}. ${S.test.notice}\n— Exam In-charge, ${S.school.name}`;}
+function parentText(r){const k=r.k;return `Dear Parent,\nEntrance Test result of *${k.name}* (Roll No. ${k.roll}, ${r.cls.name}) — ${S.school.name}, session ${S.test.session}:\n\n*${r.status===STATUS.WL?'WAITING LIST No. '+r.wl:r.status}*${r.rank?`\nMarks: ${r.tot}/${r.max} (${fix2(r.pct)}%), Grade ${r.grade}, Rank ${r.rank}`:''}\n\n${r.status===STATUS.SEL?'Please complete admission between '+fmtDate(S.test.admFrom)+' and '+fmtDate(S.test.admTo)+' with the required documents.':r.status===STATUS.WL?'You will be informed if a seat falls vacant.':'Thank you for your interest in our school.'}\n— ${S.school.name}`;}
+function waLink(text,phone){const ph=String(phone||'').replace(/\D/g,'');const num=ph.length===10?'91'+ph:ph;return 'https://wa.me/'+(num||'')+'?text='+encodeURIComponent(text);}
+/* duplicates */
+const nm=s=>String(s||'').toLowerCase().replace(/[^a-z]/g,'');
+function dupOf(d,id){return S.cands.find(x=>x.id!==id&&nm(x.name)===nm(d.name)&&nm(d.name)&&((d.father&&nm(x.father)===nm(d.father))||(d.dob&&x.dob===d.dob)));}
+function dupPairs(){const seen={},out=[];S.cands.forEach(k=>{const key=nm(k.name)+'|'+nm(k.father);if(!nm(k.name)||!nm(k.father))return;if(seen[key])out.push([seen[key],k]);else seen[key]=k;});return out;}
+/* photos */
+function readPhoto(file,cb){const fr=new FileReader();fr.onload=()=>{const img=new Image();img.onload=()=>{const c=document.createElement('canvas');c.width=PHOTO_W;c.height=PHOTO_H;const x=c.getContext('2d');const r=Math.max(PHOTO_W/img.width,PHOTO_H/img.height),w=img.width*r,h=img.height*r;x.fillStyle='#fff';x.fillRect(0,0,PHOTO_W,PHOTO_H);x.drawImage(img,(PHOTO_W-w)/2,(PHOTO_H-h)/2,w,h);cb(c.toDataURL('image/jpeg',0.82));};img.onerror=()=>toast('That file is not a picture');img.src=fr.result;};fr.readAsDataURL(file);}
+function admitPer(){return (S.exam&&+S.exam.admit===1)?1:2;}
+const examActions={
+  roomadd:()=>{S.rooms=S.rooms||[];S.rooms.push({id:rid(),name:'Room '+(S.rooms.length+1),cap:30,cols:5,inv:0});persist({meta:true});route();},
+  room5:()=>{S.rooms=S.rooms||[];for(let i=0;i<5;i++)S.rooms.push({id:rid()+i,name:'Room '+(S.rooms.length+1),cap:30,cols:5,inv:0});persist({meta:true});route();},
+  freeze:()=>{const plan=seatPlan(S,R),fx={};Object.keys(plan.by).forEach(id=>fx[id]=[plan.by[id].room.id,plan.by[id].seat]);S.seatFix=fx;persist({meta:true});route();toast('Seat numbers frozen');},
+  unfreeze:()=>ask('Unfreeze? Seat numbers will follow the list again and printed admit cards may no longer match.',()=>{S.seatFix=null;persist({meta:true});route();},'Unfreeze'),
+  seatpdf:()=>{const p=seatChartPDF(S,R,seatPlan(S,R));pdfOut(p,'Seat_Plan_Room_Charts.pdf');},
+  attpdf:()=>{const p=attendancePDF(S,R,seatPlan(S,R));pdfOut(p,'Room_Attendance_Sheets.pdf');},
+  stadd:()=>{const names=$('#stAdd').value.split(/\r?\n/).map(x=>x.replace(/\t.*$/,'').trim()).filter(Boolean);if(!names.length){toast('Type teacher names, one per line');return;}S.staff=S.staff||[];const have=new Set(S.staff.map(t=>nm(t.name)));let n=0;names.forEach(x=>{if(!have.has(nm(x))){S.staff.push({id:rid()+n,name:x,phone:''});have.add(nm(x));n++;}});persist({meta:true});route();toast(n+' teacher(s) added');},
+  stsjs:()=>loadSjsTeachers(),
+  dutypdf:()=>{const plan=seatPlan(S,R);pdfOut(dutyPDF(S,R,plan,dutyPlan(S,plan)),'Invigilation_Duty_Chart.pdf');},
+  dutywa:()=>{const t=dutyText();textModal('Invigilation duty — WhatsApp',t,waLink(t));},
+  dutyreset:()=>ask('Clear all hand-picked invigilators and share duty automatically again?',()=>{S.duty={};persist({meta:true});route();},'Clear'),
+  paperpdf:()=>{const plan=seatPlan(S,R);pdfOut(papersPDF(S,R,plan,paperPlan(S,R,plan)),'Question_Paper_Requirement.pdf');},
+  notwa:()=>{const code=ui.ncls||R.order.find(c=>R.by[c].stats.applied)||'NUR';if(!isPub(S,code))toast('Note: this class is not published yet — text says PROVISIONAL');const t=resultText(code);textModal('Result — WhatsApp text ('+clsName(code)+')',t,waLink(t));},
+  scwa:()=>{const r=R.by[ui.scls].list.find(x=>x.k.id===ui.scand);if(!r)return;const t=parentText(r);textModal('Message for parent',t,waLink(t,r.k.phone));}
+};
+document.addEventListener('click',e=>{const t=e.target.closest('[data-ex],[data-rmdel],[data-stdel]');if(!t)return;
+  if(t.dataset.ex){ui.ex=t.dataset.ex;route();return;}
+  if(!canEdit())return;
+  if(t.dataset.rmdel!==undefined){const i=+t.dataset.rmdel,r=S.rooms[i];ask('Remove '+r.name+'?',()=>{S.rooms.splice(i,1);persist({meta:true});route();},'Remove');}
+  if(t.dataset.stdel){S.staff=S.staff.filter(x=>x.id!==t.dataset.stdel);persist({meta:true});route();}
+});
+document.addEventListener('change',e=>{const t=e.target;if(!t.dataset)return;
+  if(t.name==='aper'){S.exam=Object.assign({},S.exam,{admit:+t.value});if(canEdit())persist({meta:true});route();return;}
+  if(t.id==='exmix'&&canEdit()){S.exam=Object.assign({},S.exam,{mix:t.checked});persist({meta:true});route();return;}
+  if(t.dataset.duty!==undefined&&canEdit()){S.duty=Object.assign({},S.duty);if(t.value)S.duty[t.dataset.duty]=t.value;else delete S.duty[t.dataset.duty];persist({meta:true});route();return;}
+  if(t.dataset.sch&&t.tagName==='SELECT'&&canEdit()){const [c,f]=t.dataset.sch.split('.');S.sched=Object.assign({},S.sched);S.sched[c]=Object.assign({},S.sched[c],{[f]:t.value});persist({meta:true});return;}
+});
+let exT=null;
+document.addEventListener('input',e=>{const t=e.target;if(!t.dataset)return;
+  if(t.id==='seatq'){ui.seatq=t.value;const el=$('#seatres');if(el)el.innerHTML=seatFind(seatPlan(S,R));return;}
+  if(!canEdit())return;
+  if(t.dataset.sch&&t.tagName==='INPUT'){const [c,f]=t.dataset.sch.split('.');S.sched=Object.assign({},S.sched);S.sched[c]=Object.assign({},S.sched[c],{[f]:t.value});clearTimeout(exT);exT=setTimeout(()=>persist({meta:true}),500);return;}
+  if(t.dataset.room){const [i,f]=t.dataset.room.split('.');const r=S.rooms[+i];if(!r)return;r[f]=f==='name'?t.value:Math.max(0,parseInt(t.value,10)||0);if(f==='cols')r.cols=Math.max(1,Math.min(8,r.cols||5));clearTimeout(exT);exT=setTimeout(()=>{persist({meta:true});const ae=document.activeElement;if(!(ae&&ae.dataset&&ae.dataset.room))route();},700);return;}
+  if(t.id==='exinv'||t.id==='exspare'){const v=parseInt(t.value,10);S.exam=Object.assign({},S.exam,t.id==='exinv'?{inv:Math.max(1,v||1)}:{spare:Math.max(0,isNaN(v)?0:v)});clearTimeout(exT);exT=setTimeout(()=>persist({meta:true}),500);return;}
+});
+document.addEventListener('focusout',e=>{const t=e.target;if(t&&t.dataset&&(t.dataset.room||t.id==='exinv'||t.id==='exspare'))setTimeout(()=>{const ae=document.activeElement;if(!(ae&&ae.dataset&&(ae.dataset.room||ae.id==='exinv'||ae.id==='exspare')))route();},150);});
+
+/* ---------- ONLINE APPLICATION FORMS (parents fill at apply.html) ---------- */
+const APPLY_URL='https://stjames1980.github.io/sjs-entrance/apply.html';
+function publicObj(){const sc={};S.classes.forEach(c=>sc[c.code]=schedOf(S,c.code));const a=S.apply||{};
+  return plain({school:{name:S.school.name,motto:S.school.motto,address:S.school.address,affil:S.school.affil,email:S.school.email,phone:S.school.phone},
+    test:{title:S.test.title,session:S.test.session,date:S.test.date,venue:S.test.venue,reporting:S.test.reporting,time:S.test.time,notice:S.test.notice,admFrom:S.test.admFrom,admTo:S.test.admTo},
+    classes:S.classes.map(c=>({code:c.code,name:c.name})),sched:sc,open:!!a.open,last:a.last||'',note:a.note||'',updatedAt:Date.now()});}
+async function pushPublic(){if(!Live.on||!Live.mgr)return;try{await Live.fs.collection('entrance_public').doc('info').set(publicObj());Live.pubErr='';}catch(e){Live.pubErr=e.code||e.message;}}
+function appsListen(){if(!Live.on||Live.appsOn)return;Live.appsOn=true;
+  try{Live.unsub.push(Live.fs.collection('entrance_apply').orderBy('at','desc').limit(1500).onSnapshot(s=>{Live.apps=s.docs.map(d=>Object.assign({id:d.id},d.data()));Live.appsErr='';if(curView()==='forms')route();},e=>{Live.appsErr=e.code||e.message;Live.appsOn=false;if(curView()==='forms')route();}));}catch(e){Live.appsOn=false;}}
+function admitInfo(k){const RR=compute(S),plan=seatPlan(S,RR),st=plan.by[k.id];return {status:'accepted',roll:k.roll,cand:k.id,clsName:clsName(k.cls),sched:plan&&schedOf(S,k.cls),room:st?st.room.name:'',seat:st?st.seat:0,decidedBy:whoAmI(),decidedAt:Date.now()};}
+async function acceptApp(a,quiet){
+  if(!S.classes.some(c=>c.code===a.cls)){toast('Unknown class in application '+a.id);return false;}
+  if(S.cands.some(k=>k.app===a.id)){toast('Already accepted');return false;}
+  const k=normalize({cands:[{id:uid(),app:a.id,form:a.id,cls:a.cls,name:a.name||'',gender:a.gender||'',dob:a.dob||'',father:a.father||'',mother:a.mother||'',phone:a.phone||'',address:a.address||'',category:a.category||'General',prev:a.prev||'',stream:a.stream||'',absent:false,marks:[null,null,null,null,null]}]}).cands[0];
+  k.roll=nextRoll(S,a.cls);S.cands.push(k);save({meta:true,cands:[k]});if(a.photo)photoSet(k.id,a.photo);
+  try{await Live.fs.collection('entrance_apply').doc(a.id).update(admitInfo(k));}catch(e){e._write=true;liveFail(e);}
+  if(!quiet)toast(a.name+' accepted as '+k.roll);return true;
+}
+function vForms(){
+  if(!Live.on)return `<div class="lede"><div><h2>Online application forms</h2><p>Parents fill the entrance test form on their phone; you accept it here and the candidate is added with a roll number.</p></div></div>
+    <div class="banner"><span>Online forms need online sharing. Go to <b>Online &amp; Backup</b> and tap <b>Sign in &amp; go live</b> first.</span><button class="btn sm" data-go="backup">Online &amp; Backup</button></div>`;
+  appsListen();
+  const a=S.apply||{},ed=Live.mgr,apps=Live.apps||[],f=ui.fst||'new',q=(ui.fq||'').toLowerCase();
+  const cnt={new:0,accepted:0,rejected:0};apps.forEach(x=>{cnt[x.status]=(cnt[x.status]||0)+1;});
+  const list=apps.filter(x=>(f==='all'||x.status===f)&&(!q||(x.name+' '+x.id+' '+x.father+' '+x.phone).toLowerCase().includes(q)));
+  const when=x=>x.at&&x.at.toDate?x.at.toDate().toLocaleString():'';
+  const rows=list.map(x=>{const dup=x.status==='new'?dupOf(x,null):null;return `<tr><td>${x.photo?`<img src="${esc(x.photo)}" alt="" style="width:40px;height:50px;object-fit:cover;border-radius:5px">`:''}</td>
+    <td><b>${esc(x.id)}</b><br><span class="muted" style="font-size:12px">${esc(when(x))}</span></td><td><b>${esc(x.name)}</b>${dup?`<br><span style="color:var(--red);font-size:12px">Possible duplicate of ${esc(dup.roll)}</span>`:''}</td><td>${esc(clsName(x.cls))}${x.stream?' ('+esc(x.stream)+')':''}</td><td>${esc(x.father||'')}</td><td>${esc(fmtDMY(x.dob||''))}</td><td>${esc(x.phone||'')}</td>
+    <td>${x.status==='accepted'?`<span class="pill p-sel">ACCEPTED ${esc(x.roll||'')}</span>`:x.status==='rejected'?`<span class="pill p-nq">REJECTED</span>${x.reason?'<br><span class="muted" style="font-size:12px">'+esc(x.reason)+'</span>':''}`:'<span class="pill p-wl">NEW</span>'}</td>
+    <td class="n">${ed&&x.status==='new'?`<button class="btn sm pri" data-acc="${esc(x.id)}">Accept</button> <button class="btn sm red" data-rej="${esc(x.id)}">Reject</button>`:ed&&x.status==='rejected'?`<button class="btn sm" data-reopen="${esc(x.id)}">Re-open</button>`:''}</td></tr>`;}).join('');
+  return `<div class="lede"><div><h2>Online application forms</h2><p>Parents apply at <b>${esc(APPLY_URL.replace('https://',''))}</b>. Accept a form to add the child as a candidate with a roll number; parents then see the roll number, test timing, room and seat, and can download the admit card with their Application No. and date of birth.</p></div></div>
+  ${Live.appsErr?`<div class="banner" style="background:var(--redS);color:var(--red)"><span>Could not read applications (${esc(Live.appsErr)}). The Admin must update the Firebase rules (Online &amp; Backup → One-time Firebase setup).</span></div>`:''}
+  <div class="grid2"><div class="card"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Form status: ${a.open?'<span style="color:var(--green)">OPEN</span>':'<span style="color:var(--red)">CLOSED</span>'}</h3>${ed?(a.open?'<button class="btn red" data-a="apclose">Close forms</button>':'<button class="btn pri" data-a="apopen">Open forms</button>'):''}</div>
+    <div class="form" style="margin-top:12px"><label>Last date (shown to parents)<input type="date" id="aplast" value="${esc(a.last||'')}"${ed?'':' disabled'}></label><label class="wide">Note for parents (fee, documents, office hours)<textarea id="apnote" style="min-height:70px"${ed?'':' disabled'}>${esc(a.note||'')}</textarea></label></div>
+    <div class="row" style="margin-top:10px"><button class="btn" data-a="aplink">Copy form link</button><button class="btn" data-a="apwa">WhatsApp message</button>${ed?'<button class="btn" data-a="appub">Update parents\' page</button>':''}</div>
+    ${Live.pubErr?`<p style="color:var(--red);font-size:13px">Parents' page not updated (${esc(Live.pubErr)}) — update the Firebase rules.</p>`:''}</div>
+   <div class="card"><h3>Summary</h3><div class="kpis" style="margin:0"><div class="kpi a"><b>${cnt.new||0}</b><span>New</span></div><div class="kpi g"><b>${cnt.accepted||0}</b><span>Accepted</span></div><div class="kpi r"><b>${cnt.rejected||0}</b><span>Rejected</span></div></div>
+    ${ed?`<div class="row" style="margin-top:12px"><button class="btn pri" data-a="apaccall">Accept all new (${cnt.new||0})</button><button class="btn" data-a="apsync">Send room &amp; seat to parents</button></div><p class="muted" style="font-size:13px">“Send room &amp; seat” updates every accepted form with the latest roll no., timing, room and seat (do it after freezing seat numbers).</p>`:''}</div></div>
+  <div class="tools"><div class="row">${[['new','New'],['accepted','Accepted'],['rejected','Rejected'],['all','All']].map(t=>`<button class="btn sm ${f===t[0]?'pri':''}" data-fst="${t[0]}">${t[1]}</button>`).join('')}</div><label style="flex:1;min-width:200px">Search<input id="fq" value="${esc(ui.fq||'')}" placeholder="Name, application no., phone"></label></div>
+  <div class="card scroll" style="padding:6px 10px"><table class="stack"><thead><tr><th></th><th>Application</th><th>Name</th><th>Class</th><th>Father</th><th>DOB</th><th>Phone</th><th>Status</th><th></th></tr></thead><tbody>${rows||`<tr><td colspan="9" class="muted">${apps.length?'Nothing here.':'No online applications yet.'}</td></tr>`}</tbody></table></div>`;
+}
+const formsActions={
+  apopen:()=>{S.apply=Object.assign({},S.apply,{open:true});save({meta:true});route();toast('Online forms are open');},
+  apclose:()=>ask('Close online forms? Parents will no longer be able to apply (status check still works).',()=>{S.apply=Object.assign({},S.apply,{open:false});save({meta:true});route();},'Close forms'),
+  aplink:()=>copyText(APPLY_URL),
+  apwa:()=>{const a=S.apply||{};const t=`*${S.school.name}*\n*${S.test.title} ${S.test.session} — online application*\n\nApply online for Nursery to Class XI:\n${APPLY_URL}\n${a.last?'\nLast date: '+fmtDate(a.last):''}\nTest date: ${fmtDate(S.test.date)}\n${a.note?'\n'+a.note+'\n':''}\nAfter applying, keep your Application No. Use it with the child's date of birth on the same page to check the result of scrutiny and download the admit card.`;textModal('Online form — WhatsApp message',t,waLink(t));},
+  appub:async()=>{await pushPublic();toast(Live.pubErr?'Could not update: '+Live.pubErr:'Parents\' page updated');route();},
+  apaccall:()=>{const nw=(Live.apps||[]).filter(x=>x.status==='new');if(!nw.length){toast('No new forms');return;}ask('Accept all '+nw.length+' new application(s)? Check the possible duplicates first.',async()=>{let n=0;for(const a of nw){if(await acceptApp(a,true))n++;}toast(n+' accepted');route();},'Accept all');},
+  apsync:async()=>{const acc=(Live.apps||[]).filter(x=>x.status==='accepted');let n=0;for(const a of acc){const k=S.cands.find(c=>c.app===a.id||c.id===a.cand);if(!k)continue;try{await Live.fs.collection('entrance_apply').doc(a.id).update(admitInfo(k));n++;}catch(e){e._write=true;liveFail(e);break;}}toast(n+' form(s) updated');}
+};
+document.addEventListener('click',e=>{const t=e.target.closest('[data-acc],[data-rej],[data-reopen],[data-fst]');if(!t)return;
+  if(t.dataset.fst){ui.fst=t.dataset.fst;route();return;}
+  if(!Live.mgr)return;
+  const a=(Live.apps||[]).find(x=>x.id===(t.dataset.acc||t.dataset.rej||t.dataset.reopen));if(!a)return;
+  if(t.dataset.acc){const dup=dupOf(a,null);if(dup)ask('Possible duplicate: '+dup.name+' ('+dup.roll+') is already a candidate. Accept anyway?',()=>acceptApp(a),'Accept anyway');else acceptApp(a);}
+  if(t.dataset.rej){modal(`<h3>Reject ${esc(a.name)}?</h3><p class="muted">The parent sees this reason when checking status.</p><input id="rjWhy" placeholder="Reason, e.g. age not eligible for the class" style="width:100%"><div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn" data-x="close">Cancel</button><button class="btn red" id="rjGo">Reject</button></div>`);
+    $('#rjGo').onclick=async()=>{const why=$('#rjWhy').value.trim();closeModal();try{await Live.fs.collection('entrance_apply').doc(a.id).update({status:'rejected',reason:why,decidedBy:whoAmI(),decidedAt:Date.now()});toast('Rejected');}catch(err){err._write=true;liveFail(err);}};}
+  if(t.dataset.reopen){Live.fs.collection('entrance_apply').doc(a.id).update({status:'new',reason:''}).catch(err=>{err._write=true;liveFail(err);});}
+});
+document.addEventListener('input',e=>{const t=e.target;
+  if(t.id==='fq'){ui.fq=t.value;clearTimeout(t._h);t._h=setTimeout(()=>{route();const n=$('#fq');if(n){n.focus();n.setSelectionRange(n.value.length,n.value.length);}},300);}
+  if((t.id==='apnote'||t.id==='aplast')&&Live.mgr){S.apply=Object.assign({},S.apply,t.id==='apnote'?{note:t.value}:{last:t.value});clearTimeout(t._h);t._h=setTimeout(()=>save({meta:true}),700);}
+});
+
 /* ---------- ROUTER ---------- */
 const curView=()=>{const v=(location.hash||'#dashboard').slice(1);return VIEWS[v]?v:'dashboard';};
-const VIEWS={dashboard:vDashboard,candidates:vCandidates,marks:vMarks,results:vResults,review:vReview,notice:vNotice,scorecards:vScore,admit:vAdmit,setup:vSetup,backup:vBackup};
+const VIEWS={dashboard:vDashboard,candidates:vCandidates,marks:vMarks,results:vResults,review:vReview,examday:vExam,forms:vForms,notice:vNotice,scorecards:vScore,admit:vAdmit,setup:vSetup,backup:vBackup};
 function route(){
   const v=(location.hash||'#dashboard').slice(1);const view=VIEWS[v]?v:'dashboard';
   document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+view));
@@ -1097,18 +1496,18 @@ const actions={
   print:()=>{try{window.print();}catch(e){toast('Use Download PDF to print');}},
   onesc:()=>{const r=R.by[ui.scls].list.find(x=>x.k.id===ui.scand);if(r)pdfOut(scoreCardPDF(S,R,[r]),'Score_Card_'+fn(r.k.roll)+'.pdf');},
   allsc:()=>{const l=R.by[ui.scls].list.slice().sort((a,b)=>a.k.roll.localeCompare(b.k.roll));if(l.length)pdfOut(scoreCardPDF(S,R,l),'Score_Cards_'+fn(clsName(ui.scls))+'.pdf');else toast('No candidates');},
-  admpdf:()=>{const l=R.by[ui.acls].list.slice().sort((a,b)=>a.k.roll.localeCompare(b.k.roll));if(l.length)pdfOut(admitPDF(S,R,l),'Admit_Cards_'+fn(clsName(ui.acls))+'.pdf');else toast('No candidates');},
-  admall:()=>{const p=new PDF();R.order.forEach(c=>{const l=R.by[c].list.slice().sort((a,b)=>a.k.roll.localeCompare(b.k.roll));if(l.length)admitPDF(S,R,l,p);});if(p.pages.length)pdfOut(p,'Admit_Cards_All_Classes.pdf');else toast('No candidates');},
+  admpdf:()=>{const l=R.by[ui.acls].list.slice().sort((a,b)=>a.k.roll.localeCompare(b.k.roll));if(l.length)pdfOut(admitPDF(S,R,l,null,null,admitPer()),'Admit_Cards_'+fn(clsName(ui.acls))+(admitPer()===1?'_1_per_page':'')+'.pdf');else toast('No candidates');},
+  admall:()=>{const p=new PDF();R.order.forEach(c=>{const l=R.by[c].list.slice().sort((a,b)=>a.k.roll.localeCompare(b.k.roll));if(l.length)admitPDF(S,R,l,p,null,admitPer());});if(p.pages.length)pdfOut(p,'Admit_Cards_All_Classes.pdf');else toast('No candidates');},
   copysub:()=>{const src=S.classes.find(c=>c.code==='VI');S.classes.forEach(c=>{if(['VII','VIII','IX','X','XI'].includes(c.code))c.subjects=src.subjects.map(s=>({n:s.n,m:s.m}));});save({meta:true});route();toast('Subjects copied');},
   golive:()=>liveStart(true),
   offline:()=>liveStop(false),
   signout:()=>ask('Sign out? This also signs you out of SJS App on this device.',()=>liveStop(true),'Sign out'),
   copyrules:()=>{try{navigator.clipboard.writeText(RULES_TXT).then(()=>toast('Rules copied'),()=>toast('Select the text and copy it'));}catch(e){toast('Select the text and copy it');}},
-  bkp:()=>saveFile('SJS_Entrance_Backup_'+todayISO()+'.json',JSON.stringify(S),'application/json'),
+  bkp:()=>saveFile('SJS_Entrance_Backup_'+todayISO()+'.json',JSON.stringify(Object.assign({},S,{photos:PHOTOS})),'application/json'),
   clear:()=>ask('Delete all '+S.cands.length+' candidates and their marks'+(Live.on?' for everyone in SJS App':'')+'? Download a backup first if you may need them.',()=>{S.cands=[];S.seq={};S.sample=false;save({all:true});route();toast('All candidates cleared');},'Delete all candidates'),
-  sample:()=>ask('Replace current data with sample candidates'+(Live.on?' for everyone in SJS App':'')+'?',()=>{const tm=!!S.teachersMarks;S=sampleState();S.teachersMarks=tm;S.pub={};save({all:true});route();toast('Sample data loaded');},'Load sample')
+  sample:()=>ask('Replace current data with sample candidates'+(Live.on?' for everyone in SJS App':'')+'?',()=>{const tm=!!S.teachersMarks;S=sampleState();PHOTOS={};photosLocal();S.teachersMarks=tm;S.pub={};save({all:true});route();toast('Sample data loaded');},'Load sample')
 };
-Object.assign(actions,reviewActions);
+Object.assign(actions,reviewActions,examActions,formsActions);
 document.addEventListener('click',e=>{
   const t=e.target.closest('[data-a],[data-go],[data-edit],[data-del],[data-x],[data-adm1]');
   if(e.target.id==='modal'){closeModal();return;}
@@ -1117,8 +1516,8 @@ document.addEventListener('click',e=>{
   else if(t.dataset.go)location.hash='#'+t.dataset.go;
   else if(t.dataset.edit)candForm(t.dataset.edit);
   else if(t.dataset.x==='close')closeModal();
-  else if(t.dataset.adm1){const r=R.all.find(x=>x.k.id===t.dataset.adm1);if(r)pdfOut(admitPDF(S,R,[r]),'Admit_Card_'+fn(r.k.roll)+'.pdf');}
-  else if(t.dataset.del){const k=S.cands.find(x=>x.id===t.dataset.del);if(k)ask('Delete '+k.name+' ('+k.roll+') and their marks?',()=>{S.cands=S.cands.filter(x=>x.id!==k.id);save({del:[[k.cls,k.id]]});route();toast('Deleted');},'Delete');}
+  else if(t.dataset.adm1){const r=R.all.find(x=>x.k.id===t.dataset.adm1);if(r)pdfOut(admitPDF(S,R,[r],null,null,admitPer()),'Admit_Card_'+fn(r.k.roll)+'.pdf');}
+  else if(t.dataset.del){const k=S.cands.find(x=>x.id===t.dataset.del);if(k)ask('Delete '+k.name+' ('+k.roll+') and their marks?',()=>{S.cands=S.cands.filter(x=>x.id!==k.id);save({del:[[k.cls,k.id]]});if(PHOTOS[k.id])photoSet(k.id,null);route();toast('Deleted');},'Delete');}
 });
 document.addEventListener('change',e=>{
   const t=e.target,id=t.id;
@@ -1126,7 +1525,7 @@ document.addEventListener('change',e=>{
   if(sets[id]){sets[id](t.value);route();return;}
   if(id==='tmarks'){if(!Live.mgr)return;S.teachersMarks=t.checked;save({meta:true});toast(t.checked?'Teachers can now enter marks':'Only Admin and Exam In-Charge can enter marks');return;}
   if(['nmarks','nfather','nwait'].includes(id)){ui[id]=t.checked;route();return;}
-  if(id==='restore'&&t.files[0]){const fr=new FileReader();fr.onload=()=>{try{const st=normalize(JSON.parse(fr.result));if(!st.classes.length)throw 0;ask('Replace current data with this backup ('+st.cands.length+' candidates)?',()=>{S=st;S.sample=!!st.sample;save({all:true});route();toast('Backup restored');},'Restore');}catch(err){toast('That file is not a valid backup');}};fr.readAsText(t.files[0]);t.value='';return;}
+  if(id==='restore'&&t.files[0]){const fr=new FileReader();fr.onload=()=>{try{const raw=JSON.parse(fr.result),st=normalize(raw);if(!st.classes.length)throw 0;ask('Replace current data with this backup ('+st.cands.length+' candidates)?',()=>{S=st;S.sample=!!st.sample;PHOTOS=(raw.photos&&typeof raw.photos==='object')?raw.photos:{};photosLocal();save({all:true});route();toast('Backup restored');},'Restore');}catch(err){toast('That file is not a valid backup');}};fr.readAsText(t.files[0]);t.value='';return;}
   if(t.dataset.set&&t.tagName==='SELECT'){const [g,n]=t.dataset.set.split('.');S[g][n]=t.value;save({meta:true});toast('Tie rule updated');return;}
   if(t.matches('[data-ab]')&&!canMarks()){t.checked=!t.checked;toast('View only');return;}
   if(t.dataset.set&&!canEdit())return;
@@ -1156,6 +1555,7 @@ document.addEventListener('keydown',e=>{
 });
 
 /* ---------- START ---------- */
+try{PHOTOS=JSON.parse(localStorage.getItem(KEY+'_ph')||'{}')||{};}catch(e){PHOTOS={};}
 S=loadLocal();
 if(!S){S=sampleState();try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 R=compute(S);

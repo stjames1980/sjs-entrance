@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entrance Test Application</title>
+<meta name="theme-color" content="#1d3fb8">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: a school admission office counter — welcoming, plain, trustworthy for parents on a phone
+   IDEA: the printed admission form, filled in one calm column
+   PICTURE: the form itself and the Application No. receipt
+   COLOUR and TYPE: royal blue band, white form, crest red for what matters; Outfit + Inter
+   LAYOUT: header band, two tabs (Apply / Check status), one column form up to 720px */
+:root{color-scheme:light dark;--bg:light-dark(#f3f5fb,#0b1120);--card:light-dark(#fff,#141c31);--ink:light-dark(#111a33,#e8ecf8);--mute:light-dark(#5a6584,#9aa5c4);--line:light-dark(#dfe4f0,#26304c);--soft:light-dark(#eef2fc,#1a2542);--blue:#1d3fb8;--blueD:light-dark(#142d86,#8fa8ff);--red:#d8342b;--green:light-dark(#12805c,#4cd29f);--greenS:light-dark(#e3f5ed,#123528);--amberS:light-dark(#fff1d6,#3a2a0c);--amber:light-dark(#a35f00,#f2b54b);--redS:light-dark(#fde7e5,#3d1614)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,Segoe UI,Arial,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:Outfit,Inter,sans-serif;line-height:1.1;margin:0;text-wrap:balance}
+.hero{background:var(--blue);color:#fff;padding:20px 16px 0;position:relative}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--red)}
+.brand{display:flex;gap:14px;align-items:center;max-width:760px;margin:0 auto}
+.brand img{width:58px;height:58px;border-radius:50%;background:#fff;padding:3px;object-fit:contain;flex:none}
+.brand h1{font-size:clamp(20px,4.5vw,28px)}.brand p{margin:3px 0 0;opacity:.88;font-size:14px}
+.tabs{display:flex;gap:4px;max-width:760px;margin:16px auto 0}
+.tabs button{all:unset;cursor:pointer;color:#fff;padding:12px 16px;border-radius:10px 10px 0 0;font-weight:600;opacity:.85;min-height:20px}
+.tabs button.on{background:var(--bg);color:var(--ink);opacity:1}
+main{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px}
+.card h2{font-size:24px;margin-bottom:6px}
+.muted{color:var(--mute)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.grid .full{grid-column:1/-1}
+@media(max-width:560px){.grid{grid-template-columns:minmax(0,1fr)}}
+label{display:grid;gap:5px;font-size:14px;color:var(--mute);font-weight:500}
+label b{color:var(--red)}
+input,select,textarea{font:inherit;font-size:16px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-height:46px;width:100%}
+textarea{min-height:80px}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+.btn{border:0;border-radius:12px;padding:12px 18px;min-height:48px;font:600 16px Inter,sans-serif;cursor:pointer;background:var(--soft);color:var(--blueD)}
+.btn.pri{background:var(--blue);color:#fff}.btn:disabled{opacity:.6}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.ph{display:flex;gap:14px;align-items:center}.ph img{width:84px;height:105px;object-fit:cover;border-radius:10px;background:var(--soft)}
+.banner{border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:15px}
+.ok{background:var(--greenS);color:var(--green)}.warn{background:var(--amberS);color:var(--amber)}.bad{background:var(--redS);color:var(--red)}.info{background:var(--soft);color:var(--blueD)}
+.appno{font:700 clamp(30px,8vw,44px)/1.1 Outfit,sans-serif;color:var(--red);letter-spacing:.06em;margin:6px 0}
+.kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 16px;margin:12px 0}
+.kv div small{display:block;font-size:11px;font-weight:700;color:var(--mute);text-transform:uppercase}
+.big{font:700 22px Outfit,sans-serif}
+.chk{width:22px;height:22px;min-height:0;flex:none}
+#toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#111a33;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;opacity:0;transition:opacity .25s;pointer-events:none;max-width:90vw}
+#toast.on{opacity:1}
+</style>
+</head>
+<body>
+<header class="hero"><div class="brand"><img id="hLogo" alt="St. James H.S. School logo"><div><h1 id="hName">St. James H.S. School</h1><p id="hSub">Entrance Test — online application</p></div></div>
+<nav class="tabs"><button data-t="apply" class="on">Apply online</button><button data-t="status">Status &amp; admit card</button></nav></header>
+<main id="app"><div class="card"><p class="muted">Loading…</p></div></main>
+<div id="toast"></div>
+<script>
+var LOGO_B64="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";
+/* ===== CORE: data model, result engine, sample data, PDF writer, XLSX writer ===== */
+var LOGO_JPG=null,LOGO_W=200,PHOTOS={},PHOTO_W=120,PHOTO_H=150; /* set to a binary string of a JPEG to print the school logo */
+var GRADES=[[91,'A1'],[81,'A2'],[71,'B1'],[61,'B2'],[51,'C1'],[41,'C2'],[33,'D'],[0,'E']];
+function gradeOf(p){for(var i=0;i<GRADES.length;i++){if(p>=GRADES[i][0])return GRADES[i][1];}return 'E';}
+var CLASS_LIST=[['NUR','Nursery'],['LKG','LKG'],['UKG','UKG'],['I','Class I'],['II','Class II'],['III','Class III'],['IV','Class IV'],['V','Class V'],['VI','Class VI'],['VII','Class VII'],['VIII','Class VIII'],['IX','Class IX'],['X','Class X'],['XI','Class XI']];
+function subjDefaults(code){
+  var S=function(a){return a.map(function(x){return {n:x[0],m:x[1]};});};
+  if(code==='NUR')return S([['English (Oral)',20],['Number Work',20],['Rhymes & Oral',20],['Drawing & Colouring',20],['Interview',20]]);
+  if(code==='LKG'||code==='UKG')return S([['English',25],['Mathematics',25],['General Awareness',25],['Drawing',15],['Interview',10]]);
+  if(['I','II','III','IV','V'].indexOf(code)>=0)return S([['English',30],['Mathematics',30],['EVS',20],['General Knowledge',10],['Interview',10]]);
+  return S([['English',25],['Mathematics',25],['Science',20],['Social Science',20],['Interview',10]]);
+}
+function seatDefaults(code){
+  var m={NUR:[40,10,35],LKG:[25,8,35],UKG:[20,6,35],X:[5,3,40],XI:[40,10,40]};
+  return m[code]||[([ 'I','II','III','IV','V'].indexOf(code)>=0?15:12),5,40];
+}
+function defaultState(){
+  return {v:1,savedAt:0,sample:false,
+    school:{name:'ST. JAMES H.S. SCHOOL',motto:'Faith And Service',address:'Gongrai, PO. Kendraicherra, Dist-Sepahijala, Tripura-799102',affil:'CBSE Affiliation No.: 2030038  |  School Code: 35414  |  UDISE: 16050401504',email:'stjames579@gmail.com',phone:'',principal:'',incharge:''},
+    test:{session:'2027-2028',title:'Entrance Test',date:'2026-12-12',time:'9:00 AM - 11:30 AM',reporting:'8:30 AM',venue:'School Campus, Gongrai',resultDate:'2026-12-19',admFrom:'2027-01-04',admTo:'2027-01-16',tie:'break',
+      notice:'Selected candidates must complete admission between the dates given above with the original Birth Certificate, Transfer Certificate (Class I upward), last Report Card, Aadhaar card and 4 passport-size photographs. Waiting-list candidates will be called only if seats fall vacant. The decision of the school authority is final.'},
+    classes:CLASS_LIST.map(function(c){var d=seatDefaults(c[0]);return {code:c[0],name:c[1],seats:d[0],wait:d[1],pass:d[2],subjects:subjDefaults(c[0])};}),
+    cands:[],seq:{}};
+}
+function normalize(st){
+  var d=defaultState();
+  st=st||{};
+  var o={rooms:(st.rooms||[]).filter(function(r){return r&&r.id;}).map(function(r){return {id:String(r.id),name:String(r.name||''),cap:Math.max(0,parseInt(r.cap,10)||0),cols:Math.max(1,Math.min(8,parseInt(r.cols,10)||5)),inv:Math.max(0,parseInt(r.inv,10)||0)};}),staff:(st.staff||[]).filter(function(t){return t&&t.id;}).map(function(t){return {id:String(t.id),name:String(t.name||''),phone:String(t.phone||'')};}),sched:(st.sched&&typeof st.sched==='object')?st.sched:{},duty:(st.duty&&typeof st.duty==='object')?st.duty:{},exam:(st.exam&&typeof st.exam==='object')?st.exam:{},seatFix:(st.seatFix&&typeof st.seatFix==='object')?st.seatFix:null,apply:(st.apply&&typeof st.apply==='object')?st.apply:{},v:1,savedAt:st.savedAt||0,sample:!!st.sample,teachersMarks:!!st.teachersMarks,pub:(st.pub&&typeof st.pub==='object')?st.pub:{},school:Object.assign(d.school,st.school||{}),test:Object.assign(d.test,st.test||{}),classes:[],cands:[],seq:st.seq||{}};
+  d.classes.forEach(function(dc){
+    var sc=(st.classes||[]).filter(function(x){return x.code===dc.code;})[0]||{};
+    var c=Object.assign({},dc,sc);
+    c.subjects=[0,1,2,3,4].map(function(i){var s=(sc.subjects||[])[i]||dc.subjects[i];return {n:String(s.n||''),m:Math.max(0,+s.m||0)};});
+    c.seats=Math.max(0,+c.seats||0);c.wait=Math.max(0,+c.wait||0);c.pass=Math.min(100,Math.max(0,+c.pass||0));
+    o.classes.push(c);
+  });
+  (st.cands||[]).forEach(function(k){
+    if(!k||!k.cls)return;
+    var m=(k.marks||[]).slice(0,5);while(m.length<5)m.push(null);
+    o.cands.push(Object.assign({id:k.id||uid(),form:'',roll:'',name:'',gender:'',dob:'',father:'',mother:'',phone:'',address:'',category:'General',prev:'',stream:'',absent:false,ov:'',note:''},k,{marks:m.map(function(v){return (v===''||v===undefined||v===null||isNaN(+v))?null:+v;})}));
+  });
+  return o;
+}
+function uid(){return 'c'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+function nextRoll(S,code){
+  var n=(S.seq[code]||0)+1;
+  var used={};S.cands.forEach(function(k){used[k.roll]=1;});
+  while(used[code+'-'+pad3(n)])n++;
+  S.seq[code]=n;return code+'-'+pad3(n);
+}
+function pad3(n){return ('00'+n).slice(-3);}
+
+/* ---------- RESULT ENGINE ---------- */
+var STATUS={SEL:'SELECTED',WL:'WAITING LIST',Q:'QUALIFIED',NS:'NOT SELECTED',NQ:'NOT QUALIFIED',AB:'ABSENT',PEN:'PENDING'};
+var OVR={SEL:'SELECTED',WL:'WAITING LIST',NS:'NOT SELECTED'};
+function isPub(S,code){return !!(S.pub&&S.pub[code]);}
+function compute(S){
+  var by={},order=[];
+  S.classes.forEach(function(c){by[c.code]={cls:c,list:[],appeared:[],stats:null};order.push(c.code);});
+  S.cands.forEach(function(k){
+    var g=by[k.cls];if(!g)return;
+    var max=0,tot=0,entered=0,active=0;
+    g.cls.subjects.forEach(function(s,i){
+      if(!s.n||!(s.m>0))return;active++;max+=s.m;
+      var v=k.marks[i];if(v!==null&&v!==undefined){tot+=v;entered++;}
+    });
+    var r={k:k,cls:g.cls,max:max,tot:tot,entered:entered,active:active,pct:max?tot*100/max:0,rank:null,wl:null,grade:'',status:'',incomplete:false};
+    if(k.absent)r.status=STATUS.AB;else if(entered===0)r.status=STATUS.PEN;else{r.incomplete=entered<active;g.appeared.push(r);}
+    g.list.push(r);
+  });
+  var all=[];
+  order.forEach(function(code){
+    var g=by[code],c=g.cls;
+    var brk=S.test.tie!=='share';
+    var tieCmp=function(a,b){var d=b.tot-a.tot;if(d||!brk)return d;for(var j=0;j<5;j++){var x=a.k.marks[j]||0,y=b.k.marks[j]||0;if(x!==y)return y-x;}var da=a.k.dob||'9999',db=b.k.dob||'9999';return da<db?-1:da>db?1:0;};
+    g.appeared.sort(function(a,b){return tieCmp(a,b)||a.k.name.localeCompare(b.k.name);});
+    var wlNo=0;
+    g.appeared.forEach(function(r,i){
+      var p=g.appeared[i-1];
+      r.rank=(p&&tieCmp(p,r)===0)?p.rank:i+1;
+      r.pct=Math.round(r.pct*100)/100;
+      r.grade=gradeOf(r.pct);
+      if(r.pct<c.pass)r.status=STATUS.NQ;
+      else if(r.rank<=c.seats)r.status=STATUS.SEL;
+      else if(r.rank<=c.seats+c.wait)r.status=STATUS.WL;
+      else r.status=STATUS.Q;
+      r.auto=r.status;
+      if(OVR[r.k.ov])r.status=OVR[r.k.ov];
+      r.over=r.status!==r.auto;
+    });
+    g.appeared.forEach(function(r){r.wl=r.status===STATUS.WL?++wlNo:null;});
+    var rest=g.list.filter(function(r){return r.status===STATUS.AB||r.status===STATUS.PEN;}).sort(function(a,b){return a.k.roll.localeCompare(b.k.roll);});
+    g.sorted=g.appeared.concat(rest);
+    var st={applied:g.list.length,appeared:g.appeared.length,absent:0,pending:0,sel:0,wl:0,q:0,nq:0,ns:0,over:0,seats:c.seats,avg:0,top:null,hi:0,pub:isPub(S,code)};
+    g.list.forEach(function(r){if(r.status===STATUS.AB)st.absent++;else if(r.status===STATUS.PEN)st.pending++;else if(r.status===STATUS.SEL)st.sel++;else if(r.status===STATUS.WL)st.wl++;else if(r.status===STATUS.Q)st.q++;else if(r.status===STATUS.NQ)st.nq++;else if(r.status===STATUS.NS)st.ns++;if(r.over)st.over++;});
+    st.qualified=g.appeared.filter(function(r){return r.pct>=c.pass;}).length;
+    st.vacant=Math.max(0,c.seats-st.sel);
+    if(g.appeared.length){st.avg=g.appeared.reduce(function(a,r){return a+r.pct;},0)/g.appeared.length;st.top=g.appeared[0];st.hi=g.appeared[0].pct;}
+    g.stats=st;all=all.concat(g.list);
+  });
+  var T={applied:0,appeared:0,absent:0,pending:0,sel:0,wl:0,q:0,nq:0,ns:0,over:0,seats:0,qualified:0,vacant:0};
+  order.forEach(function(code){var s=by[code].stats;for(var key in T)T[key]+=s[key];});
+  var ap=all.filter(function(r){return r.rank!==null;});
+  T.avg=ap.length?ap.reduce(function(a,r){return a+r.pct;},0)/ap.length:0;
+  T.passRate=T.appeared?T.qualified*100/T.appeared:0;
+  T.top=ap.slice().sort(function(a,b){return b.pct-a.pct||b.tot-a.tot;}).slice(0,10);
+  T.grades={};GRADES.forEach(function(g){T.grades[g[1]]=0;});ap.forEach(function(r){T.grades[r.grade]++;});
+  T.gender={Male:0,Female:0,Other:0};T.cat={};
+  S.cands.forEach(function(k){var gk=k.gender==='Female'?'Female':k.gender==='Male'?'Male':'Other';T.gender[gk]++;var ck=k.category||'General';T.cat[ck]=(T.cat[ck]||0)+1;});
+  return {by:by,order:order,all:all,T:T};
+}
+function remarkOf(r,S){
+  if(r.status===STATUS.SEL)return 'Selected for admission';
+  if(r.status===STATUS.WL)return 'Waiting List No. '+r.wl;
+  if(r.status===STATUS.Q)return 'Qualified - not within merit seats';
+  if(r.status===STATUS.NS)return 'Not selected for admission';
+  if(r.status===STATUS.NQ)return 'Did not qualify (below '+r.cls.pass+'%)';
+  if(r.status===STATUS.AB)return 'Absent in the test';
+  return 'Result pending';
+}
+function statusShort(r){return r.status===STATUS.WL?('WL-'+r.wl):r.status;}
+function fmtDate(iso){if(!iso)return '';var p=String(iso).split('-');if(p.length!==3)return iso;var M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return (+p[2])+' '+M[(+p[1])-1]+' '+p[0];}
+function fmtDMY(iso){if(!iso)return '';var p=String(iso).split('-');return p.length===3?p[2]+'-'+p[1]+'-'+p[0]:iso;}
+function fix2(n){return (Math.round(n*100)/100).toFixed(2);}
+function todayISO(){var d=new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);}
+
+/* ---------- SAMPLE DATA ---------- */
+function sampleState(){
+  var S=defaultState();S.sample=true;
+  var seed=20261124;function rnd(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296;}
+  function pick(a){return a[Math.floor(rnd()*a.length)];}
+  var boys=['Lalramenga','Vanlalhruaia','Zothanpuia','Lalrinsanga','Rohmingthanga','Biakthansanga','Lalthanzuala','Malsawmtluanga','Lalnunmawia','Remruatfela','Joel','Samuel','Daniel','David','Rahul','Arjun','Sourav','Bikram','Nathan','Lalmuanawma','Thangchungnunga','Lalhmangaiha'];
+  var girls=['Lalrinpuii','Lalmuanpuii','Vanlalruati','Zonunsiami','Lalremsiami','Esther','Ruth','Priya','Sneha','Lalhriatpuii','Hmingthansangi','Lalchhanhimi','Rebecca','Mary','Ankita','Zoramthari','Lalnunpuii','Rosy'];
+  var surn=['Darlong','Darlong','Darlong','Halam','Ranglong','Hrangkhawl','Debbarma','Debnath','Kaipeng','Molsom','Reang','Saha'];
+  var fathers=['Lalthangliana','Zairemmawia','Rokima','Lalbiakzuala','Thanghmingliana','Ramdinthara','Lalchhuanawma','Joseph','Stephen','Paul','Bimal','Ratan','Hrangthanzama','Lalrinchhana'];
+  var mothers=['Lalhmingmawii','Zothansangi','Rosiami','Lalnghakliani','Thanpari','Martha','Lydia','Sumita','Rina','Lalzarzoveli','Biakchhungi'];
+  var vill=['Gongrai','Kendraicherra','Bethlehem','Sonamura Road','Bishramganj','Jampuijala','Takarjala','Melaghar'];
+  var cats=['ST','ST','ST','ST','General','OBC','SC'];
+  var counts={NUR:56,LKG:33,UKG:27,I:21,II:19,III:18,IV:17,V:20,VI:19,VII:16,VIII:15,IX:17,X:9,XI:52};
+  var ageOf={NUR:3,LKG:4,UKG:5,I:6,II:7,III:8,IV:9,V:10,VI:11,VII:12,VIII:13,IX:14,X:15,XI:16};
+  var form=1001;
+  S.classes.forEach(function(c){
+    var n=counts[c.code]||8;
+    for(var i=0;i<n;i++){
+      var g=rnd()<0.5?'Male':'Female';
+      var sur=pick(surn);
+      var name=(g==='Male'?pick(boys):pick(girls))+' '+sur;
+      var y=2026-ageOf[c.code]-(rnd()<0.3?1:0);
+      var dob=y+'-'+('0'+(1+Math.floor(rnd()*12))).slice(-2)+'-'+('0'+(1+Math.floor(rnd()*28))).slice(-2);
+      var k={id:uid()+i,form:'F'+(form++),roll:nextRoll(S,c.code),cls:c.code,name:name,gender:g,dob:dob,father:pick(fathers)+' '+sur,mother:pick(mothers)+' '+sur,phone:'9'+Math.floor(100000000+rnd()*899999999),address:pick(vill),category:pick(cats),prev:c.code==='NUR'?'':pick(['Holy Cross School','Govt. Primary School','Gongrai H.S. School','Bethel English School','St. James H.S. School']),stream:c.code==='XI'?pick(['Science','Science','Arts','Commerce']):'',absent:rnd()<0.06,marks:[null,null,null,null,null]};
+      var ability=0.3+rnd()*0.68;
+      if(!k.absent){c.subjects.forEach(function(s,j){if(s.n&&s.m>0){var v=Math.round(s.m*Math.min(1,Math.max(0,ability+(rnd()-0.5)*0.25))*2)/2;k.marks[j]=v;}});}
+      S.cands.push(k);
+    }
+  });
+  // leave a few marks pending in Class XI to show the pending state
+  S.cands.filter(function(k){return k.cls==='XI';}).slice(-3).forEach(function(k){k.marks=[null,null,null,null,null];k.absent=false;});
+  return S;
+}
+
+/* ---------- PDF WRITER (A4, Helvetica) ---------- */
+var HW=[278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584];
+var HBW=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,333,333,584,584,584,611,975,722,722,722,722,667,611,778,722,278,556,722,611,833,722,778,667,778,722,667,611,722,667,944,667,667,611,333,278,333,584,556,333,556,611,556,611,556,333,611,611,278,278,556,278,889,611,611,611,611,389,556,333,611,556,778,556,556,500,389,280,389,584];
+function pdfSafe(s){return String(s==null?'':s).replace(/[‘’]/g,"'").replace(/[“”]/g,'"').replace(/[–—−]/g,'-').replace(/•/g,'-').replace(/·/g,'|').replace(/[À-ÿ]/g,function(ch){return ch.normalize?ch.normalize('NFD').replace(/[̀-ͯ]/g,''):'?';}).replace(/[^\x20-\x7E]/g,'');}
+function tw(s,size,bold){s=pdfSafe(s);var a=bold?HBW:HW,w=0;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);w+=(c>=32&&c<=126)?a[c-32]:556;}return w*size/1000;}
+function fitText(s,size,bold,maxW){s=pdfSafe(s);if(tw(s,size,bold)<=maxW)return s;while(s.length>1&&tw(s+'...',size,bold)>maxW)s=s.slice(0,-1);return s.replace(/\s+$/,'')+'...';}
+function wrapText(s,size,bold,maxW){var words=pdfSafe(s).split(/\s+/),lines=[],cur='';words.forEach(function(w){var t=cur?cur+' '+w:w;if(tw(t,size,bold)<=maxW||!cur)cur=t;else{lines.push(cur);cur=w;}});if(cur)lines.push(cur);return lines;}
+function hex(c){c=(c||'#000000').replace('#','');var n=parseInt(c,16);return [((n>>16)&255)/255,((n>>8)&255)/255,(n&255)/255].map(function(v){return +v.toFixed(3);}).join(' ');}
+function PDF(){this.W=595.28;this.H=841.89;this.pages=[];this.cur=null;}
+PDF.prototype.add=function(){this.cur=[];this.pages.push(this.cur);if(this.wm){var sz=86,w=tw(this.wm,sz,true),k=0.7071,x=this.W/2-w/2*k,y=this.H/2-w/2*k+20;this.cur.push('BT /F2 '+sz+' Tf '+hex('#e2e6f1')+' rg 0 Tc '+k+' '+k+' '+(-k)+' '+k+' '+x.toFixed(2)+' '+y.toFixed(2)+' Tm ('+this.wm+') Tj ET');}return this;};
+PDF.prototype.op=function(s){this.cur.push(s);};
+PDF.prototype.rect=function(x,y,w,h,o){o=o||{};var Y=this.H-y-h,s='q ';if(o.lw)s+=o.lw+' w ';if(o.fill)s+=hex(o.fill)+' rg ';if(o.stroke)s+=hex(o.stroke)+' RG ';if(o.dash)s+='['+o.dash+'] 0 d ';
+  if(o.r){var r=Math.min(o.r,w/2,h/2),k=r*0.5523,x2=x+w,Y2=Y+h;s+=(x+r)+' '+Y+' m '+(x2-r)+' '+Y+' l '+(x2-r+k)+' '+Y+' '+x2+' '+(Y+r-k)+' '+x2+' '+(Y+r)+' c '+x2+' '+(Y2-r)+' l '+x2+' '+(Y2-r+k)+' '+(x2-r+k)+' '+Y2+' '+(x2-r)+' '+Y2+' c '+(x+r)+' '+Y2+' l '+(x+r-k)+' '+Y2+' '+x+' '+(Y2-r+k)+' '+x+' '+(Y2-r)+' c '+x+' '+(Y+r)+' l '+x+' '+(Y+r-k)+' '+(x+r-k)+' '+Y+' '+(x+r)+' '+Y+' c h ';}
+  else s+=x.toFixed(2)+' '+Y.toFixed(2)+' '+w.toFixed(2)+' '+h.toFixed(2)+' re ';
+  s+=(o.fill&&o.stroke)?'B':o.fill?'f':'S';this.op(s+' Q');};
+PDF.prototype.line=function(x1,y1,x2,y2,color,lw,dash){this.op('q '+(lw||0.5)+' w '+hex(color||'#999999')+' RG '+(dash?'['+dash+'] 0 d ':'')+x1.toFixed(2)+' '+(this.H-y1).toFixed(2)+' m '+x2.toFixed(2)+' '+(this.H-y2).toFixed(2)+' l S Q');};
+PDF.prototype.circle=function(cx,cy,r,o){o=o||{};var k=r*0.5523,Y=this.H-cy,s='q '+(o.lw||1)+' w '+(o.fill?hex(o.fill)+' rg ':'')+(o.stroke?hex(o.stroke)+' RG ':'');
+  s+=(cx+r)+' '+Y+' m '+(cx+r)+' '+(Y+k)+' '+(cx+k)+' '+(Y+r)+' '+cx+' '+(Y+r)+' c '+(cx-k)+' '+(Y+r)+' '+(cx-r)+' '+(Y+k)+' '+(cx-r)+' '+Y+' c '+(cx-r)+' '+(Y-k)+' '+(cx-k)+' '+(Y-r)+' '+cx+' '+(Y-r)+' c '+(cx+k)+' '+(Y-r)+' '+(cx+r)+' '+(Y-k)+' '+(cx+r)+' '+Y+' c h ';
+  s+=(o.fill&&o.stroke)?'B':o.fill?'f':'S';this.op(s+' Q');};
+PDF.prototype.image=function(x,y,w,h,key,bin,pw,ph){key=key||'logo';
+  if(key==='logo'){if(!LOGO_JPG)return false;bin=LOGO_JPG;pw=ph=LOGO_W;}
+  if(!bin)return false;this.imgs=this.imgs||{};
+  if(!this.imgs[key])this.imgs[key]={bin:bin,pw:pw,ph:ph,n:'Im'+(Object.keys(this.imgs).length+1)};
+  this.op('q '+w.toFixed(2)+' 0 0 '+h.toFixed(2)+' '+x.toFixed(2)+' '+(this.H-y-h).toFixed(2)+' cm /'+this.imgs[key].n+' Do Q');return true;};
+function photoBin(id){var d=PHOTOS&&PHOTOS[id];if(!d)return null;try{var b=d.split(',')[1];return typeof atob==='function'?atob(b):Buffer.from(b,'base64').toString('latin1');}catch(e){return null;}}
+PDF.prototype.photo=function(id,x,y,w,h){var b=photoBin(id);if(!b)return false;return this.image(x,y,w,h,'ph_'+id,b,PHOTO_W,PHOTO_H);};
+PDF.prototype.text=function(str,x,y,o){o=o||{};var size=o.size||10,bold=!!o.bold,s=pdfSafe(str);if(o.maxW)s=fitText(s,size,bold,o.maxW);if(!s)return;var w=tw(s,size,bold);
+  if(o.align==='center')x-=w/2;else if(o.align==='right')x-=w;
+  var f=bold?'F2':o.italic?'F3':'F1';
+  this.op('BT /'+f+' '+size+' Tf '+hex(o.color||'#111a33')+' rg '+(o.cs||0)+' Tc '+x.toFixed(2)+' '+(this.H-y).toFixed(2)+' Td ('+s.replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)')+') Tj ET');};
+PDF.prototype.para=function(str,x,y,w,o){o=o||{};var size=o.size||9,lh=o.lh||size*1.4,self=this;var lines=wrapText(str,size,o.bold,w);lines.forEach(function(l,i){self.text(l,x,y+i*lh,o);});return y+lines.length*lh;};
+PDF.prototype.output=function(){
+  var objs=[],self=this;
+  function add(s){objs.push(s);return objs.length;}
+  add('<< /Type /Catalog /Pages 2 0 R >>');add('PAGES');
+  var f1=add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>');
+  var f2=add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>');
+  var f3=add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Oblique /Encoding /WinAnsiEncoding >>');
+  var kids=[],xo='';
+  Object.keys(this.imgs||{}).forEach(function(k){var im=self.imgs[k];var n=add('<< /Type /XObject /Subtype /Image /Width '+im.pw+' /Height '+im.ph+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+im.bin.length+' >>\nstream\n'+im.bin+'\nendstream');xo+=' /'+im.n+' '+n+' 0 R';});
+  this.pages.forEach(function(p){var c=p.join('\n');var ci=add('<< /Length '+c.length+' >>\nstream\n'+c+'\nendstream');
+    var pi=add('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+self.W+' '+self.H+'] /Resources << /Font << /F1 '+f1+' 0 R /F2 '+f2+' 0 R /F3 '+f3+' 0 R >>'+(xo?' /XObject <<'+xo+' >>':'')+' >> /Contents '+ci+' 0 R >>');kids.push(pi+' 0 R');});
+  objs[1]='<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+kids.length+' >>';
+  var out='%PDF-1.4\n%\xE2\xE3\xCF\xD3\n',offs=[];
+  objs.forEach(function(o,i){offs.push(out.length);out+=(i+1)+' 0 obj\n'+o+'\nendobj\n';});
+  var x=out.length;out+='xref\n0 '+(objs.length+1)+'\n0000000000 65535 f \n';
+  offs.forEach(function(o){out+=('000000000'+o).slice(-10)+' 00000 n \n';});
+  out+='trailer\n<< /Size '+(objs.length+1)+' /Root 1 0 R /Info << /Producer (SJS Entrance Test Software) /Title (Entrance Test Result) >> >>\nstartxref\n'+x+'\n%%EOF';
+  var b=new Uint8Array(out.length);for(var i=0;i<out.length;i++)b[i]=out.charCodeAt(i)&255;return b;};
+
+var C={blue:'#1d3fb8',blueD:'#142d86',ink:'#111a33',mute:'#5a6584',line:'#d5dbea',soft:'#eef2fc',red:'#d8342b',green:'#12805c',greenS:'#e3f5ed',amber:'#b46a00',amberS:'#fff1d6',redS:'#fde7e5',greyS:'#f1f3f8'};
+var ML=36;
+function statusColors(st){if(st===STATUS.SEL)return [C.green,C.greenS];if(st===STATUS.WL)return [C.amber,C.amberS];if(st===STATUS.NQ)return [C.red,C.redS];if(st===STATUS.Q)return [C.blue,C.soft];if(st===STATUS.NS)return [C.red,C.greyS];return [C.mute,C.greyS];}
+function crest(p,cx,cy,r){if(LOGO_JPG){p.circle(cx,cy,r,{fill:'#ffffff'});p.image(cx-r*0.71,cy-r*0.71,r*1.42,r*1.42);return;}p.circle(cx,cy,r,{fill:C.blue});p.circle(cx,cy,r-3,{stroke:'#ffffff',lw:0.8});p.text('SJ',cx,cy+r*0.28,{size:r*0.78,bold:true,color:'#ffffff',align:'center'});}
+function pdfHeader(p,S,title,sub,compact){
+  var W=p.W,cx=W/2;
+  p.rect(0,0,W,7,{fill:C.blue});p.rect(0,7,W,2,{fill:C.red});
+  if(compact){crest(p,ML+14,34,14);p.text(S.school.name,ML+36,32,{size:12,bold:true});p.text(S.test.title+' '+S.test.session+'  |  '+title,ML+36,45,{size:8.5,color:C.mute,maxW:W-2*ML-40});p.line(ML,56,W-ML,56,C.line,0.8);return 70;}
+  crest(p,ML+30,52,38);
+  p.text(S.school.name,cx,44,{size:19,bold:true,align:'center',color:C.blueD});
+  p.text('Motto: '+S.school.motto,cx,57,{size:9,italic:true,align:'center',color:C.mute});
+  p.text(S.school.address,cx,69,{size:8.5,align:'center',maxW:W-2*ML-80});
+  p.text(S.school.affil,cx,80,{size:7.8,align:'center',color:C.mute,maxW:W-2*ML-80});
+  if(S.school.email||S.school.phone)p.text((S.school.email?'Email: '+S.school.email:'')+(S.school.phone?'   Phone: '+S.school.phone:''),cx,90,{size:7.8,align:'center',color:C.mute});
+  p.line(ML,98,W-ML,98,C.blue,1.2);p.line(ML,100.5,W-ML,100.5,C.line,0.5);
+  var tW=Math.min(W-2*ML,tw(title,12.5,true)+60);
+  p.rect(cx-tW/2,109,tW,24,{fill:C.blue,r:12});
+  p.text(title,cx,125.5,{size:12.5,bold:true,color:'#ffffff',align:'center',cs:0.4});
+  if(sub)p.text(sub,cx,147,{size:9,align:'center',color:C.mute,maxW:W-2*ML});
+  return sub?160:146;
+}
+function pdfFooter(p,S){var n=p.pages.length,W=p.W,H=p.H;p.pages.forEach(function(pg,i){p.cur=pg;p.line(ML,H-34,W-ML,H-34,C.line,0.6);p.text('Generated on '+fmtDMY(todayISO())+'  |  '+S.school.name+' - '+S.test.title+' Result Software',ML,H-22,{size:7,color:C.mute});p.text('Page '+(i+1)+' of '+n,W-ML,H-22,{size:7,color:C.mute,align:'right'});});}
+function pdfTable(p,S,y,cols,rows,o){
+  o=o||{};var rowH=o.rowH||18,fs=o.fs||8.5,W=p.W,bottom=p.H-(o.bottom||56),x0=ML;
+  var hs=o.hfs||7.8;
+  var headLines=cols.map(function(c){return wrapText(c.h,hs,true,c.w-6).slice(0,2);});
+  var headH=Math.max.apply(null,headLines.map(function(l){return l.length;}))>1?28:21;
+  function head(){var x=x0;p.rect(x0,y,cols.reduce(function(a,c){return a+c.w;},0),headH,{fill:C.blue});
+    cols.forEach(function(c,i){var L=headLines[i],cy=y+headH/2+hs*0.35-(L.length-1)*hs*0.55;L.forEach(function(t,j){var tx=c.a==='r'?x+c.w-5:c.a==='c'?x+c.w/2:x+5;p.text(t,tx,cy+j*hs*1.1,{size:hs,bold:true,color:'#ffffff',align:c.a==='r'?'right':c.a==='c'?'center':'left'});});x+=c.w;});
+    y+=headH;}
+  head();
+  var tW=cols.reduce(function(a,c){return a+c.w;},0);
+  rows.forEach(function(row,ri){
+    if(y+rowH>bottom){p.add();y=pdfHeader(p,S,o.contTitle||'continued',null,true);head();}
+    var st=o.rowStyle?o.rowStyle(row,ri):null;
+    if(st&&st.fill)p.rect(x0,y,tW,rowH,{fill:st.fill});else if(ri%2)p.rect(x0,y,tW,rowH,{fill:'#f6f8fd'});
+    var x=x0;
+    cols.forEach(function(c,ci){var v=row[ci];var cs=o.cellStyle?o.cellStyle(row,ci,ri):null;
+      if(cs&&cs.pill){var pw=c.w-8;p.rect(x+4,y+3.5,pw,rowH-7,{fill:cs.pill,r:(rowH-7)/2});}
+      var tx=c.a==='r'?x+c.w-5:c.a==='c'?x+c.w/2:x+5;
+      p.text(v,tx,y+rowH/2+fs*0.35,{size:(cs&&cs.size)||fs,bold:cs&&cs.bold,color:(cs&&cs.color)||C.ink,align:c.a==='r'?'right':c.a==='c'?'center':'left',maxW:c.w-8});
+      x+=c.w;});
+    p.line(x0,y+rowH,x0+tW,y+rowH,C.line,0.5);
+    y+=rowH;
+  });
+  if(!rows.length){p.rect(x0,y,tW,rowH+4,{fill:'#f6f8fd'});p.text(o.empty||'No candidates',x0+tW/2,y+rowH/2+5,{size:8.5,italic:true,color:C.mute,align:'center'});y+=rowH+4;}
+  // outer frame for last segment
+  return y;
+}
+function ensure(p,S,y,need,title){if(y+need>p.H-56){p.add();return pdfHeader(p,S,title||'continued',null,true);}return y;}
+function signatures(p,S,y){
+  y=ensure(p,S,y,80);y+=46;var W=p.W;
+  [[ML,'Exam In-charge',S.school.incharge],[W/2-70,'Date: '+fmtDMY(S.test.resultDate),''],[W-ML-140,'Principal',S.school.principal]].forEach(function(s,i){
+    if(i===1){p.text(s[1],W/2,y+10,{size:8.5,align:'center',color:C.mute});p.text('Place: Gongrai',W/2,y+22,{size:8.5,align:'center',color:C.mute});return;}
+    p.line(s[0],y,s[0]+140,y,C.ink,0.7);p.text(s[1],s[0]+70,y+12,{size:9,bold:true,align:'center'});if(s[2])p.text(s[2],s[0]+70,y+23,{size:8,align:'center',color:C.mute});});
+  return y+30;
+}
+function statBoxes(p,y,items){var W=p.W-2*ML,gap=8,bw=(W-gap*(items.length-1))/items.length;items.forEach(function(it,i){var x=ML+i*(bw+gap);p.rect(x,y,bw,40,{fill:it[2]||C.soft,r:6});p.text(String(it[1]),x+bw/2,y+21,{size:15,bold:true,align:'center',color:it[3]||C.blueD});p.text(it[0],x+bw/2,y+33,{size:7,align:'center',color:C.mute});});return y+52;}
+function sectionLabel(p,y,t,color){p.rect(ML,y,4,14,{fill:color||C.red});p.text(t,ML+10,y+11,{size:10.5,bold:true,color:C.ink});return y+22;}
+
+function noticePDF(S,R,codes,opt,p){
+  p=p||new PDF();opt=opt||{};
+  codes.forEach(function(code){
+    var g=R.by[code],c=g.cls,st=g.stats;p.wm=isPub(S,code)?'':'PROVISIONAL';p.add();
+    var y=pdfHeader(p,S,(isPub(S,code)?S.test.title+' Result '+S.test.session:'Provisional Result '+S.test.session+' - for review').toUpperCase(),'Class applied for: '+c.name+'   |   Test held on '+fmtDate(S.test.date)+'   |   Result declared on '+fmtDate(S.test.resultDate));
+    y=statBoxes(p,y,[['Applied',st.applied],['Appeared',st.appeared],['Qualified',st.qualified],['Seats',st.seats],['Selected',st.sel,C.greenS,C.green],['Waiting list',st.wl,C.amberS,C.amber]]);
+    var cols=[{h:'Merit No.',w:46,a:'c'},{h:'Roll No.',w:58,a:'c'},{h:"Candidate's Name",w:opt.father?150:240,a:'l'}];
+    if(opt.father)cols.push({h:"Father's Name",w:opt.marks?127:209,a:'l'});
+    if(opt.marks){cols.push({h:'Marks ('+(g.appeared[0]?g.appeared[0].max:'')+')',w:opt.father?50:66,a:'c'},{h:'Percent',w:opt.father?50:65,a:'c'},{h:'Grade',w:opt.father?42:48,a:'c'});}
+    var tw0=cols.reduce(function(a,x){return a+x.w;},0);cols[2].w+=523-tw0;
+    function rowOf(r,no){var a=[String(no),r.k.roll,r.k.name+(c.code==='XI'&&r.k.stream?' ('+r.k.stream+')':'')];if(opt.father)a.push(r.k.father);if(opt.marks)a.push(String(r.tot),fix2(r.pct)+'%',r.grade);return a;}
+    y=sectionLabel(p,y,'LIST OF SELECTED CANDIDATES (in order of merit)',C.green);
+    var sel=g.appeared.filter(function(r){return r.status===STATUS.SEL;});
+    y=pdfTable(p,S,y,cols,sel.map(function(r,i){return rowOf(r,i+1);}),{contTitle:'Result - '+c.name+' (continued)',empty:'No candidate selected yet',cellStyle:function(row,ci){return ci===0?{bold:true,color:C.green}:ci===1?{bold:true}:null;}});
+    if(opt.wait!==false){y=ensure(p,S,y+16,60,'Result - '+c.name+' (continued)');
+      y=sectionLabel(p,y,'WAITING LIST (in order of preference)',C.amber);
+      var wl=g.appeared.filter(function(r){return r.status===STATUS.WL;});
+      var wc=cols.slice();wc[0]={h:'W.L. No.',w:46,a:'c'};
+      y=pdfTable(p,S,y,wc,wl.map(function(r){return rowOf(r,r.wl);}),{contTitle:'Result - '+c.name+' (continued)',empty:'No waiting list',cellStyle:function(row,ci){return ci===0?{bold:true,color:C.amber}:ci===1?{bold:true}:null;}});}
+    y=ensure(p,S,y+14,90,'Result - '+c.name+' (continued)');
+    var note='Admission for selected candidates: '+fmtDate(S.test.admFrom)+' to '+fmtDate(S.test.admTo)+'. '+S.test.notice;
+    var lines=wrapText(note,8.5,false,523-24);
+    p.rect(ML,y,523,lines.length*12+26,{fill:C.soft,r:8});p.text('IMPORTANT',ML+12,y+15,{size:8.5,bold:true,color:C.blue});
+    lines.forEach(function(l,i){p.text(l,ML+12,y+29+i*12,{size:8.5});});
+    y+=lines.length*12+26;
+    signatures(p,S,y);
+  });
+  return p;
+}
+function resultPDF(S,R,codes,p){
+  p=p||new PDF();
+  codes.forEach(function(code){
+    var g=R.by[code],c=g.cls,st=g.stats;p.wm=isPub(S,code)?'':'PROVISIONAL';p.add();
+    var y=pdfHeader(p,S,(isPub(S,code)?'':'PROVISIONAL ')+'CONSOLIDATED RESULT SHEET - '+c.name.toUpperCase(),S.test.title+' '+S.test.session+'   |   Test date '+fmtDate(S.test.date)+'   |   Seats '+c.seats+'   |   Qualifying '+c.pass+'%');
+    y=statBoxes(p,y,[['Applied',st.applied],['Appeared',st.appeared],['Absent',st.absent],['Qualified',st.qualified],['Selected',st.sel,C.greenS,C.green],['Not qualified',st.nq,C.redS,C.red]]);
+    var subs=[];c.subjects.forEach(function(s,i){if(s.n&&s.m>0)subs.push([s,i]);});
+    var sw=Math.max(30,Math.min(40,Math.floor(170/Math.max(1,subs.length))));
+    var cols=[{h:'Rank',w:26,a:'c'},{h:'Roll No.',w:46,a:'c'},{h:'Name of Candidate',w:100,a:'l'}];
+    subs.forEach(function(x){cols.push({h:x[0].n+' ('+x[0].m+')',w:sw,a:'c'});});
+    cols.push({h:'Total ('+subs.reduce(function(a,x){return a+x[0].m;},0)+')',w:34,a:'c'},{h:'%',w:36,a:'c'},{h:'Grade',w:28,a:'c'},{h:'Result',w:64,a:'c'});
+    var tw0=cols.reduce(function(a,x){return a+x.w;},0);cols[2].w+=523-tw0;
+    var rows=g.sorted.map(function(r){var a=[r.rank?String(r.rank):'-',r.k.roll,r.k.name];subs.forEach(function(x){var v=r.k.marks[x[1]];a.push(r.status===STATUS.AB?'AB':v==null?'-':String(v));});
+      a.push(r.rank?String(r.tot):'-',r.rank?fix2(r.pct):'-',r.rank?r.grade:'-',statusShort(r));a.__r=r;return a;});
+    var last=cols.length-1;
+    y=pdfTable(p,S,y,cols,rows,{fs:7.8,hfs:7,rowH:17,contTitle:'Consolidated result - '+c.name+' (continued)',
+      cellStyle:function(row,ci){if(ci===last){var sc=statusColors(row.__r.status);return {pill:sc[1],color:sc[0],bold:true,size:6.8};}return null;}});
+    signatures(p,S,y+6);
+  });
+  return p;
+}
+function scoreCardPDF(S,R,list,p){
+  p=p||new PDF();
+  list.forEach(function(r){
+    var k=r.k,c=r.cls;p.wm=isPub(S,c.code)?'':'PROVISIONAL';p.add();
+    var y=pdfHeader(p,S,(isPub(S,c.code)?'':'PROVISIONAL ')+'ENTRANCE TEST SCORE CARD',S.test.title+' for admission - Session '+S.test.session);
+    var W=523,x=ML;
+    p.rect(x,y,W,132,{fill:'#ffffff',stroke:C.line,lw:0.8,r:8});
+    var kv=[['Roll No.',k.roll],['Form No.',k.form],["Candidate's Name",k.name],['Class applied for',c.name+(k.stream?' ('+k.stream+')':'')],["Father's Name",k.father],["Mother's Name",k.mother],['Date of Birth',fmtDMY(k.dob)],['Gender / Category',(k.gender||'-')+' / '+(k.category||'-')]];
+    kv.forEach(function(e,i){var col=i%2,row=Math.floor(i/2),cx=x+14+col*205,cy=y+22+row*29;p.text(e[0].toUpperCase(),cx,cy,{size:6.8,color:C.mute,bold:true});p.text(e[1]||'-',cx,cy+12,{size:10,bold:i===2,maxW:195});});
+    if(!p.photo(k.id,x+W-96,y+12,80,100)){p.rect(x+W-100,y+14,84,104,{stroke:C.line,lw:0.8,dash:'3 2',r:4});p.text('Photograph',x+W-58,y+70,{size:8,color:C.mute,align:'center'});}
+    y+=148;
+    y=sectionLabel(p,y,'MARKS OBTAINED',C.blue);
+    var rows=[],n=0;c.subjects.forEach(function(s,i){if(!s.n||!(s.m>0))return;n++;var v=k.marks[i];rows.push([String(n),s.n,String(s.m),k.absent?'AB':v==null?'-':String(v),(k.absent||v==null)?'-':gradeOf(v*100/s.m)]);});
+    var cols=[{h:'S.No.',w:46,a:'c'},{h:'Subject',w:227,a:'l'},{h:'Maximum Marks',w:84,a:'c'},{h:'Marks Obtained',w:90,a:'c'},{h:'Grade',w:76,a:'c'}];
+    y=pdfTable(p,S,y,cols,rows,{rowH:20,fs:9.5,cellStyle:function(row,ci){return ci===3?{bold:true}:null;}});
+    p.rect(ML,y,523,22,{fill:C.soft});p.text('GRAND TOTAL',ML+51,y+14.5,{size:9.5,bold:true});p.text(String(r.max),ML+273+42,y+14.5,{size:9.5,bold:true,align:'center'});p.text(r.status===STATUS.AB?'AB':r.status===STATUS.PEN?'-':String(r.tot),ML+357+45,y+14.5,{size:10.5,bold:true,align:'center',color:C.blueD});p.text(r.rank?r.grade:'-',ML+447+38,y+14.5,{size:9.5,bold:true,align:'center'});
+    y+=36;
+    var box=[['Total Marks',r.rank?r.tot+' / '+r.max:'-'],['Percentage',r.rank?fix2(r.pct)+'%':'-'],['Overall Grade',r.rank?r.grade:'-'],['Merit Rank',r.rank?r.rank+' of '+R.by[c.code].appeared.length:'-']];
+    var bw=(523-24)/4;box.forEach(function(b,i){var bx=ML+i*(bw+8);p.rect(bx,y,bw,48,{fill:C.soft,r:8});p.text(b[1],bx+bw/2,y+24,{size:14,bold:true,align:'center',color:C.blueD});p.text(b[0].toUpperCase(),bx+bw/2,y+38,{size:6.8,bold:true,align:'center',color:C.mute});});
+    y+=62;
+    var sc=statusColors(r.status);
+    p.rect(ML,y,523,46,{fill:sc[1],stroke:sc[0],lw:1.2,r:10});
+    p.text('RESULT',ML+18,y+19,{size:7.5,bold:true,color:sc[0]});
+    p.text(r.status===STATUS.WL?'WAITING LIST No. '+r.wl:r.status===STATUS.SEL?'SELECTED FOR ADMISSION':r.status,ML+18,y+35,{size:15,bold:true,color:sc[0]});
+    p.text(remarkOf(r,S),ML+505,y+29,{size:9,align:'right',color:sc[0],maxW:220});
+    y+=60;
+    var msg=r.status===STATUS.SEL?'Congratulations! Please complete the admission formalities at the school office between '+fmtDate(S.test.admFrom)+' and '+fmtDate(S.test.admTo)+'. Seats not confirmed within this period will be offered to waiting-list candidates.':r.status===STATUS.WL?'Your name is on the waiting list. You will be informed if a seat falls vacant after '+fmtDate(S.test.admTo)+'.':r.status===STATUS.NS?'The candidate has not been selected for admission in this session.':r.status===STATUS.Q?'You have qualified the test but could not be placed within the available seats. You may contact the school office if seats fall vacant.':r.status===STATUS.NQ?'The candidate did not reach the qualifying mark of '+c.pass+'%. We encourage you to keep learning and try again.':r.status===STATUS.AB?'The candidate was absent on the day of the test.':'Marks have not been entered yet. This score card is provisional.';
+    y=p.para(msg,ML,y,523,{size:9,lh:13,color:C.ink})+10;
+    y=sectionLabel(p,y,'GRADING SCALE',C.blue);
+    var gw=523/8;GRADES.forEach(function(g,i){var hi=i===0?100:GRADES[i-1][0]-1;p.rect(ML+i*gw,y,gw-4,30,{fill:C.greyS,r:5});p.text(g[1],ML+i*gw+gw/2-2,y+13,{size:9.5,bold:true,align:'center',color:C.blueD});p.text(g[0]+'-'+hi+'%',ML+i*gw+gw/2-2,y+24,{size:7,align:'center',color:C.mute});});
+    y+=36;
+    signatures(p,S,y);
+  });
+  return p;
+}
+function awardPDF(S,R,code,p){
+  p=p||new PDF();var g=R.by[code],c=g.cls;p.wm='';p.add();
+  var y=pdfHeader(p,S,'MARKS AWARD LIST - '+c.name.toUpperCase(),S.test.title+' '+S.test.session+'   |   Test date '+fmtDate(S.test.date)+'   |   for examiners');
+  var subs=c.subjects.filter(function(s){return s.n&&s.m>0;});
+  var cols=[{h:'Sl.',w:26,a:'c'},{h:'Roll No.',w:50,a:'c'},{h:'Name of Candidate',w:120,a:'l'},{h:'P / AB',w:34,a:'c'}];
+  subs.forEach(function(s){cols.push({h:s.n+' ('+s.m+')',w:48,a:'c'});});cols.push({h:'Total',w:42,a:'c'});
+  var tw0=cols.reduce(function(a,x){return a+x.w;},0);cols[2].w+=523-tw0;
+  var list=g.list.slice().sort(function(a,b){return a.k.roll.localeCompare(b.k.roll);});
+  var rows=list.map(function(r,i){var a=[String(i+1),r.k.roll,r.k.name,''];subs.forEach(function(){a.push('');});a.push('');return a;});
+  y=pdfTable(p,S,y,cols,rows,{rowH:22,contTitle:'Award list - '+c.name+' (continued)',empty:'No candidates registered'});
+  y=ensure(p,S,y+10,80);
+  p.text('Examiner: ____________________________     Signature: ____________________     Date: ______________',ML,y+40,{size:9});
+  return p;
+}
+function summaryPDF(S,R){
+  var p=new PDF();p.add();var T=R.T;
+  var y=pdfHeader(p,S,'ENTRANCE TEST SUMMARY REPORT','Session '+S.test.session+'   |   Test held on '+fmtDate(S.test.date)+'   |   Classes Nursery to XI');
+  y=statBoxes(p,y,[['Applicants',T.applied],['Appeared',T.appeared],['Absent',T.absent],['Qualified',T.qualified],['Selected',T.sel,C.greenS,C.green],['Seats',T.seats]]);
+  y=statBoxes(p,y-4,[['Waiting list',T.wl,C.amberS,C.amber],['Not qualified',T.nq,C.redS,C.red],['Pending',T.pending],['Pass rate',fix2(T.passRate)+'%'],['Average score',fix2(T.avg)+'%'],['Vacant seats',T.vacant]]);
+  y=sectionLabel(p,y,'CLASS-WISE ANALYSIS',C.blue);
+  var cols=[{h:'Class',w:56,a:'l'},{h:'Seats',w:32,a:'c'},{h:'Applied',w:38,a:'c'},{h:'Appeared',w:44,a:'c'},{h:'Absent',w:34,a:'c'},{h:'Qualified',w:44,a:'c'},{h:'Selected',w:42,a:'c'},{h:'Waiting',w:38,a:'c'},{h:'Vacant',w:34,a:'c'},{h:'Avg %',w:34,a:'c'},{h:'Topper',w:127,a:'l'}];
+  var rows=R.order.map(function(code){var g=R.by[code],s=g.stats;return [g.cls.name,s.seats,s.applied,s.appeared,s.absent,s.qualified,s.sel,s.wl,s.vacant,s.appeared?fix2(s.avg):'-',s.top?s.top.k.name+' ('+fix2(s.top.pct)+'%)':'-'].map(String);});
+  rows.push(['TOTAL',T.seats,T.applied,T.appeared,T.absent,T.qualified,T.sel,T.wl,T.vacant,fix2(T.avg),''].map(String));
+  y=pdfTable(p,S,y,cols,rows,{fs:7.6,rowH:18,cellStyle:function(row,ci,ri){if(ri===rows.length-1)return {bold:true,color:C.blueD};if(ci===6)return {bold:true,color:C.green};return ci===0?{bold:true}:null;}});
+  y=ensure(p,S,y+16,200);
+  y=sectionLabel(p,y,'TOP 10 CANDIDATES (all classes, by percentage)',C.red);
+  var tc=[{h:'#',w:30,a:'c'},{h:'Roll No.',w:62,a:'c'},{h:'Name',w:190,a:'l'},{h:'Class',w:80,a:'l'},{h:'Marks',w:60,a:'c'},{h:'%',w:55,a:'c'},{h:'Grade',w:46,a:'c'}];
+  y=pdfTable(p,S,y,tc,T.top.map(function(r,i){return [String(i+1),r.k.roll,r.k.name,r.cls.name,r.tot+'/'+r.max,fix2(r.pct),r.grade];}),{fs:8.5});
+  signatures(p,S,y);
+  pdfFooter(p,S);return p.output();
+}
+
+/* ---------- XLSX WRITER (stored zip) ---------- */
+var CRCT=(function(){var t=[];for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;}return t;})();
+function crc32(b){var c=0xFFFFFFFF;for(var i=0;i<b.length;i++)c=CRCT[(c^b[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
+function utf8(s){if(typeof TextEncoder!=='undefined')return new TextEncoder().encode(s);var b=Buffer.from(s,'utf8');return new Uint8Array(b);}
+function zip(files){
+  var parts=[],cd=[],off=0;
+  function u16(v){return [v&255,(v>>8)&255];}function u32(v){return [v&255,(v>>8)&255,(v>>16)&255,(v>>>24)&255];}
+  files.forEach(function(f){var name=utf8(f.name),data=utf8(f.data),crc=crc32(data);
+    var lh=[].concat(u32(0x04034b50),u16(20),u16(0),u16(0),u16(0),u16(0x21),u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0));
+    parts.push(new Uint8Array(lh),name,data);
+    cd.push(new Uint8Array([].concat(u32(0x02014b50),u16(20),u16(20),u16(0),u16(0),u16(0),u16(0x21),u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0),u16(0),u16(0),u16(0),u32(0),u32(off))),name);
+    off+=lh.length+name.length+data.length;});
+  var cdSize=cd.reduce(function(a,b){return a+b.length;},0);
+  var end=new Uint8Array([].concat(u32(0x06054b50),u16(0),u16(0),u16(files.length),u16(files.length),u32(cdSize),u32(off),u16(0)));
+  var all=parts.concat(cd,[end]),len=all.reduce(function(a,b){return a+b.length;},0),out=new Uint8Array(len),p=0;
+  all.forEach(function(b){out.set(b,p);p+=b.length;});return out;
+}
+function xesc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g,'');}
+function colL(n){var s='';n++;while(n>0){var m=(n-1)%26;s=String.fromCharCode(65+m)+s;n=Math.floor((n-1)/26);}return s;}
+/* styles: 0 default,1 title,2 subtitle,3 header,4 text,5 number,6 center,7 bold text,8 selected,9 notq,10 waiting,11 pct,12 info,13 total row */
+var XSTYLES='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="1"><numFmt numFmtId="164" formatCode="0.00"/></numFmts>'+
+'<fonts count="7"><font><sz val="10"/><name val="Arial"/></font><font><b/><sz val="10"/><name val="Arial"/></font><font><b/><sz val="10"/><color rgb="FFFFFFFF"/><name val="Arial"/></font><font><b/><sz val="16"/><color rgb="FF142D86"/><name val="Arial"/></font><font><i/><sz val="9"/><color rgb="FF5A6584"/><name val="Arial"/></font><font><b/><sz val="10"/><color rgb="FF12805C"/><name val="Arial"/></font><font><b/><sz val="12"/><color rgb="FFD8342B"/><name val="Arial"/></font></fonts>'+
+'<fills count="8"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF1D3FB8"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFE3F5ED"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFFDE7E5"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFFFF1D6"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFEEF2FC"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFF1F3F8"/></patternFill></fill></fills>'+
+'<borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left style="thin"><color rgb="FFC5CCDF"/></left><right style="thin"><color rgb="FFC5CCDF"/></right><top style="thin"><color rgb="FFC5CCDF"/></top><bottom style="thin"><color rgb="FFC5CCDF"/></bottom><diagonal/></border></borders>'+
+'<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="14">'+
+'<xf numFmtId="0" fontId="0" fillId="0" borderId="0"/>'+
+'<xf numFmtId="0" fontId="3" fillId="0" borderId="0" applyFont="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>'+
+'<xf numFmtId="0" fontId="4" fillId="0" borderId="0" applyFont="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>'+
+'<xf numFmtId="0" fontId="2" fillId="2" borderId="1" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>'+
+'<xf numFmtId="0" fontId="0" fillId="0" borderId="1" applyBorder="1" applyAlignment="1"><alignment vertical="center"/></xf>'+
+'<xf numFmtId="0" fontId="0" fillId="0" borderId="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>'+
+'<xf numFmtId="0" fontId="0" fillId="0" borderId="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>'+
+'<xf numFmtId="0" fontId="1" fillId="0" borderId="1" applyFont="1" applyBorder="1" applyAlignment="1"><alignment vertical="center"/></xf>'+
+'<xf numFmtId="0" fontId="5" fillId="3" borderId="1" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>'+
+'<xf numFmtId="0" fontId="1" fillId="4" borderId="1" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>'+
+'<xf numFmtId="0" fontId="1" fillId="5" borderId="1" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>'+
+'<xf numFmtId="164" fontId="0" fillId="0" borderId="1" applyNumberFormat="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>'+
+'<xf numFmtId="0" fontId="6" fillId="0" borderId="0" applyFont="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>'+
+'<xf numFmtId="0" fontId="1" fillId="6" borderId="1" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>'+
+'</cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
+/* sheet: {name, title:[..lines], header:[..], widths:[..], rows:[[{v,s}|value]], landscape} */
+function sheetXML(sh){
+  var ncol=sh.header.length,rows=[],r=0,merges=[];
+  function cell(ci,ri,v,s){var ref=colL(ci)+(ri+1);if(v===null||v===undefined||v==='')return '<c r="'+ref+'" s="'+(s||0)+'"/>';if(typeof v==='number'&&isFinite(v))return '<c r="'+ref+'" s="'+(s||0)+'"><v>'+v+'</v></c>';return '<c r="'+ref+'" s="'+(s||0)+'" t="inlineStr"><is><t xml:space="preserve">'+xesc(v)+'</t></is></c>';}
+  (sh.title||[]).forEach(function(t,i){var st=i===0?1:i===(sh.title.length-1)&&sh.redLast?12:2;rows.push('<row r="'+(r+1)+'" ht="'+(i===0?26:i===(sh.title.length-1)&&sh.redLast?20:15)+'" customHeight="1">'+cell(0,r,t,st)+'</row>');merges.push('A'+(r+1)+':'+colL(ncol-1)+(r+1));r++;});
+  if(sh.title&&sh.title.length){rows.push('<row r="'+(r+1)+'"/>');r++;}
+  var headRow=r+1;
+  rows.push('<row r="'+(r+1)+'" ht="30" customHeight="1">'+sh.header.map(function(h,ci){return cell(ci,r,h,3);}).join('')+'</row>');r++;
+  sh.rows.forEach(function(row){rows.push('<row r="'+(r+1)+'" ht="18" customHeight="1">'+row.map(function(c,ci){var o=(c&&typeof c==='object')?c:{v:c};var s=o.s!=null?o.s:(typeof o.v==='number'?5:4);return cell(ci,r,o.v,s);}).join('')+'</row>');r++;});
+  var cols='<cols>'+sh.widths.map(function(w,i){return '<col min="'+(i+1)+'" max="'+(i+1)+'" width="'+w+'" customWidth="1"/>';}).join('')+'</cols>';
+  var x='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheetPr><pageSetUpPr fitToPage="1"/></sheetPr>'+
+    '<sheetViews><sheetView workbookViewId="0" showGridLines="0"><pane ySplit="'+headRow+'" topLeftCell="A'+(headRow+1)+'" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>'+
+    '<sheetFormatPr defaultRowHeight="15"/>'+cols+'<sheetData>'+rows.join('')+'</sheetData>'+(merges.length?'<mergeCells count="'+merges.length+'">'+merges.map(function(m){return '<mergeCell ref="'+m+'"/>';}).join('')+'</mergeCells>':'')+
+    '<printOptions horizontalCentered="1"/><pageMargins left="0.4" right="0.4" top="0.5" bottom="0.6" header="0.3" footer="0.3"/><pageSetup paperSize="9" orientation="'+(sh.landscape?'landscape':'portrait')+'" fitToWidth="1" fitToHeight="0"/>'+
+    '<headerFooter><oddFooter>&amp;L&amp;8'+xesc(sh.footer||'')+'&amp;R&amp;8Page &amp;P of &amp;N</oddFooter></headerFooter></worksheet>';
+  return {xml:x,headRow:headRow};
+}
+function makeXlsx(sheets){
+  var names={};sheets.forEach(function(s,i){var n=String(s.name).replace(/[\[\]\:\*\?\/\\]/g,' ').slice(0,31)||('Sheet'+(i+1));while(names[n.toLowerCase()])n=n.slice(0,28)+'_'+i;names[n.toLowerCase()]=1;s._n=n;});
+  var files=[],defs=[];
+  files.push({name:'[Content_Types].xml',data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>'+sheets.map(function(s,i){return '<Override PartName="/xl/worksheets/sheet'+(i+1)+'.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>';}).join('')+'</Types>'});
+  files.push({name:'_rels/.rels',data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'});
+  sheets.forEach(function(s,i){var r=sheetXML(s);files.push({name:'xl/worksheets/sheet'+(i+1)+'.xml',data:r.xml});defs.push('<definedName name="_xlnm.Print_Titles" localSheetId="'+i+'">\''+s._n.replace(/'/g,"''")+'\'!$'+r.headRow+':$'+r.headRow+'</definedName>');});
+  files.push({name:'xl/workbook.xml',data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>'+sheets.map(function(s,i){return '<sheet name="'+xesc(s._n)+'" sheetId="'+(i+1)+'" r:id="rId'+(i+1)+'"/>';}).join('')+'</sheets><definedNames>'+defs.join('')+'</definedNames></workbook>'});
+  files.push({name:'xl/_rels/workbook.xml.rels',data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+sheets.map(function(s,i){return '<Relationship Id="rId'+(i+1)+'" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet'+(i+1)+'.xml"/>';}).join('')+'<Relationship Id="rId'+(sheets.length+1)+'" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>'});
+  files.push({name:'xl/styles.xml',data:XSTYLES});
+  return zip(files);
+}
+function stStyle(st){return st===STATUS.SEL?8:st===STATUS.NQ?9:st===STATUS.WL?10:6;}
+function titleLines(S,line){return [S.school.name,S.school.address,S.school.affil,line];}
+function classResultSheet(S,R,code){
+  var g=R.by[code],c=g.cls,subs=[];c.subjects.forEach(function(s,i){if(s.n&&s.m>0)subs.push([s,i]);});
+  var header=['Rank','Roll No.','Form No.',"Candidate's Name","Father's Name",'Gender','Category'];if(code==='XI')header.push('Stream');
+  subs.forEach(function(x){header.push(x[0].n+' ('+x[0].m+')');});header.push('Total ('+subs.reduce(function(a,x){return a+x[0].m;},0)+')','Percentage','Grade','Result','Remarks','Review note');
+  var widths=[7,11,9,26,24,9,10];if(code==='XI')widths.push(11);subs.forEach(function(){widths.push(11);});widths.push(10,11,8,15,30,26);
+  var rows=g.sorted.map(function(r){var a=[{v:r.rank||'-',s:6},{v:r.k.roll,s:6},{v:r.k.form,s:6},{v:r.k.name,s:7},r.k.father,{v:r.k.gender,s:6},{v:r.k.category,s:6}];if(code==='XI')a.push({v:r.k.stream,s:6});
+    subs.forEach(function(x){var v=r.k.marks[x[1]];a.push({v:r.status===STATUS.AB?'AB':v==null?'-':v,s:6});});
+    a.push({v:r.rank?r.tot:'-',s:13},{v:r.rank?Math.round(r.pct*100)/100:'-',s:11},{v:r.rank?r.grade:'-',s:6},{v:statusShort(r),s:stStyle(r.status)},remarkOf(r,S),r.over?('Changed in review from '+r.auto+(r.k.note?': '+r.k.note:'')):(r.k.note||''));return a;});
+  return {name:c.name,title:titleLines(S,((isPub(S,code)?'':'PROVISIONAL ')+S.test.title+' Result '+S.test.session+' - '+c.name).toUpperCase()),redLast:true,header:header,widths:widths,rows:rows,landscape:true,footer:S.school.name+' - '+S.test.title+' '+S.test.session};
+}
+function meritSheet(S,R,code,opt){
+  var g=R.by[code],c=g.cls;opt=opt||{};
+  var header=['Merit / W.L. No.','Roll No.',"Candidate's Name"];if(opt.father!==false)header.push("Father's Name");if(opt.marks!==false)header.push('Marks','Percentage','Grade');header.push('Result');
+  var widths=[13,12,30];if(opt.father!==false)widths.push(28);if(opt.marks!==false)widths.push(10,12,9);widths.push(17);
+  var rows=[],sn=0;g.appeared.filter(function(r){return r.status===STATUS.SEL||(opt.wait!==false&&r.status===STATUS.WL);}).forEach(function(r){
+    var a=[{v:r.status===STATUS.SEL?++sn:'WL-'+r.wl,s:6},{v:r.k.roll,s:6},{v:r.k.name,s:7}];if(opt.father!==false)a.push(r.k.father);if(opt.marks!==false)a.push({v:r.tot+'/'+r.max,s:6},{v:Math.round(r.pct*100)/100,s:11},{v:r.grade,s:6});a.push({v:statusShort(r),s:stStyle(r.status)});rows.push(a);});
+  return {name:'Notice '+c.name,title:titleLines(S,((isPub(S,code)?'':'PROVISIONAL ')+S.test.title+' Result '+S.test.session+' - '+c.name).toUpperCase()),redLast:true,header:header,widths:widths,rows:rows,footer:'Admission: '+fmtDMY(S.test.admFrom)+' to '+fmtDMY(S.test.admTo)};
+}
+function summarySheet(S,R){
+  var T=R.T,rows=R.order.map(function(code){var g=R.by[code],s=g.stats;return [{v:g.cls.name,s:7},{v:s.seats,s:6},{v:s.applied,s:6},{v:s.appeared,s:6},{v:s.absent,s:6},{v:s.pending,s:6},{v:s.qualified,s:6},{v:s.sel,s:8},{v:s.wl,s:10},{v:s.nq,s:9},{v:s.vacant,s:6},{v:s.appeared?Math.round(s.avg*100)/100:'-',s:11},s.top?s.top.k.name+' ('+fix2(s.top.pct)+'%)':'-',{v:s.pub?'Published':'Draft',s:s.pub?8:10}];});
+  rows.push([{v:'TOTAL',s:13},{v:T.seats,s:13},{v:T.applied,s:13},{v:T.appeared,s:13},{v:T.absent,s:13},{v:T.pending,s:13},{v:T.qualified,s:13},{v:T.sel,s:13},{v:T.wl,s:13},{v:T.nq,s:13},{v:T.vacant,s:13},{v:Math.round(T.avg*100)/100,s:13},{v:'Pass rate '+fix2(T.passRate)+'%',s:13},{v:R.order.filter(function(c){return R.by[c].stats.pub;}).length+' published',s:13}]);
+  return {name:'Summary',title:titleLines(S,('Entrance Test '+S.test.session+' - Class-wise Summary').toUpperCase()),redLast:true,header:['Class','Seats','Applied','Appeared','Absent','Pending','Qualified','Selected','Waiting','Not Qualified','Vacant','Average %','Topper','Result status'],widths:[13,8,9,10,8,9,10,10,9,12,8,10,34,14],rows:rows,landscape:true,footer:S.school.name};
+}
+function candidatesSheet(S,R){
+  var rows=R.all.slice().sort(function(a,b){return R.order.indexOf(a.cls.code)-R.order.indexOf(b.cls.code)||a.k.roll.localeCompare(b.k.roll);}).map(function(r){var k=r.k;return [{v:k.roll,s:6},{v:k.form,s:6},{v:r.cls.name,s:6},{v:k.name,s:7},k.father,k.mother,{v:k.gender,s:6},{v:fmtDMY(k.dob),s:6},{v:k.category,s:6},k.phone,k.address,k.prev,{v:r.rank?r.tot:'-',s:6},{v:r.rank?Math.round(r.pct*100)/100:'-',s:11},{v:statusShort(r),s:stStyle(r.status)}];});
+  return {name:'All Candidates',title:titleLines(S,'REGISTER OF CANDIDATES - '+S.test.session),redLast:true,header:['Roll No.','Form No.','Class','Name',"Father's Name","Mother's Name",'Gender','Date of Birth','Category','Contact','Address','Previous School','Total','%','Result'],widths:[10,9,10,24,22,22,8,12,9,13,16,22,8,8,14],rows:rows,landscape:true,footer:S.school.name};
+}
+/* ===== EXAM DAY: schedule, seat plan, invigilation, question papers ===== */
+function schedOf(S,code){var d=(S.sched||{})[code]||{},early=['NUR','LKG','UKG'].indexOf(code)>=0;
+  return {date:d.date||S.test.date,report:d.report||S.test.reporting,time:d.time||S.test.time,type:d.type||(early?'Written & Oral':'Written')};}
+function tmin(t){var m=String(t||'').match(/(\d{1,2})[:.](\d{2})\s*(am|pm)?/i);if(!m)return 0;var h=+m[1]%12;if(m[3]&&/pm/i.test(m[3]))h+=12;else if(!m[3]&&h<7)h+=12;return h*60+(+m[2]);}
+function sessLabel(s){return fmtDate(s.date)+', '+s.time;}
+function examCfg(S){var e=S.exam||{};return {spare:isNaN(+e.spare)||e.spare===''||e.spare==null?10:+e.spare,mix:e.mix!==false,inv:Math.max(1,+e.inv||2)};}
+function seatPlan(S,R){
+  var sess={},keys=[];
+  R.order.forEach(function(code){var g=R.by[code];if(!g.list.length)return;var sc=schedOf(S,code),key=sc.date+'|'+sc.time;
+    if(!sess[key]){sess[key]={key:key,date:sc.date,time:sc.time,classes:[],lists:[],rooms:[],unseated:[],total:0};keys.push(key);}
+    sess[key].classes.push(code);sess[key].lists.push(g.list.slice().sort(function(a,b){return a.k.roll.localeCompare(b.k.roll);}));});
+  keys.sort(function(a,b){var x=sess[a],y=sess[b];return x.date<y.date?-1:x.date>y.date?1:tmin(x.time)-tmin(y.time);});
+  var rooms=(S.rooms||[]).filter(function(r){return r&&r.name&&+r.cap>0;}),fix=S.seatFix||null,by={},cfg=examCfg(S);
+  keys.forEach(function(key){var s=sess[key],seq=[];
+    if(cfg.mix){var mx=Math.max.apply(null,s.lists.map(function(l){return l.length;}).concat([0]));for(var i=0;i<mx;i++)s.lists.forEach(function(l){if(l[i])seq.push(l[i]);});}
+    else s.lists.forEach(function(l){seq=seq.concat(l);});
+    s.total=seq.length;
+    var grid={};rooms.forEach(function(rm){grid[rm.id]=[];for(var i=0;i<+rm.cap;i++)grid[rm.id].push(null);});
+    var rest=[];
+    seq.forEach(function(r){var f=fix&&fix[r.k.id];if(f&&grid[f[0]]&&f[1]>=1&&f[1]<=grid[f[0]].length&&!grid[f[0]][f[1]-1])grid[f[0]][f[1]-1]=r;else rest.push(r);});
+    rest.forEach(function(r){for(var i=0;i<rooms.length;i++){var gr=grid[rooms[i].id],j=gr.indexOf(null);if(j>=0){gr[j]=r;return;}}s.unseated.push(r);});
+    rooms.forEach(function(rm){var gr=grid[rm.id],n=gr.filter(Boolean).length;if(!n)return;var cc={};gr.forEach(function(r,j){if(r){cc[r.cls.code]=(cc[r.cls.code]||0)+1;by[r.k.id]={room:rm,seat:j+1,sess:s};}});s.rooms.push({room:rm,seats:gr,n:n,cc:cc});});
+  });
+  return {sessions:keys.map(function(k){return sess[k];}),by:by,rooms:rooms,cap:rooms.reduce(function(a,r){return a+(+r.cap);},0)};
+}
+function dutyPlan(S,plan){
+  var staff=(S.staff||[]).filter(function(t){return t&&t.name;}),count={},dmap=S.duty||{},cfg=examCfg(S);
+  staff.forEach(function(t){count[t.id]=0;});
+  plan.sessions.forEach(function(s){var used={},slots=[];
+    s.rooms.forEach(function(x){var n=Math.max(1,+x.room.inv||cfg.inv);for(var i=0;i<n;i++)slots.push({key:s.key+'|'+x.room.id+'|'+i,x:x,i:i,t:null,man:false});});
+    slots.forEach(function(sl){var m=dmap[sl.key];if(m&&count[m]!==undefined&&!used[m]){sl.t=m;sl.man=true;used[m]=1;count[m]++;}});
+    slots.forEach(function(sl){if(sl.t||dmap[sl.key]==='-')return;var best=null;staff.forEach(function(t){if(used[t.id])return;if(best===null||count[t.id]<count[best])best=t.id;});if(best){sl.t=best;used[best]=1;count[best]++;}});
+    s.slots=slots;s.reserve=staff.filter(function(t){return !used[t.id];});s.short=slots.filter(function(sl){return !sl.t;}).length;
+  });
+  var name={};staff.forEach(function(t){name[t.id]=t.name;});
+  return {count:count,staff:staff,name:name};
+}
+function paperPlan(S,R,plan){
+  var cfg=examCfg(S),sp=function(n){return Math.ceil(n*(1+cfg.spare/100));},classes=[],packets=[];
+  R.order.forEach(function(code){var n=R.by[code].list.length;if(!n)return;var sc=schedOf(S,code),subs=R.by[code].cls.subjects.filter(function(x){return x.n&&x.m>0;});
+    classes.push({code:code,name:R.by[code].cls.name,type:sc.type,n:n,books:sp(n),subs:subs.map(function(x){return x.n;}).join(', ')});});
+  plan.sessions.forEach(function(s){s.rooms.forEach(function(x){Object.keys(x.cc).forEach(function(code){packets.push({s:s,room:x.room,code:code,name:R.by[code].cls.name,n:x.cc[code],pk:sp(x.cc[code])});});});});
+  return {spare:cfg.spare,classes:classes,packets:packets,total:classes.reduce(function(a,c){return a+c.books;},0),cands:classes.reduce(function(a,c){return a+c.n;},0)};
+}
+
+/* ---------- Admit card: 2 per A4 portrait ---------- */
+function admitPDF(S,R,list,p,plan,per){
+  p=p||new PDF();plan=plan||seatPlan(S,R);per=per===1?1:2;
+  list.forEach(function(r,i){
+    var second=per===2&&i%2===1;
+    if(!second){p.wm='';p.add();}
+    var k=r.k,c=r.cls,sc=schedOf(S,c.code),st=plan.by[k.id],W=p.W,x=ML,w=W-2*ML,top=second?432:26,h=384;
+    if(second||per===1){p.line(14,421,W-14,421,'#9aa3bb',0.7,'5 4');p.text('cut here',W/2,418,{size:6.5,color:'#9aa3bb',align:'center'});}
+    if(per===1)officeCopy(p,S,r,sc,st);
+    p.rect(x,top,w,h,{fill:'#ffffff',stroke:'#cdd5ea',lw:1,r:12});
+    p.rect(x,top,w,64,{fill:C.blue,r:12});p.rect(x,top+46,w,18,{fill:C.blue});p.rect(x,top+64,w,3,{fill:C.red});
+    p.circle(x+36,top+32,24,{fill:'#ffffff'});if(!p.image(x+36-17,top+32-17,34,34)){p.text('SJ',x+36,top+38,{size:16,bold:true,color:C.blue,align:'center'});}
+    p.text(S.school.name,x+70,top+27,{size:15.5,bold:true,color:'#ffffff'});
+    p.text(S.school.address,x+70,top+41,{size:7.6,color:'#dfe6ff',maxW:w-190});
+    p.text('Motto: '+S.school.motto,x+70,top+53,{size:7.2,italic:true,color:'#dfe6ff'});
+    p.rect(x+w-118,top+18,104,28,{fill:'#ffffff',r:14});p.text('ADMIT CARD',x+w-66,top+36.5,{size:11,bold:true,color:C.blue,align:'center',cs:0.5});
+    p.text((S.test.title+' for admission  |  Session '+S.test.session).toUpperCase(),x+16,top+84,{size:8,bold:true,color:C.mute,cs:0.3});
+    // details
+    var dx=x+16,dw=w-16-16-104,cw=dw/2;
+    p.rect(dx,top+94,dw,40,{fill:C.soft,r:8});
+    p.text('ROLL NO.',dx+12,top+109,{size:6.8,bold:true,color:C.mute});p.text(k.roll,dx+12,top+127,{size:17,bold:true,color:C.red});
+    p.text('CLASS APPLIED FOR',dx+cw+6,top+109,{size:6.8,bold:true,color:C.mute});p.text(c.name+(k.stream?' ('+k.stream+')':''),dx+cw+6,top+127,{size:13,bold:true,color:C.blueD,maxW:cw-12});
+    var kv=[["CANDIDATE'S NAME",k.name,2],["FATHER'S NAME",k.father,1],['FORM NO.',k.form||'-',1],['DATE OF BIRTH',fmtDMY(k.dob)||'-',1],['GENDER',k.gender||'-',1]];
+    var yy=top+150,col=0;
+    kv.forEach(function(e){var cx=dx+(e[2]===2?0:col*cw);p.text(e[0],cx+2,yy,{size:6.6,bold:true,color:C.mute});p.text(e[1]||'-',cx+2,yy+13,{size:e[2]===2?11.5:9.8,bold:e[2]===2,maxW:(e[2]===2?dw:cw)-8});
+      if(e[2]===2){yy+=30;col=0;}else{col++;if(col>1){col=0;yy+=30;}}});
+    // photo
+    var px=x+w-16-96,py=top+94;
+    p.rect(px-4,py-4,104,124,{fill:'#ffffff',stroke:C.line,lw:0.8,r:6});
+    if(!p.photo(k.id,px,py,96,116)){p.rect(px,py,96,116,{stroke:'#b9c2da',lw:0.8,dash:'3 2',r:4});p.text('Affix recent',px+48,py+54,{size:7.5,color:C.mute,align:'center'});p.text('passport photo',px+48,py+65,{size:7.5,color:C.mute,align:'center'});}
+    // info strip
+    var sy=top+232,boxes=[['DATE',fmtDate(sc.date)],['REPORTING',sc.report],['TEST TIME',sc.time],['TEST TYPE',sc.type],['ROOM',st?st.room.name:'-'],['SEAT NO.',st?String(st.seat):'-']];
+    var fr=[1.05,0.85,1.3,1.05,0.9,0.75],tot=fr.reduce(function(a,b){return a+b;},0),gap=6,uw=(w-32-gap*5)/tot,bx=x+16;
+    boxes.forEach(function(b,j){var bw=uw*fr[j],hi=j>=4;p.rect(bx,sy,bw,42,{fill:hi?C.redS:C.soft,r:7});p.text(b[0],bx+8,sy+14,{size:6.4,bold:true,color:hi?C.red:C.mute});p.text(b[1],bx+8,sy+31,{size:hi?13:9,bold:true,color:hi?C.red:C.blueD,maxW:bw-12});bx+=bw+gap;});
+    p.text('Venue: '+S.test.venue,x+16,sy+55,{size:8,color:C.mute,maxW:w-32});
+    // instructions
+    var iy=sy+71;p.text('INSTRUCTIONS',x+16,iy,{size:7.8,bold:true,color:C.blue});
+    ['Bring this admit card on the test day; keep it safe until admission is complete.','Report by the reporting time. Bring pencil, eraser, sharpener'+(['NUR','LKG','UKG'].indexOf(c.code)>=0?' and crayons.':' and a blue/black pen.'),'Mobile phones, calculators and written material are not allowed in the examination room.','Parents / guardians must wait outside the examination area until the test is over.'].forEach(function(t,j){p.text((j+1)+'.  '+t,x+16,iy+13+j*11.5,{size:7.6,maxW:w-32});});
+    var gy=top+h-18;
+    p.line(x+16,gy,x+176,gy,C.ink,0.6);p.text("Signature of Candidate / Guardian",x+96,gy+11,{size:7,align:'center',color:C.mute});
+    p.line(x+w-176,gy,x+w-16,gy,C.ink,0.6);p.text('Exam In-charge',x+w-96,gy+11,{size:7.4,align:'center',bold:true});
+  });
+  return p;
+}
+
+function officeCopy(p,S,r,sc,st){
+  var k=r.k,c=r.cls,x=ML,w=p.W-2*ML,top=432,h=384;
+  p.rect(x,top,w,h,{fill:'#ffffff',stroke:'#cdd5ea',lw:1,r:12});
+  p.rect(x,top,w,40,{fill:C.greyS,r:12});p.rect(x,top+28,w,12,{fill:C.greyS});p.rect(x,top+40,w,2,{fill:C.blue});
+  p.text('OFFICE COPY',x+16,top+25,{size:12,bold:true,color:C.blue,cs:0.6});
+  p.text(S.school.name+'  |  '+S.test.title+' '+S.test.session,x+w-16,top+25,{size:8.5,bold:true,color:C.mute,align:'right'});
+  var dx=x+16,cw=(w-32-104)/2,y=top+64;
+  var kv=[['ROLL NO.',k.roll],['CLASS APPLIED FOR',c.name+(k.stream?' ('+k.stream+')':'')],["CANDIDATE'S NAME",k.name],['FORM NO.',k.form||'-'],["FATHER'S NAME",k.father],["MOTHER'S NAME",k.mother],['DATE OF BIRTH',fmtDMY(k.dob)||'-'],['CONTACT',k.phone||'-'],['TEST',fmtDate(sc.date)+', '+sc.time],['ROOM / SEAT',st?st.room.name+' / '+st.seat:'-']];
+  kv.forEach(function(e,j){var cx=dx+(j%2)*cw,cy=y+Math.floor(j/2)*29;p.text(e[0],cx,cy,{size:6.6,bold:true,color:C.mute});p.text(e[1]||'-',cx,cy+13,{size:j===0?12:9.6,bold:j<3,color:j===0?C.red:C.ink,maxW:cw-10});});
+  var px=x+w-16-88,py=top+56;p.rect(px-3,py-3,94,112,{stroke:C.line,lw:0.8,r:5});
+  if(!p.photo(k.id,px,py,88,106)){p.rect(px,py,88,106,{stroke:'#b9c2da',lw:0.8,dash:'3 2',r:4});p.text('Photo',px+44,py+56,{size:7.5,color:C.mute,align:'center'});}
+  var dy=top+214;p.text('DOCUMENTS CHECKED (tick)',x+16,dy,{size:7.6,bold:true,color:C.blue});
+  ['Birth certificate','Transfer certificate','Last report card','Aadhaar card','Passport photos'].forEach(function(t,j){var bx=x+16+j*100;p.rect(bx,dy+9,10,10,{stroke:C.ink,lw:0.7,r:2});p.text(t,bx+15,dy+17.5,{size:7.8});});
+  p.rect(x+16,dy+34,w-32,40,{fill:C.soft,r:6});
+  p.text('Received the admit card. I confirm the details above are correct.',x+28,dy+50,{size:8.2});
+  p.text('Parent / guardian name & phone: ____________________________________________',x+28,dy+65,{size:8.2});
+  var gy=top+h-24;
+  p.line(x+16,gy,x+176,gy,C.ink,0.6);p.text('Signature of Parent / Guardian',x+96,gy+11,{size:7,align:'center',color:C.mute});
+  p.line(x+w/2-70,gy,x+w/2+70,gy,C.ink,0.6);p.text('Date',x+w/2,gy+11,{size:7,align:'center',color:C.mute});
+  p.line(x+w-176,gy,x+w-16,gy,C.ink,0.6);p.text('Received by (office)',x+w-96,gy+11,{size:7.4,align:'center',bold:true});
+}
+/* ---------- Seat plan room charts ---------- */
+function seatChartPDF(S,R,plan,p){
+  p=p||new PDF();
+  plan.sessions.forEach(function(s){s.rooms.forEach(function(x){
+    p.wm='';p.add();
+    var y=pdfHeader(p,S,'SEAT PLAN  -  '+x.room.name.toUpperCase(),S.test.title+' '+S.test.session+'   |   '+sessLabel(s)+'   |   '+x.n+' candidates');
+    var cc=Object.keys(x.cc).map(function(code){return R.by[code].cls.name+': '+x.cc[code];}).join('     ');
+    p.text('Classes in this room:  '+cc,ML,y,{size:8.5,color:C.mute,maxW:523});y+=12;
+    p.rect(ML+150,y,223,16,{fill:C.greyS,r:4});p.text('FRONT  /  BLACKBOARD',ML+261.5,y+11,{size:7.5,bold:true,color:C.mute,align:'center',cs:0.6});y+=24;
+    var cols=Math.max(1,Math.min(8,+x.room.cols||4)),rows=Math.ceil(x.seats.length/cols),gap=6,bw=(523-gap*(cols-1))/cols;
+    var avail=p.H-56-y-6,bh=Math.max(30,Math.min(62,(avail-gap*(rows-1))/rows));
+    if(rows*(bh+gap)>avail){bh=30;}
+    x.seats.forEach(function(r,j){var row=Math.floor(j/cols),col=j%cols,bx=ML+col*(bw+gap),by=y+row*(bh+gap);
+      if(by+bh>p.H-56){return;}
+      p.rect(bx,by,bw,bh,{fill:r?'#ffffff':C.greyS,stroke:r?'#c5cde3':C.greyS,lw:0.8,r:5});
+      p.text(String(j+1),bx+6,by+11,{size:7,bold:true,color:C.mute});
+      if(r){p.text(r.k.roll,bx+bw-6,by+11,{size:8.5,bold:true,color:C.red,align:'right'});
+        if(bh>=40){p.text(r.k.name,bx+6,by+bh/2+5,{size:8.2,bold:true,maxW:bw-10});p.text(r.cls.name,bx+6,by+bh-7,{size:6.8,color:C.mute,maxW:bw-10});}
+        else p.text(r.k.name,bx+6,by+bh-7,{size:7,maxW:bw-10});}
+      else p.text('empty',bx+bw/2,by+bh/2+3,{size:7,color:'#a7afc4',align:'center'});});
+  });});
+  if(!p.pages.length){p.add();var y=pdfHeader(p,S,'SEAT PLAN','');p.text('No rooms or candidates yet.',ML,y+10,{size:10});}
+  return p;
+}
+/* ---------- Room attendance sheets ---------- */
+function attendancePDF(S,R,plan,p){
+  p=p||new PDF();
+  plan.sessions.forEach(function(s){s.rooms.forEach(function(x){
+    p.wm='';p.add();
+    var y=pdfHeader(p,S,'ATTENDANCE SHEET  -  '+x.room.name.toUpperCase(),S.test.title+' '+S.test.session+'   |   '+sessLabel(s)+'   |   '+x.n+' candidates');
+    var cols=[{h:'Seat',w:34,a:'c'},{h:'Roll No.',w:58,a:'c'},{h:"Candidate's Name",w:140,a:'l'},{h:'Class',w:60,a:'l'},{h:'Booklet No.',w:62,a:'c'},{h:'Signature of Candidate',w:126,a:'c'},{h:'P / AB',w:43,a:'c'}];
+    var rows=[];x.seats.forEach(function(r,j){if(r)rows.push([String(j+1),r.k.roll,r.k.name,r.cls.name,'','','']);});
+    y=pdfTable(p,S,y,cols,rows,{rowH:22,fs:8.5,contTitle:'Attendance - '+x.room.name+' (continued)',cellStyle:function(row,ci){return ci===1?{bold:true}:null;}});
+    y=ensure(p,S,y+14,90,'Attendance - '+x.room.name+' (continued)');
+    p.rect(ML,y,523,30,{fill:C.soft,r:6});
+    p.text('Total: '+x.n+'      Present: ________      Absent: ________      Absent Roll Nos.: ______________________________',ML+12,y+19,{size:8.8});
+    y+=62;
+    p.line(ML,y,ML+170,y,C.ink,0.6);p.text('Invigilator 1 (name & signature)',ML+85,y+11,{size:7.5,align:'center',color:C.mute});
+    p.line(ML+200,y,ML+370,y,C.ink,0.6);p.text('Invigilator 2 (name & signature)',ML+285,y+11,{size:7.5,align:'center',color:C.mute});
+    p.line(ML+400,y,ML+523,y,C.ink,0.6);p.text('Exam In-charge',ML+461,y+11,{size:7.5,align:'center',bold:true});
+  });});
+  if(!p.pages.length){p.add();var y=pdfHeader(p,S,'ATTENDANCE SHEET','');p.text('No rooms or candidates yet.',ML,y+10,{size:10});}
+  return p;
+}
+/* ---------- Invigilation duty chart ---------- */
+function dutyPDF(S,R,plan,D,p){
+  p=p||new PDF();p.wm='';p.add();
+  var y=pdfHeader(p,S,'INVIGILATION DUTY CHART',S.test.title+' '+S.test.session+'   |   '+plan.sessions.length+' session(s)   |   '+D.staff.length+' teachers');
+  plan.sessions.forEach(function(s){
+    y=ensure(p,S,y,80,'Invigilation duty (continued)');
+    y=sectionLabel(p,y,sessLabel(s).toUpperCase()+'   -   '+s.classes.map(function(c){return R.by[c].cls.name;}).join(', '),C.blue);
+    var cols=[{h:'Room',w:80,a:'l'},{h:'Cand.',w:40,a:'c'},{h:'Classes',w:120,a:'l'},{h:'Invigilators',w:203,a:'l'},{h:'Signature',w:80,a:'c'}];
+    var rows=s.rooms.map(function(x){var names=s.slots.filter(function(sl){return sl.x===x;}).map(function(sl){return sl.t?D.name[sl.t]:'(not assigned)';});
+      return [x.room.name,String(x.n),Object.keys(x.cc).map(function(c){return R.by[c].cls.name;}).join(', '),names.join(',  '),''];});
+    y=pdfTable(p,S,y,cols,rows,{rowH:22,fs:8.5,contTitle:'Invigilation duty (continued)',cellStyle:function(row,ci){return ci===3?{bold:true}:ci===0?{bold:true}:null;}});
+    if(s.reserve.length){y=p.para('Reserve / relief: '+s.reserve.map(function(t){return t.name;}).join(', '),ML,y+12,523,{size:8.5,color:C.mute,lh:12});}
+    y+=12;
+  });
+  y=ensure(p,S,y+6,120,'Invigilation duty (continued)');
+  y=sectionLabel(p,y,'DUTIES PER TEACHER',C.red);
+  var tc=[{h:'#',w:30,a:'c'},{h:'Teacher',w:200,a:'l'},{h:'Duties',w:60,a:'c'},{h:'Signature',w:233,a:'c'}];
+  y=pdfTable(p,S,y,tc,D.staff.map(function(t,i){return [String(i+1),t.name,String(D.count[t.id]||0),''];}),{rowH:20,fs:8.5,contTitle:'Invigilation duty (continued)'});
+  signatures(p,S,y);
+  return p;
+}
+/* ---------- Question paper requirement ---------- */
+function papersPDF(S,R,plan,P,p){
+  p=p||new PDF();p.wm='';p.add();
+  var y=pdfHeader(p,S,'QUESTION PAPER REQUIREMENT',S.test.title+' '+S.test.session+'   |   Spare '+P.spare+'%   |   '+P.cands+' candidates   |   '+P.total+' booklets');
+  y=sectionLabel(p,y,'CLASS-WISE (one question booklet per candidate)',C.blue);
+  var cols=[{h:'Class',w:70,a:'l'},{h:'Test type',w:80,a:'l'},{h:'Subjects',w:203,a:'l'},{h:'Candidates',w:60,a:'c'},{h:'Spare',w:45,a:'c'},{h:'Booklets to print',w:65,a:'c'}];
+  var rows=P.classes.map(function(c){return [c.name,c.type,c.subs,String(c.n),'+'+(c.books-c.n),String(c.books)];});
+  rows.push(['TOTAL','','',String(P.cands),'+'+(P.total-P.cands),String(P.total)]);
+  y=pdfTable(p,S,y,cols,rows,{rowH:20,fs:8.2,cellStyle:function(row,ci,ri){if(ri===rows.length-1)return {bold:true,color:C.blueD};return ci===5?{bold:true,color:C.red}:null;}});
+  y=ensure(p,S,y+16,80,'Question papers (continued)');
+  y=sectionLabel(p,y,'ROOM-WISE PACKETS',C.red);
+  var pc=[{h:'Session',w:150,a:'l'},{h:'Room',w:90,a:'l'},{h:'Class',w:90,a:'l'},{h:'Candidates',w:63,a:'c'},{h:'Packet (with spare)',w:80,a:'c'},{h:'Checked',w:50,a:'c'}];
+  y=pdfTable(p,S,y,pc,P.packets.map(function(k){return [sessLabel(k.s),k.room.name,k.name,String(k.n),String(k.pk),''];}),{rowH:19,fs:8.2,contTitle:'Question papers (continued)',empty:'Add rooms in Exam Day to get room-wise packets',cellStyle:function(row,ci){return ci===4?{bold:true}:null;}});
+  signatures(p,S,y);
+  return p;
+}
+
+if(typeof module!=='undefined'&&typeof window==='undefined')module.exports={seatPlan:seatPlan,dutyPlan:dutyPlan,paperPlan:paperPlan,seatChartPDF:seatChartPDF,attendancePDF:attendancePDF,dutyPDF:dutyPDF,papersPDF:papersPDF,schedOf:schedOf,setPhotos:function(o){PHOTOS=o;},isPub:isPub,defaultState:defaultState,normalize:normalize,sampleState:sampleState,compute:compute,noticePDF:noticePDF,resultPDF:resultPDF,scoreCardPDF:scoreCardPDF,admitPDF:admitPDF,awardPDF:awardPDF,summaryPDF:summaryPDF,pdfFooter:pdfFooter,PDF:PDF,makeXlsx:makeXlsx,classResultSheet:classResultSheet,meritSheet:meritSheet,summarySheet:summarySheet,candidatesSheet:candidatesSheet,STATUS:STATUS};
+
+LOGO_JPG=atob(LOGO_B64);
+</script>
+<script>
+{
+const FB_CFG={apiKey:"AIzaSyD5nDjNVJrb9ePPq5SIC7tiqAdhYXogbOo",authDomain:"sjs-timetable.firebaseapp.com",projectId:"sjs-timetable",storageBucket:"sjs-timetable.firebasestorage.app",messagingSenderId:"352312773603",appId:"1:352312773603:web:ab84f9b0019c03c39e6ed6"};
+const $=s=>document.querySelector(s);
+const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let fs=null,info=null,tab='apply',photo='',last=null,busy=false;
+const MINE='sjs_apply_mine';
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('on'),3000);}
+function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('load'));document.head.appendChild(s);});}
+async function init(){
+  $('#hLogo').src='data:image/jpeg;base64,'+LOGO_B64;
+  try{const b='https://www.gstatic.com/firebasejs/10.12.2/';await loadScript(b+'firebase-app-compat.js');await loadScript(b+'firebase-firestore-compat.js');
+    if(!firebase.apps.length)firebase.initializeApp(FB_CFG);fs=firebase.firestore();
+    const d=await fs.collection('entrance_public').doc('info').get();info=d.exists?d.data():null;}
+  catch(e){info=null;render('<div class="banner bad">Could not connect. Please check the internet and reload this page.</div>');return;}
+  if(info){$('#hName').textContent=title(info.school.name);$('#hSub').textContent=info.test.title+' '+info.test.session+' — online application';}
+  render();
+}
+const title=s=>String(s||'').replace(/\b(\w)(\w*)/g,(m,a,b)=>a+b.toLowerCase()).replace(/H\.s\./i,'H.S.');
+function render(msg){
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===tab));
+  if(msg){$('#app').innerHTML=msg;return;}
+  $('#app').innerHTML=tab==='apply'?vApply():vStatus();
+}
+function mine(){try{return JSON.parse(localStorage.getItem(MINE)||'[]');}catch(e){return [];}}
+function vApply(){
+  if(!info)return '<div class="card"><h2>Applications are not open</h2><p class="muted">The school has not opened online applications yet. Please check again later or contact the school office.</p></div>';
+  const closed=!info.open||(info.last&&info.last<new Date().toISOString().slice(0,10));
+  const my=mine();
+  const myList=my.length?`<div class="card"><h3>Applied from this phone</h3>${my.map(m=>`<p style="margin:8px 0"><b>${esc(m.id)}</b> — ${esc(m.name)} (${esc(m.cls)}) <button class="btn" style="min-height:36px;padding:6px 12px;font-size:14px" data-chk="${esc(m.id)}" data-dob="${esc(m.dob)}">Check status</button></p>`).join('')}</div>`:'';
+  if(closed)return `<div class="card"><h2>Online applications are closed</h2><p class="muted">${info.last?'The last date was '+esc(fmtDate(info.last))+'. ':''}You can still check the status of a form you already sent.</p><button class="btn pri" data-t2="status">Check status</button></div>`+myList;
+  const cls=info.classes.map(c=>`<option value="${esc(c.code)}">${esc(c.name)}</option>`).join('');
+  return `<div class="card"><h2>${esc(info.test.title)} ${esc(info.test.session)}</h2>
+   <p class="muted" style="margin:0">Test date <b>${esc(fmtDate(info.test.date))}</b>${info.last?' · Last date to apply <b>'+esc(fmtDate(info.last))+'</b>':''} · Venue ${esc(info.test.venue)}</p>
+   ${info.note?`<div class="banner info" style="margin:14px 0 0">${esc(info.note)}</div>`:''}</div>
+  <form class="card" id="af" novalidate><h3 style="margin-bottom:14px">Candidate details</h3><div class="grid">
+   <label><span>Class applied for <b>*</b></span><select name="cls" required><option value="">Choose class</option>${cls}</select></label>
+   <label id="strw" style="display:none">Stream (Class XI)<select name="stream"><option value="">Choose</option><option>Science</option><option>Arts</option><option>Commerce</option></select></label>
+   <label class="full"><span>Candidate's full name <b>*</b></span><input name="name" required maxlength="80" autocomplete="off"></label>
+   <label><span>Gender <b>*</b></span><select name="gender" required><option value="">Choose</option><option>Male</option><option>Female</option><option>Other</option></select></label>
+   <label><span>Date of birth <b>*</b></span><input name="dob" type="date" required></label>
+   <label><span>Father's name <b>*</b></span><input name="father" required maxlength="80"></label>
+   <label>Mother's name<input name="mother" maxlength="80"></label>
+   <label><span>Mobile number (WhatsApp) <b>*</b></span><input name="phone" type="tel" inputmode="numeric" required maxlength="15" placeholder="10-digit number"></label>
+   <label>Category<select name="category"><option>General</option><option>ST</option><option>SC</option><option>OBC</option><option>Other</option></select></label>
+   <label class="full">Address / Village<input name="address" maxlength="200"></label>
+   <label class="full">Previous school (if any)<input name="prev" maxlength="100"></label>
+   <div class="full ph"><img id="phPrev" alt="" style="display:none"><label style="flex:1">Recent passport photo (optional)<input type="file" id="phIn" accept="image/*"></label></div>
+   <label class="full row" style="color:var(--ink);font-weight:400;flex-wrap:nowrap;align-items:flex-start"><input type="checkbox" class="chk" id="decl"> <span>I declare that the details given are true. I will bring the original documents at the time of admission.</span></label>
+  </div><p id="err" style="color:var(--red);min-height:1.3em;margin:12px 0 4px"></p><button class="btn pri" type="submit" style="width:100%">Submit application</button></form>`+myList;
+}
+function vStatus(){
+  return `<div class="card"><h2>Check status / admit card</h2><p class="muted">Enter the Application No. you received after applying and the child's date of birth.</p>
+   <div class="grid" style="margin-top:12px"><label>Application No.<input id="sNo" value="${esc(last?last.id:'')}" autocapitalize="characters" placeholder="e.g. E7K2QX9M"></label><label>Date of birth<input id="sDob" type="date" value="${esc(last?last.dob:'')}"></label></div>
+   <p id="sErr" style="color:var(--red);min-height:1.3em;margin:10px 0"></p><button class="btn pri" id="sGo" style="width:100%">Check</button></div><div id="sRes">${last&&last.doc?resultCard(last.doc):''}</div>`;
+}
+function resultCard(a){
+  const head=`<div class="kv"><div><small>Application No.</small><b>${esc(a.id)}</b></div><div><small>Candidate</small><b>${esc(a.name)}</b></div><div><small>Class</small>${esc(clsN(a.cls))}${a.stream?' ('+esc(a.stream)+')':''}</div><div><small>Father</small>${esc(a.father||'')}</div></div>`;
+  if(a.status==='accepted'){const sc=a.sched||{};return `<div class="card"><div class="banner ok"><b>Application accepted.</b> Please download and print the admit card.</div>${head}
+    <div class="kv"><div><small>Roll No.</small><span class="big" style="color:var(--red)">${esc(a.roll||'')}</span></div><div><small>Room / Seat</small><span class="big">${a.room?esc(a.room)+' / '+esc(a.seat):'To be announced'}</span></div>
+    <div><small>Test date</small>${esc(fmtDate(sc.date||info.test.date))}</div><div><small>Reporting time</small>${esc(sc.report||info.test.reporting)}</div><div><small>Test time</small>${esc(sc.time||info.test.time)}</div><div><small>Venue</small>${esc(info.test.venue)}</div></div>
+    <button class="btn pri" data-adm style="width:100%">Download admit card (PDF)</button></div>`;}
+  if(a.status==='rejected')return `<div class="card"><div class="banner bad"><b>Application not accepted.</b>${a.reason?' Reason: '+esc(a.reason):''}</div>${head}<p class="muted">Please contact the school office for help.</p></div>`;
+  return `<div class="card"><div class="banner warn"><b>Received — under scrutiny.</b> Please check again later. The admit card will be available here once the form is accepted.</div>${head}<button class="btn" data-ack style="width:100%">Download acknowledgement (PDF)</button></div>`;
+}
+const clsN=c=>((info&&info.classes||[]).find(x=>x.code===c)||{}).name||c;
+function S0(){const sc=info.sched||{};return {school:Object.assign({name:'',motto:'',address:'',affil:'',email:'',phone:''},info.school),test:Object.assign({},info.test),sched:sc,exam:{}};}
+function dl(name,bytes){const b=new Blob([bytes],{type:'application/pdf'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},8000);toast('Downloading '+name);}
+function admitCard(a){const S=S0();if(a.sched)S.sched=Object.assign({},S.sched,{[a.cls]:a.sched});
+  PHOTOS={};if(a.photo)PHOTOS[a.id]=a.photo;
+  const r={k:{id:a.id,roll:a.roll||'',name:a.name,father:a.father||'',mother:a.mother||'',dob:a.dob||'',gender:a.gender||'',form:a.id,stream:a.stream||'',phone:a.phone||''},cls:{code:a.cls,name:a.clsName||clsN(a.cls)}};
+  const plan={by:{}};if(a.room)plan.by[a.id]={room:{name:a.room},seat:a.seat};
+  const p=admitPDF(S,null,[r],null,plan,2);dl('Admit_Card_'+(a.roll||a.id)+'.pdf',p.output());}
+function ackPDF(a){const S=S0();PHOTOS={};if(a.photo)PHOTOS[a.id]=a.photo;const p=new PDF();p.add();
+  let y=pdfHeader(p,S,'APPLICATION ACKNOWLEDGEMENT',S.test.title+' '+S.test.session);
+  p.rect(ML,y,523,64,{fill:C.soft,r:10});p.text('APPLICATION NO.',ML+16,y+20,{size:8,bold:true,color:C.mute});p.text(a.id,ML+16,y+48,{size:26,bold:true,color:C.red});
+  y+=82;
+  const rows=[['Class applied for',clsN(a.cls)+(a.stream?' ('+a.stream+')':'')],["Candidate's name",a.name],['Gender',a.gender||'-'],['Date of birth',fmtDMY(a.dob)],["Father's name",a.father||'-'],["Mother's name",a.mother||'-'],['Mobile',a.phone||'-'],['Category',a.category||'-'],['Address',a.address||'-'],['Previous school',a.prev||'-'],['Submitted on',a.at&&a.at.toDate?a.at.toDate().toLocaleString():new Date().toLocaleString()]];
+  if(a.photo)p.photo(a.id,ML+523-96,y,96,120);
+  rows.forEach((e,i)=>{p.text(e[0].toUpperCase(),ML,y+i*26,{size:7.5,bold:true,color:C.mute});p.text(e[1],ML,y+i*26+12,{size:10.5,bold:i===1,maxW:a.photo?400:523});});
+  y+=rows.length*26+16;
+  y=p.para('Keep this Application No. safe. Check the status and download the admit card at stjames1980.github.io/sjs-entrance/apply.html using the Application No. and the date of birth. Bring the original documents at the time of admission.',ML,y,523,{size:9,lh:13,color:C.ink});
+  pdfFooter(p,S);dl('Application_'+a.id+'.pdf',p.output());}
+function genId(){const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='E';const r=new Uint32Array(8);crypto.getRandomValues(r);for(let i=0;i<8;i++)s+=A[r[i]%A.length];return s;}
+function readPhoto(file,cb){const fr=new FileReader();fr.onload=()=>{const img=new Image();img.onload=()=>{const c=document.createElement('canvas');c.width=PHOTO_W;c.height=PHOTO_H;const x=c.getContext('2d');const r=Math.max(PHOTO_W/img.width,PHOTO_H/img.height),w=img.width*r,h=img.height*r;x.fillStyle='#fff';x.fillRect(0,0,PHOTO_W,PHOTO_H);x.drawImage(img,(PHOTO_W-w)/2,(PHOTO_H-h)/2,w,h);cb(c.toDataURL('image/jpeg',0.82));};img.onerror=()=>toast('That file is not a picture');img.src=fr.result;};fr.readAsDataURL(file);}
+async function submit(f){
+  if(busy)return;const d=Object.fromEntries(new FormData(f).entries());Object.keys(d).forEach(k=>d[k]=String(d[k]).trim());
+  const err=m=>{$('#err').textContent=m;};
+  if(!d.cls)return err('Choose the class.');if(d.name.length<2)return err("Type the candidate's full name.");if(!d.gender)return err('Choose the gender.');if(!d.dob)return err('Enter the date of birth.');
+  if(!d.father)return err("Type the father's name.");d.phone=d.phone.replace(/[^\d+]/g,'');if(d.phone.replace(/\D/g,'').length<10)return err('Type a 10-digit mobile number.');
+  if(d.cls!=='XI')d.stream='';if(!$('#decl').checked)return err('Please tick the declaration.');
+  const doc={name:d.name,cls:d.cls,gender:d.gender,dob:d.dob,father:d.father,mother:d.mother||'',phone:d.phone,address:d.address||'',category:d.category||'General',prev:d.prev||'',stream:d.stream||'',status:'new',at:firebase.firestore.FieldValue.serverTimestamp()};
+  if(photo)doc.photo=photo;
+  busy=true;f.querySelector('button[type=submit]').disabled=true;err('Sending…');
+  try{const id=genId();await fs.collection('entrance_apply').doc(id).set(doc);
+    const m=mine();m.unshift({id,name:d.name,cls:clsN(d.cls),dob:d.dob});try{localStorage.setItem(MINE,JSON.stringify(m.slice(0,10)));}catch(e){}
+    const a=Object.assign({},doc,{id,at:null});
+    $('#app').innerHTML=`<div class="card" style="text-align:center"><div class="banner ok" style="text-align:left"><b>Application sent.</b> Thank you. The school will check the form.</div><p class="muted" style="margin:14px 0 0">Your Application No.</p><div class="appno">${esc(id)}</div><p class="muted">Write it down or take a screenshot. You need it with the date of birth to check the status and download the admit card.</p>
+      <div class="row" style="justify-content:center"><button class="btn pri" id="ackBtn">Download acknowledgement</button><button class="btn" id="cpBtn">Copy number</button><button class="btn" data-t2="status">Check status</button></div></div>`;
+    $('#ackBtn').onclick=()=>ackPDF(a);$('#cpBtn').onclick=()=>{try{navigator.clipboard.writeText(id).then(()=>toast('Copied'));}catch(e){toast(id);}};
+    photo='';last={id,dob:d.dob};
+  }catch(e){err(e&&e.code==='permission-denied'?'Online applications are closed or a detail is too long. Please check and try again.':'Could not send. Check the internet and try again.');f.querySelector('button[type=submit]').disabled=false;}
+  busy=false;
+}
+async function check(no,dob){
+  no=String(no||'').trim().toUpperCase();const er=$('#sErr');
+  if(!no||!dob){er.textContent='Type the Application No. and choose the date of birth.';return;}
+  er.textContent='Checking…';
+  try{const d=await fs.collection('entrance_apply').doc(no).get();if(!d.exists||d.data().dob!==dob){er.textContent='No application found with that number and date of birth.';$('#sRes').innerHTML='';return;}
+    const a=Object.assign({id:no},d.data());last={id:no,dob,doc:a};er.textContent='';$('#sRes').innerHTML=resultCard(a);}
+  catch(e){er.textContent='Could not check. Please try again.';}
+}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-t],[data-t2],[data-chk],[data-adm],[data-ack],#sGo');if(!t)return;
+  if(t.dataset.t||t.dataset.t2){tab=t.dataset.t||t.dataset.t2;render();return;}
+  if(t.dataset.chk){tab='status';last={id:t.dataset.chk,dob:t.dataset.dob};render();check(t.dataset.chk,t.dataset.dob);return;}
+  if(t.id==='sGo'){check($('#sNo').value,$('#sDob').value);return;}
+  if(t.dataset.adm!==undefined&&last&&last.doc){admitCard(last.doc);return;}
+  if(t.dataset.ack!==undefined&&last&&last.doc){ackPDF(last.doc);return;}
+});
+document.addEventListener('change',e=>{const t=e.target;
+  if(t.name==='cls'){$('#strw').style.display=t.value==='XI'?'':'none';}
+  if(t.id==='phIn'&&t.files[0])readPhoto(t.files[0],d=>{photo=d;const im=$('#phPrev');im.src=d;im.style.display='';});
+});
+document.addEventListener('submit',e=>{if(e.target.id==='af'){e.preventDefault();submit(e.target);}});
+init();
+}
+
+</script>
+</body>
+</html>
