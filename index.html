@@ -84,6 +84,9 @@ input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{out
 .mk input.bad{border-color:var(--red);background:var(--redS)}
 .mk td{padding:5px 6px}.mk td:first-child,td b{white-space:nowrap}
 .mk tr.abs td{opacity:.55}
+tr.chg td{background:var(--amberS)}
+.pubt tr.on td{background:var(--soft);font-weight:700}
+.pubt td,.pubt th{padding:7px 6px}
 .chk{width:22px;height:22px;min-height:0}
 .a4wrap{background:var(--greyS);border-radius:14px;padding:16px;overflow:auto}
 .a4{background:#fff;color:#111a33;width:100%;max-width:794px;margin:0 auto;padding:28px 34px;box-shadow:0 6px 24px #0002;font-size:12px;border-top:6px solid #1d3fb8}
@@ -124,7 +127,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{out
 <header class="hero">
   <div class="brand"><a class="backapp" href="https://stjames1980.github.io/sjs-school/" aria-label="Back to SJS App" title="Back to SJS App"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a><img class="logo" id="hLogo" alt="St. James H.S. School logo"><div><h1 id="hName">SJS Entrance Test</h1><p id="hSub">St. James H.S. School</p></div><a class="sync" id="sync" href="#backup">This device only</a></div>
   <nav class="tabs" id="tabs">
-    <a href="#dashboard">Dashboard</a><a href="#candidates">Candidates</a><a href="#marks">Marks Entry</a><a href="#results">Results</a><a href="#notice">Notice Board</a><a href="#scorecards">Score Cards</a><a href="#admit">Admit Cards</a><a href="#setup">Setup</a><a href="#backup">Online &amp; Backup</a>
+    <a href="#dashboard">Dashboard</a><a href="#candidates">Candidates</a><a href="#marks">Marks Entry</a><a href="#results">Results</a><a href="#review">Review &amp; Publish</a><a href="#notice">Notice Board</a><a href="#scorecards">Score Cards</a><a href="#admit">Admit Cards</a><a href="#setup">Setup</a><a href="#backup">Online &amp; Backup</a>
   </nav>
 </header>
 <main id="app"></main>
@@ -159,7 +162,7 @@ function defaultState(){
 function normalize(st){
   var d=defaultState();
   st=st||{};
-  var o={v:1,savedAt:st.savedAt||0,sample:!!st.sample,teachersMarks:!!st.teachersMarks,school:Object.assign(d.school,st.school||{}),test:Object.assign(d.test,st.test||{}),classes:[],cands:[],seq:st.seq||{}};
+  var o={v:1,savedAt:st.savedAt||0,sample:!!st.sample,teachersMarks:!!st.teachersMarks,pub:(st.pub&&typeof st.pub==='object')?st.pub:{},school:Object.assign(d.school,st.school||{}),test:Object.assign(d.test,st.test||{}),classes:[],cands:[],seq:st.seq||{}};
   d.classes.forEach(function(dc){
     var sc=(st.classes||[]).filter(function(x){return x.code===dc.code;})[0]||{};
     var c=Object.assign({},dc,sc);
@@ -170,7 +173,7 @@ function normalize(st){
   (st.cands||[]).forEach(function(k){
     if(!k||!k.cls)return;
     var m=(k.marks||[]).slice(0,5);while(m.length<5)m.push(null);
-    o.cands.push(Object.assign({id:k.id||uid(),form:'',roll:'',name:'',gender:'',dob:'',father:'',mother:'',phone:'',address:'',category:'General',prev:'',stream:'',absent:false},k,{marks:m.map(function(v){return (v===''||v===undefined||v===null||isNaN(+v))?null:+v;})}));
+    o.cands.push(Object.assign({id:k.id||uid(),form:'',roll:'',name:'',gender:'',dob:'',father:'',mother:'',phone:'',address:'',category:'General',prev:'',stream:'',absent:false,ov:'',note:''},k,{marks:m.map(function(v){return (v===''||v===undefined||v===null||isNaN(+v))?null:+v;})}));
   });
   return o;
 }
@@ -184,7 +187,9 @@ function nextRoll(S,code){
 function pad3(n){return ('00'+n).slice(-3);}
 
 /* ---------- RESULT ENGINE ---------- */
-var STATUS={SEL:'SELECTED',WL:'WAITING LIST',Q:'QUALIFIED',NQ:'NOT QUALIFIED',AB:'ABSENT',PEN:'PENDING'};
+var STATUS={SEL:'SELECTED',WL:'WAITING LIST',Q:'QUALIFIED',NS:'NOT SELECTED',NQ:'NOT QUALIFIED',AB:'ABSENT',PEN:'PENDING'};
+var OVR={SEL:'SELECTED',WL:'WAITING LIST',NS:'NOT SELECTED'};
+function isPub(S,code){return !!(S.pub&&S.pub[code]);}
 function compute(S){
   var by={},order=[];
   S.classes.forEach(function(c){by[c.code]={cls:c,list:[],appeared:[],stats:null};order.push(c.code);});
@@ -213,19 +218,23 @@ function compute(S){
       r.grade=gradeOf(r.pct);
       if(r.pct<c.pass)r.status=STATUS.NQ;
       else if(r.rank<=c.seats)r.status=STATUS.SEL;
-      else if(r.rank<=c.seats+c.wait){r.status=STATUS.WL;r.wl=++wlNo;}
+      else if(r.rank<=c.seats+c.wait)r.status=STATUS.WL;
       else r.status=STATUS.Q;
+      r.auto=r.status;
+      if(OVR[r.k.ov])r.status=OVR[r.k.ov];
+      r.over=r.status!==r.auto;
     });
+    g.appeared.forEach(function(r){r.wl=r.status===STATUS.WL?++wlNo:null;});
     var rest=g.list.filter(function(r){return r.status===STATUS.AB||r.status===STATUS.PEN;}).sort(function(a,b){return a.k.roll.localeCompare(b.k.roll);});
     g.sorted=g.appeared.concat(rest);
-    var st={applied:g.list.length,appeared:g.appeared.length,absent:0,pending:0,sel:0,wl:0,q:0,nq:0,seats:c.seats,avg:0,top:null,hi:0};
-    g.list.forEach(function(r){if(r.status===STATUS.AB)st.absent++;else if(r.status===STATUS.PEN)st.pending++;else if(r.status===STATUS.SEL)st.sel++;else if(r.status===STATUS.WL)st.wl++;else if(r.status===STATUS.Q)st.q++;else if(r.status===STATUS.NQ)st.nq++;});
-    st.qualified=st.sel+st.wl+st.q;
+    var st={applied:g.list.length,appeared:g.appeared.length,absent:0,pending:0,sel:0,wl:0,q:0,nq:0,ns:0,over:0,seats:c.seats,avg:0,top:null,hi:0,pub:isPub(S,code)};
+    g.list.forEach(function(r){if(r.status===STATUS.AB)st.absent++;else if(r.status===STATUS.PEN)st.pending++;else if(r.status===STATUS.SEL)st.sel++;else if(r.status===STATUS.WL)st.wl++;else if(r.status===STATUS.Q)st.q++;else if(r.status===STATUS.NQ)st.nq++;else if(r.status===STATUS.NS)st.ns++;if(r.over)st.over++;});
+    st.qualified=g.appeared.filter(function(r){return r.pct>=c.pass;}).length;
     st.vacant=Math.max(0,c.seats-st.sel);
     if(g.appeared.length){st.avg=g.appeared.reduce(function(a,r){return a+r.pct;},0)/g.appeared.length;st.top=g.appeared[0];st.hi=g.appeared[0].pct;}
     g.stats=st;all=all.concat(g.list);
   });
-  var T={applied:0,appeared:0,absent:0,pending:0,sel:0,wl:0,q:0,nq:0,seats:0,qualified:0,vacant:0};
+  var T={applied:0,appeared:0,absent:0,pending:0,sel:0,wl:0,q:0,nq:0,ns:0,over:0,seats:0,qualified:0,vacant:0};
   order.forEach(function(code){var s=by[code].stats;for(var key in T)T[key]+=s[key];});
   var ap=all.filter(function(r){return r.rank!==null;});
   T.avg=ap.length?ap.reduce(function(a,r){return a+r.pct;},0)/ap.length:0;
@@ -240,6 +249,7 @@ function remarkOf(r,S){
   if(r.status===STATUS.SEL)return 'Selected for admission';
   if(r.status===STATUS.WL)return 'Waiting List No. '+r.wl;
   if(r.status===STATUS.Q)return 'Qualified - not within merit seats';
+  if(r.status===STATUS.NS)return 'Not selected for admission';
   if(r.status===STATUS.NQ)return 'Did not qualify (below '+r.cls.pass+'%)';
   if(r.status===STATUS.AB)return 'Absent in the test';
   return 'Result pending';
@@ -293,7 +303,7 @@ function fitText(s,size,bold,maxW){s=pdfSafe(s);if(tw(s,size,bold)<=maxW)return 
 function wrapText(s,size,bold,maxW){var words=pdfSafe(s).split(/\s+/),lines=[],cur='';words.forEach(function(w){var t=cur?cur+' '+w:w;if(tw(t,size,bold)<=maxW||!cur)cur=t;else{lines.push(cur);cur=w;}});if(cur)lines.push(cur);return lines;}
 function hex(c){c=(c||'#000000').replace('#','');var n=parseInt(c,16);return [((n>>16)&255)/255,((n>>8)&255)/255,(n&255)/255].map(function(v){return +v.toFixed(3);}).join(' ');}
 function PDF(){this.W=595.28;this.H=841.89;this.pages=[];this.cur=null;}
-PDF.prototype.add=function(){this.cur=[];this.pages.push(this.cur);return this;};
+PDF.prototype.add=function(){this.cur=[];this.pages.push(this.cur);if(this.wm){var sz=86,w=tw(this.wm,sz,true),k=0.7071,x=this.W/2-w/2*k,y=this.H/2-w/2*k+20;this.cur.push('BT /F2 '+sz+' Tf '+hex('#e2e6f1')+' rg 0 Tc '+k+' '+k+' '+(-k)+' '+k+' '+x.toFixed(2)+' '+y.toFixed(2)+' Tm ('+this.wm+') Tj ET');}return this;};
 PDF.prototype.op=function(s){this.cur.push(s);};
 PDF.prototype.rect=function(x,y,w,h,o){o=o||{};var Y=this.H-y-h,s='q ';if(o.lw)s+=o.lw+' w ';if(o.fill)s+=hex(o.fill)+' rg ';if(o.stroke)s+=hex(o.stroke)+' RG ';if(o.dash)s+='['+o.dash+'] 0 d ';
   if(o.r){var r=Math.min(o.r,w/2,h/2),k=r*0.5523,x2=x+w,Y2=Y+h;s+=(x+r)+' '+Y+' m '+(x2-r)+' '+Y+' l '+(x2-r+k)+' '+Y+' '+x2+' '+(Y+r-k)+' '+x2+' '+(Y+r)+' c '+x2+' '+(Y2-r)+' l '+x2+' '+(Y2-r+k)+' '+(x2-r+k)+' '+Y2+' '+(x2-r)+' '+Y2+' c '+(x+r)+' '+Y2+' l '+(x+r-k)+' '+Y2+' '+x+' '+(Y2-r+k)+' '+x+' '+(Y2-r)+' c '+x+' '+(Y+r)+' l '+x+' '+(Y+r-k)+' '+(x+r-k)+' '+Y+' '+(x+r)+' '+Y+' c h ';}
@@ -330,7 +340,7 @@ PDF.prototype.output=function(){
 
 var C={blue:'#1d3fb8',blueD:'#142d86',ink:'#111a33',mute:'#5a6584',line:'#d5dbea',soft:'#eef2fc',red:'#d8342b',green:'#12805c',greenS:'#e3f5ed',amber:'#b46a00',amberS:'#fff1d6',redS:'#fde7e5',greyS:'#f1f3f8'};
 var ML=36;
-function statusColors(st){if(st===STATUS.SEL)return [C.green,C.greenS];if(st===STATUS.WL)return [C.amber,C.amberS];if(st===STATUS.NQ)return [C.red,C.redS];if(st===STATUS.Q)return [C.blue,C.soft];return [C.mute,C.greyS];}
+function statusColors(st){if(st===STATUS.SEL)return [C.green,C.greenS];if(st===STATUS.WL)return [C.amber,C.amberS];if(st===STATUS.NQ)return [C.red,C.redS];if(st===STATUS.Q)return [C.blue,C.soft];if(st===STATUS.NS)return [C.red,C.greyS];return [C.mute,C.greyS];}
 function crest(p,cx,cy,r){if(LOGO_JPG){p.circle(cx,cy,r,{fill:'#ffffff'});p.image(cx-r*0.71,cy-r*0.71,r*1.42,r*1.42);return;}p.circle(cx,cy,r,{fill:C.blue});p.circle(cx,cy,r-3,{stroke:'#ffffff',lw:0.8});p.text('SJ',cx,cy+r*0.28,{size:r*0.78,bold:true,color:'#ffffff',align:'center'});}
 function pdfHeader(p,S,title,sub,compact){
   var W=p.W,cx=W/2;
@@ -391,8 +401,8 @@ function sectionLabel(p,y,t,color){p.rect(ML,y,4,14,{fill:color||C.red});p.text(
 function noticePDF(S,R,codes,opt,p){
   p=p||new PDF();opt=opt||{};
   codes.forEach(function(code){
-    var g=R.by[code],c=g.cls,st=g.stats;p.add();
-    var y=pdfHeader(p,S,(S.test.title+' Result '+S.test.session).toUpperCase(),'Class applied for: '+c.name+'   |   Test held on '+fmtDate(S.test.date)+'   |   Result declared on '+fmtDate(S.test.resultDate));
+    var g=R.by[code],c=g.cls,st=g.stats;p.wm=isPub(S,code)?'':'PROVISIONAL';p.add();
+    var y=pdfHeader(p,S,(isPub(S,code)?S.test.title+' Result '+S.test.session:'Provisional Result '+S.test.session+' - for review').toUpperCase(),'Class applied for: '+c.name+'   |   Test held on '+fmtDate(S.test.date)+'   |   Result declared on '+fmtDate(S.test.resultDate));
     y=statBoxes(p,y,[['Applied',st.applied],['Appeared',st.appeared],['Qualified',st.qualified],['Seats',st.seats],['Selected',st.sel,C.greenS,C.green],['Waiting list',st.wl,C.amberS,C.amber]]);
     var cols=[{h:'Merit No.',w:46,a:'c'},{h:'Roll No.',w:58,a:'c'},{h:"Candidate's Name",w:opt.father?150:240,a:'l'}];
     if(opt.father)cols.push({h:"Father's Name",w:opt.marks?127:209,a:'l'});
@@ -401,7 +411,7 @@ function noticePDF(S,R,codes,opt,p){
     function rowOf(r,no){var a=[String(no),r.k.roll,r.k.name+(c.code==='XI'&&r.k.stream?' ('+r.k.stream+')':'')];if(opt.father)a.push(r.k.father);if(opt.marks)a.push(String(r.tot),fix2(r.pct)+'%',r.grade);return a;}
     y=sectionLabel(p,y,'LIST OF SELECTED CANDIDATES (in order of merit)',C.green);
     var sel=g.appeared.filter(function(r){return r.status===STATUS.SEL;});
-    y=pdfTable(p,S,y,cols,sel.map(function(r){return rowOf(r,r.rank);}),{contTitle:'Result - '+c.name+' (continued)',empty:'No candidate selected yet',cellStyle:function(row,ci){return ci===0?{bold:true,color:C.green}:ci===1?{bold:true}:null;}});
+    y=pdfTable(p,S,y,cols,sel.map(function(r,i){return rowOf(r,i+1);}),{contTitle:'Result - '+c.name+' (continued)',empty:'No candidate selected yet',cellStyle:function(row,ci){return ci===0?{bold:true,color:C.green}:ci===1?{bold:true}:null;}});
     if(opt.wait!==false){y=ensure(p,S,y+16,60,'Result - '+c.name+' (continued)');
       y=sectionLabel(p,y,'WAITING LIST (in order of preference)',C.amber);
       var wl=g.appeared.filter(function(r){return r.status===STATUS.WL;});
@@ -420,8 +430,8 @@ function noticePDF(S,R,codes,opt,p){
 function resultPDF(S,R,codes,p){
   p=p||new PDF();
   codes.forEach(function(code){
-    var g=R.by[code],c=g.cls,st=g.stats;p.add();
-    var y=pdfHeader(p,S,'CONSOLIDATED RESULT SHEET - '+c.name.toUpperCase(),S.test.title+' '+S.test.session+'   |   Test date '+fmtDate(S.test.date)+'   |   Seats '+c.seats+'   |   Qualifying '+c.pass+'%');
+    var g=R.by[code],c=g.cls,st=g.stats;p.wm=isPub(S,code)?'':'PROVISIONAL';p.add();
+    var y=pdfHeader(p,S,(isPub(S,code)?'':'PROVISIONAL ')+'CONSOLIDATED RESULT SHEET - '+c.name.toUpperCase(),S.test.title+' '+S.test.session+'   |   Test date '+fmtDate(S.test.date)+'   |   Seats '+c.seats+'   |   Qualifying '+c.pass+'%');
     y=statBoxes(p,y,[['Applied',st.applied],['Appeared',st.appeared],['Absent',st.absent],['Qualified',st.qualified],['Selected',st.sel,C.greenS,C.green],['Not qualified',st.nq,C.redS,C.red]]);
     var subs=[];c.subjects.forEach(function(s,i){if(s.n&&s.m>0)subs.push([s,i]);});
     var sw=Math.max(30,Math.min(40,Math.floor(170/Math.max(1,subs.length))));
@@ -441,8 +451,8 @@ function resultPDF(S,R,codes,p){
 function scoreCardPDF(S,R,list,p){
   p=p||new PDF();
   list.forEach(function(r){
-    var k=r.k,c=r.cls;p.add();
-    var y=pdfHeader(p,S,'ENTRANCE TEST SCORE CARD',S.test.title+' for admission - Session '+S.test.session);
+    var k=r.k,c=r.cls;p.wm=isPub(S,c.code)?'':'PROVISIONAL';p.add();
+    var y=pdfHeader(p,S,(isPub(S,c.code)?'':'PROVISIONAL ')+'ENTRANCE TEST SCORE CARD',S.test.title+' for admission - Session '+S.test.session);
     var W=523,x=ML;
     p.rect(x,y,W,132,{fill:'#ffffff',stroke:C.line,lw:0.8,r:8});
     var kv=[['Roll No.',k.roll],['Form No.',k.form],["Candidate's Name",k.name],['Class applied for',c.name+(k.stream?' ('+k.stream+')':'')],["Father's Name",k.father],["Mother's Name",k.mother],['Date of Birth',fmtDMY(k.dob)],['Gender / Category',(k.gender||'-')+' / '+(k.category||'-')]];
@@ -464,7 +474,7 @@ function scoreCardPDF(S,R,list,p){
     p.text(r.status===STATUS.WL?'WAITING LIST No. '+r.wl:r.status===STATUS.SEL?'SELECTED FOR ADMISSION':r.status,ML+18,y+35,{size:15,bold:true,color:sc[0]});
     p.text(remarkOf(r,S),ML+505,y+29,{size:9,align:'right',color:sc[0],maxW:220});
     y+=60;
-    var msg=r.status===STATUS.SEL?'Congratulations! Please complete the admission formalities at the school office between '+fmtDate(S.test.admFrom)+' and '+fmtDate(S.test.admTo)+'. Seats not confirmed within this period will be offered to waiting-list candidates.':r.status===STATUS.WL?'Your name is on the waiting list. You will be informed if a seat falls vacant after '+fmtDate(S.test.admTo)+'.':r.status===STATUS.Q?'You have qualified the test but could not be placed within the available seats. You may contact the school office if seats fall vacant.':r.status===STATUS.NQ?'The candidate did not reach the qualifying mark of '+c.pass+'%. We encourage you to keep learning and try again.':r.status===STATUS.AB?'The candidate was absent on the day of the test.':'Marks have not been entered yet. This score card is provisional.';
+    var msg=r.status===STATUS.SEL?'Congratulations! Please complete the admission formalities at the school office between '+fmtDate(S.test.admFrom)+' and '+fmtDate(S.test.admTo)+'. Seats not confirmed within this period will be offered to waiting-list candidates.':r.status===STATUS.WL?'Your name is on the waiting list. You will be informed if a seat falls vacant after '+fmtDate(S.test.admTo)+'.':r.status===STATUS.NS?'The candidate has not been selected for admission in this session.':r.status===STATUS.Q?'You have qualified the test but could not be placed within the available seats. You may contact the school office if seats fall vacant.':r.status===STATUS.NQ?'The candidate did not reach the qualifying mark of '+c.pass+'%. We encourage you to keep learning and try again.':r.status===STATUS.AB?'The candidate was absent on the day of the test.':'Marks have not been entered yet. This score card is provisional.';
     y=p.para(msg,ML,y,523,{size:9,lh:13,color:C.ink})+10;
     y=sectionLabel(p,y,'GRADING SCALE',C.blue);
     var gw=523/8;GRADES.forEach(function(g,i){var hi=i===0?100:GRADES[i-1][0]-1;p.rect(ML+i*gw,y,gw-4,30,{fill:C.greyS,r:5});p.text(g[1],ML+i*gw+gw/2-2,y+13,{size:9.5,bold:true,align:'center',color:C.blueD});p.text(g[0]+'-'+hi+'%',ML+i*gw+gw/2-2,y+24,{size:7,align:'center',color:C.mute});});
@@ -476,7 +486,7 @@ function scoreCardPDF(S,R,list,p){
 function admitPDF(S,R,list,p){
   p=p||new PDF();
   list.forEach(function(r,i){
-    if(i%2===0)p.add();
+    if(i%2===0){p.wm='';p.add();}
     var k=r.k,c=r.cls,top=i%2===0?28:440,W=p.W,x=ML,w=523,h=372;
     if(i%2===1)p.line(14,421,W-14,421,'#9aa3bb',0.8,'4 3');
     p.rect(x,top,w,h,{stroke:C.blue,lw:1.2,r:10});
@@ -502,7 +512,7 @@ function admitPDF(S,R,list,p){
   return p;
 }
 function awardPDF(S,R,code,p){
-  p=p||new PDF();var g=R.by[code],c=g.cls;p.add();
+  p=p||new PDF();var g=R.by[code],c=g.cls;p.wm='';p.add();
   var y=pdfHeader(p,S,'MARKS AWARD LIST - '+c.name.toUpperCase(),S.test.title+' '+S.test.session+'   |   Test date '+fmtDate(S.test.date)+'   |   for examiners');
   var subs=c.subjects.filter(function(s){return s.n&&s.m>0;});
   var cols=[{h:'Sl.',w:26,a:'c'},{h:'Roll No.',w:50,a:'c'},{h:'Name of Candidate',w:120,a:'l'},{h:'P / AB',w:34,a:'c'}];
@@ -606,31 +616,31 @@ function titleLines(S,line){return [S.school.name,S.school.address,S.school.affi
 function classResultSheet(S,R,code){
   var g=R.by[code],c=g.cls,subs=[];c.subjects.forEach(function(s,i){if(s.n&&s.m>0)subs.push([s,i]);});
   var header=['Rank','Roll No.','Form No.',"Candidate's Name","Father's Name",'Gender','Category'];if(code==='XI')header.push('Stream');
-  subs.forEach(function(x){header.push(x[0].n+' ('+x[0].m+')');});header.push('Total ('+subs.reduce(function(a,x){return a+x[0].m;},0)+')','Percentage','Grade','Result','Remarks');
-  var widths=[7,11,9,26,24,9,10];if(code==='XI')widths.push(11);subs.forEach(function(){widths.push(11);});widths.push(10,11,8,15,30);
+  subs.forEach(function(x){header.push(x[0].n+' ('+x[0].m+')');});header.push('Total ('+subs.reduce(function(a,x){return a+x[0].m;},0)+')','Percentage','Grade','Result','Remarks','Review note');
+  var widths=[7,11,9,26,24,9,10];if(code==='XI')widths.push(11);subs.forEach(function(){widths.push(11);});widths.push(10,11,8,15,30,26);
   var rows=g.sorted.map(function(r){var a=[{v:r.rank||'-',s:6},{v:r.k.roll,s:6},{v:r.k.form,s:6},{v:r.k.name,s:7},r.k.father,{v:r.k.gender,s:6},{v:r.k.category,s:6}];if(code==='XI')a.push({v:r.k.stream,s:6});
     subs.forEach(function(x){var v=r.k.marks[x[1]];a.push({v:r.status===STATUS.AB?'AB':v==null?'-':v,s:6});});
-    a.push({v:r.rank?r.tot:'-',s:13},{v:r.rank?Math.round(r.pct*100)/100:'-',s:11},{v:r.rank?r.grade:'-',s:6},{v:statusShort(r),s:stStyle(r.status)},remarkOf(r,S));return a;});
-  return {name:c.name,title:titleLines(S,(S.test.title+' Result '+S.test.session+' - '+c.name).toUpperCase()),redLast:true,header:header,widths:widths,rows:rows,landscape:true,footer:S.school.name+' - '+S.test.title+' '+S.test.session};
+    a.push({v:r.rank?r.tot:'-',s:13},{v:r.rank?Math.round(r.pct*100)/100:'-',s:11},{v:r.rank?r.grade:'-',s:6},{v:statusShort(r),s:stStyle(r.status)},remarkOf(r,S),r.over?('Changed in review from '+r.auto+(r.k.note?': '+r.k.note:'')):(r.k.note||''));return a;});
+  return {name:c.name,title:titleLines(S,((isPub(S,code)?'':'PROVISIONAL ')+S.test.title+' Result '+S.test.session+' - '+c.name).toUpperCase()),redLast:true,header:header,widths:widths,rows:rows,landscape:true,footer:S.school.name+' - '+S.test.title+' '+S.test.session};
 }
 function meritSheet(S,R,code,opt){
   var g=R.by[code],c=g.cls;opt=opt||{};
   var header=['Merit / W.L. No.','Roll No.',"Candidate's Name"];if(opt.father!==false)header.push("Father's Name");if(opt.marks!==false)header.push('Marks','Percentage','Grade');header.push('Result');
   var widths=[13,12,30];if(opt.father!==false)widths.push(28);if(opt.marks!==false)widths.push(10,12,9);widths.push(17);
-  var rows=[];g.appeared.filter(function(r){return r.status===STATUS.SEL||(opt.wait!==false&&r.status===STATUS.WL);}).forEach(function(r){
-    var a=[{v:r.status===STATUS.SEL?r.rank:'WL-'+r.wl,s:6},{v:r.k.roll,s:6},{v:r.k.name,s:7}];if(opt.father!==false)a.push(r.k.father);if(opt.marks!==false)a.push({v:r.tot+'/'+r.max,s:6},{v:Math.round(r.pct*100)/100,s:11},{v:r.grade,s:6});a.push({v:statusShort(r),s:stStyle(r.status)});rows.push(a);});
-  return {name:'Notice '+c.name,title:titleLines(S,(S.test.title+' Result '+S.test.session+' - '+c.name).toUpperCase()),redLast:true,header:header,widths:widths,rows:rows,footer:'Admission: '+fmtDMY(S.test.admFrom)+' to '+fmtDMY(S.test.admTo)};
+  var rows=[],sn=0;g.appeared.filter(function(r){return r.status===STATUS.SEL||(opt.wait!==false&&r.status===STATUS.WL);}).forEach(function(r){
+    var a=[{v:r.status===STATUS.SEL?++sn:'WL-'+r.wl,s:6},{v:r.k.roll,s:6},{v:r.k.name,s:7}];if(opt.father!==false)a.push(r.k.father);if(opt.marks!==false)a.push({v:r.tot+'/'+r.max,s:6},{v:Math.round(r.pct*100)/100,s:11},{v:r.grade,s:6});a.push({v:statusShort(r),s:stStyle(r.status)});rows.push(a);});
+  return {name:'Notice '+c.name,title:titleLines(S,((isPub(S,code)?'':'PROVISIONAL ')+S.test.title+' Result '+S.test.session+' - '+c.name).toUpperCase()),redLast:true,header:header,widths:widths,rows:rows,footer:'Admission: '+fmtDMY(S.test.admFrom)+' to '+fmtDMY(S.test.admTo)};
 }
 function summarySheet(S,R){
-  var T=R.T,rows=R.order.map(function(code){var g=R.by[code],s=g.stats;return [{v:g.cls.name,s:7},{v:s.seats,s:6},{v:s.applied,s:6},{v:s.appeared,s:6},{v:s.absent,s:6},{v:s.pending,s:6},{v:s.qualified,s:6},{v:s.sel,s:8},{v:s.wl,s:10},{v:s.nq,s:9},{v:s.vacant,s:6},{v:s.appeared?Math.round(s.avg*100)/100:'-',s:11},s.top?s.top.k.name+' ('+fix2(s.top.pct)+'%)':'-'];});
-  rows.push([{v:'TOTAL',s:13},{v:T.seats,s:13},{v:T.applied,s:13},{v:T.appeared,s:13},{v:T.absent,s:13},{v:T.pending,s:13},{v:T.qualified,s:13},{v:T.sel,s:13},{v:T.wl,s:13},{v:T.nq,s:13},{v:T.vacant,s:13},{v:Math.round(T.avg*100)/100,s:13},{v:'Pass rate '+fix2(T.passRate)+'%',s:13}]);
-  return {name:'Summary',title:titleLines(S,('Entrance Test '+S.test.session+' - Class-wise Summary').toUpperCase()),redLast:true,header:['Class','Seats','Applied','Appeared','Absent','Pending','Qualified','Selected','Waiting','Not Qualified','Vacant','Average %','Topper'],widths:[13,8,9,10,8,9,10,10,9,12,8,10,34],rows:rows,landscape:true,footer:S.school.name};
+  var T=R.T,rows=R.order.map(function(code){var g=R.by[code],s=g.stats;return [{v:g.cls.name,s:7},{v:s.seats,s:6},{v:s.applied,s:6},{v:s.appeared,s:6},{v:s.absent,s:6},{v:s.pending,s:6},{v:s.qualified,s:6},{v:s.sel,s:8},{v:s.wl,s:10},{v:s.nq,s:9},{v:s.vacant,s:6},{v:s.appeared?Math.round(s.avg*100)/100:'-',s:11},s.top?s.top.k.name+' ('+fix2(s.top.pct)+'%)':'-',{v:s.pub?'Published':'Draft',s:s.pub?8:10}];});
+  rows.push([{v:'TOTAL',s:13},{v:T.seats,s:13},{v:T.applied,s:13},{v:T.appeared,s:13},{v:T.absent,s:13},{v:T.pending,s:13},{v:T.qualified,s:13},{v:T.sel,s:13},{v:T.wl,s:13},{v:T.nq,s:13},{v:T.vacant,s:13},{v:Math.round(T.avg*100)/100,s:13},{v:'Pass rate '+fix2(T.passRate)+'%',s:13},{v:R.order.filter(function(c){return R.by[c].stats.pub;}).length+' published',s:13}]);
+  return {name:'Summary',title:titleLines(S,('Entrance Test '+S.test.session+' - Class-wise Summary').toUpperCase()),redLast:true,header:['Class','Seats','Applied','Appeared','Absent','Pending','Qualified','Selected','Waiting','Not Qualified','Vacant','Average %','Topper','Result status'],widths:[13,8,9,10,8,9,10,10,9,12,8,10,34,14],rows:rows,landscape:true,footer:S.school.name};
 }
 function candidatesSheet(S,R){
   var rows=R.all.slice().sort(function(a,b){return R.order.indexOf(a.cls.code)-R.order.indexOf(b.cls.code)||a.k.roll.localeCompare(b.k.roll);}).map(function(r){var k=r.k;return [{v:k.roll,s:6},{v:k.form,s:6},{v:r.cls.name,s:6},{v:k.name,s:7},k.father,k.mother,{v:k.gender,s:6},{v:fmtDMY(k.dob),s:6},{v:k.category,s:6},k.phone,k.address,k.prev,{v:r.rank?r.tot:'-',s:6},{v:r.rank?Math.round(r.pct*100)/100:'-',s:11},{v:statusShort(r),s:stStyle(r.status)}];});
   return {name:'All Candidates',title:titleLines(S,'REGISTER OF CANDIDATES - '+S.test.session),redLast:true,header:['Roll No.','Form No.','Class','Name',"Father's Name","Mother's Name",'Gender','Date of Birth','Category','Contact','Address','Previous School','Total','%','Result'],widths:[10,9,10,24,22,22,8,12,9,13,16,22,8,8,14],rows:rows,landscape:true,footer:S.school.name};
 }
-if(typeof module!=='undefined'&&typeof window==='undefined')module.exports={defaultState:defaultState,normalize:normalize,sampleState:sampleState,compute:compute,noticePDF:noticePDF,resultPDF:resultPDF,scoreCardPDF:scoreCardPDF,admitPDF:admitPDF,awardPDF:awardPDF,summaryPDF:summaryPDF,pdfFooter:pdfFooter,PDF:PDF,makeXlsx:makeXlsx,classResultSheet:classResultSheet,meritSheet:meritSheet,summarySheet:summarySheet,candidatesSheet:candidatesSheet,STATUS:STATUS};
+if(typeof module!=='undefined'&&typeof window==='undefined')module.exports={isPub:isPub,defaultState:defaultState,normalize:normalize,sampleState:sampleState,compute:compute,noticePDF:noticePDF,resultPDF:resultPDF,scoreCardPDF:scoreCardPDF,admitPDF:admitPDF,awardPDF:awardPDF,summaryPDF:summaryPDF,pdfFooter:pdfFooter,PDF:PDF,makeXlsx:makeXlsx,classResultSheet:classResultSheet,meritSheet:meritSheet,summarySheet:summarySheet,candidatesSheet:candidatesSheet,STATUS:STATUS};
 
 LOGO_JPG=atob(LOGO_B64);
 </script>
@@ -670,7 +680,7 @@ function save(o){
 }
 const mainRef=()=>Live.fs.collection('entrance').doc('main');
 const plain=o=>JSON.parse(JSON.stringify(o));
-function metaObj(){return plain({v:1,school:S.school,test:S.test,classes:S.classes,seq:S.seq,sample:!!S.sample,teachersMarks:!!S.teachersMarks,savedAt:Date.now(),by:Live.user?Live.user.email:''});}
+function metaObj(){return plain({v:1,school:S.school,test:S.test,classes:S.classes,seq:S.seq,sample:!!S.sample,teachersMarks:!!S.teachersMarks,pub:S.pub||{},savedAt:Date.now(),by:Live.user?Live.user.email:''});}
 function candsMap(code){const m={};S.cands.filter(k=>k.cls===code).forEach(k=>m[k.id]=plain(k));return m;}
 async function flush(){
   if(!Live.on||Live.busy)return;Live.busy=true;
@@ -750,7 +760,7 @@ function subscribe(){
   unsubAll();const main=mainRef();
   Live.unsub.push(main.onSnapshot(d=>{if(!d.exists||Live.meta||Live.full)return;const m=d.data()||{};
     const n=normalize({school:m.school,test:m.test,classes:m.classes,cands:[]});
-    S.school=n.school;S.test=n.test;S.classes=n.classes;S.seq=m.seq||{};S.sample=!!m.sample;S.teachersMarks=!!m.teachersMarks;afterRemote();},e=>liveFail(e)));
+    S.school=n.school;S.test=n.test;S.classes=n.classes;S.seq=m.seq||{};S.sample=!!m.sample;S.teachersMarks=!!m.teachersMarks;S.pub=(m.pub&&typeof m.pub==='object')?m.pub:{};afterRemote();},e=>liveFail(e)));
   Live.unsub.push(main.collection('c').onSnapshot(snap=>{if(Live.full)return;let ch=false;
     snap.docChanges().forEach(c=>{applyClass(c.doc.id,c.type==='removed'?{}:((c.doc.data()||{}).cands||{}));ch=true;});if(ch)afterRemote();},e=>liveFail(e)));
 }
@@ -774,7 +784,7 @@ function syncMarkInputs(){
   const map={};list.forEach(r=>map[r.k.id]=r.k);let ok=true;
   rows.forEach(tr=>{const k=map[tr.dataset.id];if(!k){ok=false;return;}
     const ab=tr.querySelector('[data-ab]');if(ab&&ab!==document.activeElement)ab.checked=!!k.absent;tr.classList.toggle('abs',!!k.absent);
-    tr.querySelectorAll('[data-m]').forEach(inp=>{inp.disabled=k.absent||!canMarks();if(inp!==document.activeElement){const v=k.marks[+inp.dataset.m];inp.value=v==null?'':v;}});});
+    tr.querySelectorAll('[data-m]').forEach(inp=>{inp.disabled=k.absent||!canMarks()||isPub(S,k.cls);if(inp!==document.activeElement){const v=k.marks[+inp.dataset.m];inp.value=v==null?'':v;}});});
   return ok;
 }
 document.addEventListener('focusout',()=>setTimeout(()=>{const ae=document.activeElement;if(Live.needRender&&!(ae&&ae.closest&&ae.closest('#app')&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName))&&!$('#modal').classList.contains('on')){Live.needRender=false;route();}},250));
@@ -821,7 +831,7 @@ function vDashboard(){
   const arcs=parts.map(p=>{const len=p[1]/tot*C2;const s=`<circle r="52" cx="75" cy="75" fill="none" stroke="${p[2]}" stroke-width="22" stroke-dasharray="${len} ${C2-len}" stroke-dashoffset="${-acc}" transform="rotate(-90 75 75)"/>`;acc+=len;return s;}).join('');
   const gmax=Math.max(1,...Object.values(T.grades));
   const grades=Object.keys(T.grades).map(g=>`<div class="bar"><span>${g}</span><div class="t"><i style="width:${T.grades[g]*100/gmax}%;background:var(--blue)"></i></div><span class="n">${T.grades[g]}</span></div>`).join('');
-  const rows=R.order.map(c=>{const s=R.by[c].stats;return `<tr><td><b>${esc(clsName(c))}</b></td><td class="n">${s.seats}</td><td class="n">${s.applied}</td><td class="n">${s.appeared}</td><td class="n">${s.absent}</td><td class="n">${s.qualified}</td><td class="n" style="color:var(--green);font-weight:700">${s.sel}</td><td class="n">${s.wl}</td><td class="n">${s.vacant}</td><td class="n">${s.appeared?fix2(s.avg):'–'}</td><td>${s.top?esc(s.top.k.name)+' <span class="muted">'+fix2(s.top.pct)+'%</span>':'–'}</td></tr>`;}).join('');
+  const rows=R.order.map(c=>{const s=R.by[c].stats;return `<tr><td><b>${esc(clsName(c))}</b></td><td class="n">${s.seats}</td><td class="n">${s.applied}</td><td class="n">${s.appeared}</td><td class="n">${s.absent}</td><td class="n">${s.qualified}</td><td class="n" style="color:var(--green);font-weight:700">${s.sel}</td><td class="n">${s.wl}</td><td class="n">${s.vacant}</td><td class="n">${s.appeared?fix2(s.avg):'–'}</td><td>${s.top?esc(s.top.k.name)+' <span class="muted">'+fix2(s.top.pct)+'%</span>':'–'}</td><td>${s.pub?'<span class="pill p-sel">PUBLISHED</span>':s.applied?'<span class="pill p-wl">DRAFT</span>':''}</td></tr>`;}).join('');
   const top=T.top.map((r,i)=>`<li><span class="rk">${i+1}</span><span><b>${esc(r.k.name)}</b><br><span class="muted" style="font-size:12.5px">${esc(r.cls.name)} · ${esc(r.k.roll)}</span></span><em>${fix2(r.pct)}%</em></li>`).join('')||'<li class="muted">No marks entered yet</li>';
   const gsum=T.gender.Male+T.gender.Female+T.gender.Other||1;
   return sampleBanner()+`<div class="lede"><div><h2>${T.sel} selected for ${T.seats} seats${T.seats?' ('+rate+'% filled)':''}</h2><p>${T.appeared} of ${T.applied} candidates appeared on ${esc(fmtDate(S.test.date))} · ${T.pending} result${T.pending===1?'':'s'} pending · result date ${esc(fmtDate(S.test.resultDate))}</p></div>
@@ -829,14 +839,14 @@ function vDashboard(){
   <div class="kpis">
    <div class="kpi"><b>${T.applied}</b><span>Applicants</span></div><div class="kpi"><b>${T.appeared}</b><span>Appeared</span></div><div class="kpi"><b>${T.absent}</b><span>Absent</span></div><div class="kpi"><b>${T.qualified}</b><span>Qualified</span></div>
    <div class="kpi g"><b>${T.sel}</b><span>Selected</span></div><div class="kpi a"><b>${T.wl}</b><span>Waiting list</span></div><div class="kpi r"><b>${T.nq}</b><span>Not qualified</span></div><div class="kpi"><b>${T.pending}</b><span>Marks pending</span></div>
-   <div class="kpi"><b>${fix2(T.passRate)}%</b><span>Pass rate</span></div><div class="kpi"><b>${fix2(T.avg)}%</b><span>Average score</span></div><div class="kpi"><b>${T.vacant}</b><span>Vacant seats</span></div><div class="kpi"><b>${T.top[0]?fix2(T.top[0].pct)+'%':'–'}</b><span>Highest score</span></div>
+   <div class="kpi"><b>${fix2(T.passRate)}%</b><span>Pass rate</span></div><div class="kpi"><b>${fix2(T.avg)}%</b><span>Average score</span></div><div class="kpi"><b>${T.vacant}</b><span>Vacant seats</span></div><div class="kpi"><b>${T.top[0]?fix2(T.top[0].pct)+'%':'–'}</b><span>Highest score</span></div><div class="kpi ${R.order.filter(c=>R.by[c].stats.pub).length?'g':''}"><b>${R.order.filter(c=>R.by[c].stats.pub).length}/${R.order.filter(c=>R.by[c].stats.applied).length}</b><span>Classes published</span></div><div class="kpi"><b>${T.over}</b><span>Changed in review</span></div>
   </div>
   <div class="grid2"><div class="card"><h3>Class-wise result</h3><div class="bars">${bars}</div>
    <div class="legend"><span><i class="c-sel"></i>Selected</span><span><i class="c-wl"></i>Waiting</span><span><i class="c-q"></i>Qualified</span><span><i class="c-nq"></i>Not qualified</span><span><i class="c-ab"></i>Absent</span><span><i class="c-pen"></i>Pending</span><span>· right: selected/seats · applied</span></div></div>
    <div class="card"><h3>Result status</h3><div class="donut"><svg viewBox="0 0 150 150" role="img" aria-label="Result status">${arcs}<text x="75" y="72" text-anchor="middle" font-family="Outfit,Inter,Arial,sans-serif" font-size="26" font-weight="700" fill="currentColor">${T.applied}</text><text x="75" y="92" text-anchor="middle" font-size="11" font-family="Inter,Arial,sans-serif" fill="currentColor" opacity=".6">applicants</text></svg>
     <div class="legend" style="display:grid;margin:0">${parts.map(p=>`<span><i style="background:${p[2]}"></i>${p[0]}: <b>${p[1]}</b></span>`).join('')}</div></div>
     <h3 style="margin-top:18px">Grade distribution</h3><div class="bars">${grades}</div></div></div>
-  <div class="card"><h3>Class summary</h3><div class="scroll"><table class="stack"><thead><tr><th>Class</th><th class="n">Seats</th><th class="n">Applied</th><th class="n">Appeared</th><th class="n">Absent</th><th class="n">Qualified</th><th class="n">Selected</th><th class="n">Waiting</th><th class="n">Vacant</th><th class="n">Avg %</th><th>Topper</th></tr></thead><tbody>${rows}</tbody></table></div></div>
+  <div class="card"><h3>Class summary</h3><div class="scroll"><table class="stack"><thead><tr><th>Class</th><th class="n">Seats</th><th class="n">Applied</th><th class="n">Appeared</th><th class="n">Absent</th><th class="n">Qualified</th><th class="n">Selected</th><th class="n">Waiting</th><th class="n">Vacant</th><th class="n">Avg %</th><th>Topper</th><th>Result</th></tr></thead><tbody>${rows}</tbody></table></div></div>
   <div class="grid2"><div class="card"><h3>Top 10 candidates (all classes)</h3><ol class="top10">${top}</ol></div>
    <div class="card"><h3>Applicants profile</h3><div class="bars">${[['Boys',T.gender.Male],['Girls',T.gender.Female]].concat(T.gender.Other?[['Not set',T.gender.Other]]:[]).map(x=>`<div class="bar"><span>${x[0]}</span><div class="t"><i style="width:${x[1]*100/gsum}%;background:var(--blue)"></i></div><span class="n">${x[1]}</span></div>`).join('')}</div>
    <h3 style="margin-top:18px">Category</h3><div class="bars">${Object.keys(T.cat).map(k=>`<div class="bar"><span>${esc(k)}</span><div class="t"><i style="width:${T.cat[k]*100/gsum}%;background:var(--red)"></i></div><span class="n">${T.cat[k]}</span></div>`).join('')}</div></div></div>`;
@@ -892,10 +902,10 @@ function vMarks(){
   const g=R.by[ui.cls],c=g.cls,subs=activeSubs(c);
   const list=g.list.slice().sort((a,b)=>a.k.roll.localeCompare(b.k.roll));
   return sampleBanner()+`<div class="lede"><div><h2>Marks entry · ${esc(c.name)}</h2><p>${canMarks()?'Type marks and they save at once'+(Live.on?' for everyone':'')+'. Tick <b>Absent</b> for candidates who did not appear. Rank and result update automatically.':'View only — marks can be typed by the Admin and Exam In-Charge'+(Live.on?' (or teachers, when allowed)':'')+'.'}</p></div><div class="row"><button class="btn" data-a="award">Blank award list PDF</button></div></div>
-  <div class="tools"><label>Class<select id="mcls">${clsOpts(ui.cls)}</select></label><span class="muted">Qualifying ${c.pass}% · Seats ${c.seats} · Waiting list ${c.wait}</span></div>
+  ${isPub(S,ui.cls)?`<div class="banner" style="background:var(--greenS);color:var(--green)"><span><b>${esc(c.name)} result is published</b> — marks are locked. Unpublish it in Review &amp; Publish to change marks.</span><button class="btn sm" data-go="review">Review &amp; Publish</button></div>`:''}<div class="tools"><label>Class<select id="mcls">${clsOpts(ui.cls)}</select></label><span class="muted">Qualifying ${c.pass}% · Seats ${c.seats} · Waiting list ${c.wait}</span></div>
   <div class="card scroll" style="padding:6px 8px"><table class="mk"><thead><tr><th>Roll No.</th><th>Name</th><th class="c">Absent</th>${subs.map(x=>`<th class="c">${esc(x[0].n)}<br><span class="muted">/${x[0].m}</span></th>`).join('')}<th class="n">Total</th><th class="n">%</th><th class="c">Rank</th><th>Result</th></tr></thead><tbody>
-  ${list.map(r=>`<tr data-id="${esc(r.k.id)}" class="${r.k.absent?'abs':''}"><td><b>${esc(r.k.roll)}</b></td><td style="min-width:150px">${esc(r.k.name)}</td><td class="c"><input type="checkbox" class="chk" data-ab ${r.k.absent?'checked':''} ${canMarks()?'':'disabled'} aria-label="Absent"></td>
-   ${subs.map((x,j)=>`<td class="c"><input inputmode="decimal" data-m="${x[1]}" data-col="${j}" data-max="${x[0].m}" value="${r.k.marks[x[1]]==null?'':r.k.marks[x[1]]}" ${r.k.absent||!canMarks()?'disabled':''} aria-label="${esc(x[0].n)}"></td>`).join('')}
+  ${list.map(r=>`<tr data-id="${esc(r.k.id)}" class="${r.k.absent?'abs':''}"><td><b>${esc(r.k.roll)}</b></td><td style="min-width:150px">${esc(r.k.name)}</td><td class="c"><input type="checkbox" class="chk" data-ab ${r.k.absent?'checked':''} ${canMarks()&&!isPub(S,ui.cls)?'':'disabled'} aria-label="Absent"></td>
+   ${subs.map((x,j)=>`<td class="c"><input inputmode="decimal" data-m="${x[1]}" data-col="${j}" data-max="${x[0].m}" value="${r.k.marks[x[1]]==null?'':r.k.marks[x[1]]}" ${r.k.absent||!canMarks()||isPub(S,ui.cls)?'disabled':''} aria-label="${esc(x[0].n)}"></td>`).join('')}
    <td class="n" data-o="tot"></td><td class="n" data-o="pct"></td><td class="c" data-o="rank"></td><td data-o="st"></td></tr>`).join('')||`<tr><td colspan="${subs.length+7}" class="muted">No candidates in ${esc(c.name)} yet.</td></tr>`}
   </tbody></table></div>`;
 }
@@ -923,7 +933,7 @@ function a4Head(title,sub){return `<div class="hd"><img src="data:image/jpeg;bas
 function vNotice(){
   const codes=ui.ncls?[ui.ncls]:R.order.filter(c=>R.by[c].stats.applied);const code=codes[0]||'NUR';
   const g=R.by[code],c=g.cls,s=g.stats;
-  const cols=r=>`<td class="c"><b>${r.status===STATUS.WL?r.wl:r.rank}</b></td><td class="c"><b>${esc(r.k.roll)}</b></td><td>${esc(r.k.name)}</td>${ui.nfather?`<td>${esc(r.k.father)}</td>`:''}${ui.nmarks?`<td class="c">${r.tot}</td><td class="c">${fix2(r.pct)}%</td><td class="c">${r.grade}</td>`:''}`;
+  const cols=(r,i)=>`<td class="c"><b>${r.status===STATUS.WL?r.wl:i+1}</b></td><td class="c"><b>${esc(r.k.roll)}</b></td><td>${esc(r.k.name)}</td>${ui.nfather?`<td>${esc(r.k.father)}</td>`:''}${ui.nmarks?`<td class="c">${r.tot}</td><td class="c">${fix2(r.pct)}%</td><td class="c">${r.grade}</td>`:''}`;
   const th=f=>`<tr><th class="c">${f}</th><th class="c">Roll No.</th><th>Candidate's name</th>${ui.nfather?"<th>Father's name</th>":''}${ui.nmarks?'<th class="c">Marks</th><th class="c">%</th><th class="c">Grade</th>':''}</tr>`;
   const sel=g.appeared.filter(r=>r.status===STATUS.SEL),wl=g.appeared.filter(r=>r.status===STATUS.WL);
   return sampleBanner()+`<div class="lede"><div><h2>Notice board result</h2><p>A4 merit list for the notice board and file copy — selected candidates in order of merit, then the waiting list.</p></div>
@@ -932,10 +942,11 @@ function vNotice(){
    <label class="row" style="color:var(--ink)"><input type="checkbox" class="chk" id="nmarks" ${ui.nmarks?'checked':''}> Show marks</label>
    <label class="row" style="color:var(--ink)"><input type="checkbox" class="chk" id="nfather" ${ui.nfather?'checked':''}> Father's name</label>
    <label class="row" style="color:var(--ink)"><input type="checkbox" class="chk" id="nwait" ${ui.nwait?'checked':''}> Waiting list</label></div>
+  ${!isPub(S,code)?`<div class="banner"><span><b>${esc(c.name)}: PROVISIONAL.</b> This result has not been published yet, so the PDF prints with a PROVISIONAL watermark. Check and publish it in Review &amp; Publish for the final notice.</span><button class="btn sm" data-go="review">Review &amp; Publish</button></div>`:''}
   ${!ui.ncls?`<p class="muted">“All classes” makes one PDF with each class on its own page. Preview shows ${esc(c.name)}.</p>`:''}
-  <div class="a4wrap"><div class="a4">${a4Head((S.test.title+' Result '+S.test.session).toUpperCase(),'Class applied for: '+c.name+'  |  Test held on '+fmtDate(S.test.date)+'  |  Result declared on '+fmtDate(S.test.resultDate))}
+  <div class="a4wrap"><div class="a4">${a4Head((isPub(S,code)?S.test.title+' Result '+S.test.session:'Provisional Result '+S.test.session).toUpperCase(),'Class applied for: '+c.name+'  |  Test held on '+fmtDate(S.test.date)+'  |  Result declared on '+fmtDate(S.test.resultDate))}
    <p style="text-align:center;margin:4px 0 0">Applied <b>${s.applied}</b> · Appeared <b>${s.appeared}</b> · Qualified <b>${s.qualified}</b> · Seats <b>${s.seats}</b> · Selected <b style="color:#12805c">${s.sel}</b> · Waiting <b style="color:#a35f00">${s.wl}</b></p>
-   <h4>LIST OF SELECTED CANDIDATES (in order of merit)</h4><div class="scroll"><table><thead>${th('Merit No.')}</thead><tbody>${sel.map(r=>`<tr>${cols(r)}</tr>`).join('')||'<tr><td colspan="7">No candidate selected yet</td></tr>'}</tbody></table></div>
+   <h4>LIST OF SELECTED CANDIDATES (in order of merit)</h4><div class="scroll"><table><thead>${th('Merit No.')}</thead><tbody>${sel.map((r,i)=>`<tr>${cols(r,i)}</tr>`).join('')||'<tr><td colspan="7">No candidate selected yet</td></tr>'}</tbody></table></div>
    ${ui.nwait?`<h4 style="border-color:#a35f00">WAITING LIST</h4><div class="scroll"><table><thead>${th('W.L. No.')}</thead><tbody>${wl.map(r=>`<tr>${cols(r)}</tr>`).join('')||'<tr><td colspan="7">No waiting list</td></tr>'}</tbody></table></div>`:''}
    <div class="note"><b style="color:#1d3fb8">IMPORTANT</b><br>Admission for selected candidates: ${esc(fmtDate(S.test.admFrom))} to ${esc(fmtDate(S.test.admTo))}. ${esc(S.test.notice)}</div>
    <div class="sig"><span>Exam In-charge</span><span>Principal</span></div></div></div>`;
@@ -948,7 +959,7 @@ function vScore(){
   const r=list.find(x=>x.k.id===ui.scand);
   let prev='<p class="muted">No candidates in this class.</p>';
   if(r){const k=r.k,c=r.cls;const sc={[STATUS.SEL]:['#e3f5ed','#12805c'],[STATUS.WL]:['#fff1d6','#a35f00'],[STATUS.NQ]:['#fde7e5','#d8342b'],[STATUS.Q]:['#eef2fc','#1d3fb8']}[r.status]||['#f1f3f8','#5a6584'];
-    prev=`<div class="a4wrap"><div class="a4">${a4Head('ENTRANCE TEST SCORE CARD','Session '+S.test.session)}
+    prev=`<div class="a4wrap"><div class="a4">${a4Head((isPub(S,c.code)?'':'PROVISIONAL ')+'ENTRANCE TEST SCORE CARD','Session '+S.test.session)}
     <div class="kv">${[['Roll No.',k.roll],['Form No.',k.form],["Candidate's name",k.name],['Class applied for',c.name+(k.stream?' ('+k.stream+')':'')],["Father's name",k.father],["Mother's name",k.mother],['Date of birth',fmtDMY(k.dob)],['Gender / Category',(k.gender||'–')+' / '+(k.category||'–')]].map(e=>`<div><small>${e[0]}</small>${esc(e[1]||'–')}</div>`).join('')}</div>
     <table><thead><tr><th>S.No.</th><th>Subject</th><th class="c">Max</th><th class="c">Obtained</th></tr></thead><tbody>${activeSubs(c).map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x[0].n)}</td><td class="c">${x[0].m}</td><td class="c"><b>${k.absent?'AB':k.marks[x[1]]==null?'–':k.marks[x[1]]}</b></td></tr>`).join('')}<tr><td></td><td><b>GRAND TOTAL</b></td><td class="c"><b>${r.max}</b></td><td class="c"><b>${r.rank?r.tot:'–'}</b></td></tr></tbody></table>
     <p style="margin:10px 0 0">Percentage <b>${r.rank?fix2(r.pct)+'%':'–'}</b> · Grade <b>${r.rank?r.grade:'–'}</b> · Merit rank <b>${r.rank?r.rank+' of '+g.appeared.length:'–'}</b></p>
@@ -1008,15 +1019,62 @@ function vBackup(){
    ${Live.on&&Live.mgr?`<label class="row" style="margin-top:14px"><input type="checkbox" class="chk" id="tmarks" ${S.teachersMarks?'checked':''}> <span><b>Teachers can enter marks</b> — every confirmed SJS App teacher may type marks (only the Admin and Exam In-Charge change setup and candidates).</span></label>`:''}
    <p class="muted" style="font-size:13px;margin-bottom:0">Uses the same logins as SJS App (Staff ID or email + password). If you are already signed in to SJS App on this phone, it connects by itself. Admin and Exam In-Charge: full access · Principal and teachers: view only (or marks entry when allowed).</p></div>
   ${!Live.on||Live.admin?`<details class="card"><summary><b>One-time Firebase setup (Admin)</b></summary><p class="muted">In Firebase console → Firestore Database → Rules, paste this block just above the last two closing braces <code>}</code> <code>}</code>, then Publish.</p><pre style="background:var(--soft);padding:12px;border-radius:10px;overflow:auto;font-size:12px">${esc(RULES_TXT)}</pre><button class="btn" data-a="copyrules">Copy rules</button></details>`:''}
-  <div class="grid2"><div class="card"><h3>How it works</h3><ol class="steps"><li><span><b>Setup</b> — check school details, test date, seats, waiting list, qualifying % and subjects for each class.</span></li><li><span><b>Candidates</b> — add each applicant (or paste a list from Excel). Roll numbers like NUR-001 are given automatically.</span></li><li><span><b>Admit cards</b> — print two per A4 sheet before the test; print a blank award list for examiners.</span></li><li><span><b>Marks entry</b> — type marks or tick Absent. Total, %, grade, rank, selection and waiting list are worked out at once.</span></li><li><span><b>Notice board / Results / Score cards</b> — download A4 PDF or Excel for the notice board, file copy and parents.</span></li></ol></div>
+  <div class="grid2"><div class="card"><h3>How it works</h3><ol class="steps"><li><span><b>Setup</b> — check school details, test date, seats, waiting list, qualifying % and subjects for each class.</span></li><li><span><b>Candidates</b> — add each applicant (or paste a list from Excel). Roll numbers like NUR-001 are given automatically.</span></li><li><span><b>Admit cards</b> — print two per A4 sheet before the test; print a blank award list for examiners.</span></li><li><span><b>Marks entry</b> — type marks or tick Absent. Total, %, grade, rank, selection and waiting list are worked out at once.</span></li><li><span><b>Review &amp; Publish</b> — check each class, change Select / Waiting list / Not selected where needed, then publish. Until then printouts say PROVISIONAL.</span></li><li><span><b>Notice board / Results / Score cards</b> — download A4 PDF or Excel for the notice board, file copy and parents.</span></li></ol></div>
   <div class="card"><h3>Keep your data safe</h3><p class="muted">Download a backup file regularly, especially before clearing data or changing devices.</p>
    <div class="row"><button class="btn pri" data-a="bkp">Download backup (.json)</button>${canEdit()?'<label class="btn" style="display:inline-flex;align-items:center">Restore backup<input type="file" id="restore" accept=".json,application/json" hidden></label>':''}</div>
    ${canEdit()?`<h3 style="margin-top:20px">Start fresh</h3><div class="row"><button class="btn red" data-a="clear">Clear all candidates</button><button class="btn" data-a="sample">Load sample data</button></div>
    <p class="muted" style="font-size:13px">Clearing keeps your school details, test details, seats and subjects.${Live.on?' <b>Online: this changes the data for everyone.</b>':''}</p>`:''}</div></div>`;
 }
+const persist=o=>save(o);
+const whoAmI=()=>Live.user?loginName(Live.user.email):'';
+/* ---------- REVIEW & PUBLISH ---------- */
+const DEC={'':'Automatic',SEL:'Select',WL:'Waiting list',NS:'Not selected'};
+function pubLine(code){const p=S.pub&&S.pub[code];return p?`Published ${esc(new Date(p.at).toLocaleString())}${p.by?' by '+esc(p.by):''}`:'Draft — not published';}
+function vReview(){
+  if(!ui.vcls)ui.vcls=ui.cls||'NUR';
+  const g=R.by[ui.vcls],c=g.cls,s=g.stats,pub=isPub(S,c.code),ed=canEdit()&&!pub;
+  const over=s.sel>s.seats;
+  const all=R.order.map(code=>{const x=R.by[code].stats;return `<tr class="${code===ui.vcls?'on':''}" data-vc="${code}" style="cursor:pointer"><td><b>${esc(clsName(code))}</b></td><td class="n">${x.sel}/${x.seats}</td><td class="n">${x.wl}</td><td class="n">${x.over||''}</td><td class="n">${x.pending||''}</td><td>${x.pub?'<span class="pill p-sel">PUBLISHED</span>':x.applied?'<span class="pill p-wl">DRAFT</span>':'<span class="muted">–</span>'}</td></tr>`;}).join('');
+  const rows=g.sorted.map(r=>{const can=r.rank!=null;
+    return `<tr class="${r.over?'chg':''}"><td class="c"><b>${r.rank||'–'}</b></td><td><b>${esc(r.k.roll)}</b></td><td style="min-width:150px">${esc(r.k.name)}</td><td class="n">${can?r.tot:'–'}</td><td class="n">${can?fix2(r.pct):'–'}</td>
+     <td>${can?`<span class="pill ${pillCls(r.auto)}">${esc(r.auto)}</span>`:pill(r)}</td>
+     <td>${can?`<select data-ov="${esc(r.k.id)}" ${ed?'':'disabled'} aria-label="Final decision">${Object.keys(DEC).map(v=>`<option value="${v}"${(r.k.ov||'')===v?' selected':''}>${v?DEC[v]:'Automatic ('+(r.auto===STATUS.WL?'waiting':r.auto.toLowerCase())+')'}</option>`).join('')}</select>`:'<span class="muted">–</span>'}</td>
+     <td>${can?pill(r):''}</td>
+     <td>${can?`<input data-note="${esc(r.k.id)}" value="${esc(r.k.note||'')}" placeholder="Reason (office only)" ${ed?'':'disabled'} style="min-width:160px">`:''}</td></tr>`;}).join('');
+  return sampleBanner()+`<div class="lede"><div><h2>Review &amp; publish · ${esc(c.name)}</h2><p>Check the automatic result, change any decision you need, then publish. Until a class is published, its notice, result sheet and score cards print as <b>PROVISIONAL</b>.</p></div>
+   <div class="row"><button class="btn" data-a="notpdfv">Preview notice PDF</button>${canEdit()?(pub?'<button class="btn red" data-a="unpub">Unpublish to edit</button>':'<button class="btn pri" data-a="pub">Publish final result</button>'):''}</div></div>
+  <div class="tools"><label>Class<select id="vcls">${clsOpts(ui.vcls)}</select></label><span class="pill ${pub?'p-sel':'p-wl'}" style="font-size:13px">${pubLine(c.code)}</span></div>
+  <div class="kpis">
+   <div class="kpi ${over?'r':'g'}"><b>${s.sel}/${s.seats}</b><span>Selected / seats${over?' — over by '+(s.sel-s.seats):s.sel<s.seats?' — '+(s.seats-s.sel)+' vacant':''}</span></div>
+   <div class="kpi a"><b>${s.wl}</b><span>Waiting list</span></div><div class="kpi"><b>${s.ns}</b><span>Not selected (review)</span></div>
+   <div class="kpi"><b>${s.over}</b><span>Changed in review</span></div><div class="kpi"><b>${s.pending}</b><span>Marks pending</span></div></div>
+  ${s.pending&&!pub?`<div class="banner"><span>${s.pending} candidate${s.pending===1?' has':'s have'} no marks yet. Enter marks or mark them Absent before publishing.</span></div>`:''}
+  ${pub?`<div class="banner" style="background:var(--greenS);color:var(--green)"><span><b>Final result published.</b> Marks and decisions for ${esc(c.name)} are locked. Notice board, result sheet and score cards now print as final.</span></div>`:''}
+  <div>
+   <div class="card scroll" style="padding:6px 10px"><table><thead><tr><th class="c">Rank</th><th>Roll No.</th><th>Name</th><th class="n">Total</th><th class="n">%</th><th>Automatic</th><th>Final decision</th><th>Final</th><th>Note</th></tr></thead><tbody>${rows||'<tr><td colspan="9" class="muted">No candidates.</td></tr>'}</tbody></table>
+    ${ed&&s.over?'<div class="row" style="margin-top:10px"><button class="btn sm" data-a="resetov">Undo all changes in this class</button></div>':''}</div>
+   <div class="card scroll" style="padding:6px 10px"><h3 style="margin:8px 0">All classes</h3><table class="pubt"><thead><tr><th>Class</th><th class="n">Sel.</th><th class="n">WL</th><th class="n">Changed</th><th class="n">Pending</th><th>Status</th></tr></thead><tbody>${all}</tbody></table>
+    ${canEdit()?'<div class="row" style="margin-top:10px"><button class="btn sm" data-a="puball">Publish all ready classes</button></div>':''}</div></div>`;
+}
+const reviewActions={
+  notpdfv:()=>pdfOut(noticePDF(S,R,[ui.vcls],{marks:ui.nmarks,father:ui.nfather,wait:ui.nwait}),'Notice_'+(isPub(S,ui.vcls)?'Final':'Provisional')+'_'+fn(clsName(ui.vcls))+'.pdf'),
+  pub:()=>{const s=R.by[ui.vcls].stats;const warn=(s.pending?s.pending+' candidate(s) still have no marks. ':'')+(s.sel>s.seats?'Selected ('+s.sel+') is more than seats ('+s.seats+'). ':'');
+    ask(warn+'Publish the final result for '+clsName(ui.vcls)+'? Marks and decisions will be locked until you unpublish.',()=>{S.pub=S.pub||{};S.pub[ui.vcls]={at:Date.now(),by:whoAmI()};persist({meta:true});route();toast(clsName(ui.vcls)+' result published');},'Publish final result');},
+  unpub:()=>ask('Unpublish '+clsName(ui.vcls)+'? Printouts will show PROVISIONAL again until you publish.',()=>{delete S.pub[ui.vcls];persist({meta:true});route();toast('Back to draft');},'Unpublish'),
+  puball:()=>{const ready=R.order.filter(c=>{const s=R.by[c].stats;return s.applied&&!s.pending&&!s.pub;});if(!ready.length){toast('No class is ready (all published, empty, or marks pending)');return;}
+    ask('Publish the final result for '+ready.length+' class'+(ready.length>1?'es':'')+' with all marks entered ('+ready.map(clsName).join(', ')+')?',()=>{S.pub=S.pub||{};ready.forEach(c=>S.pub[c]={at:Date.now(),by:whoAmI()});persist({meta:true});route();toast(ready.length+' published');},'Publish');},
+  resetov:()=>ask('Undo all review changes in '+clsName(ui.vcls)+'?',()=>{const ch=S.cands.filter(k=>k.cls===ui.vcls&&k.ov);ch.forEach(k=>k.ov='');persist({cands:ch});route();toast('Changes undone');},'Undo changes')
+};
+document.addEventListener('change',e=>{const t=e.target;
+  if(t.id==='vcls'){ui.vcls=t.value;route();return;}
+  if(t.dataset&&t.dataset.ov!==undefined){const k=S.cands.find(x=>x.id===t.dataset.ov);if(!k||!canEdit()||isPub(S,k.cls))return;k.ov=t.value;persist({cands:[k]});route();}
+});
+document.addEventListener('input',e=>{const t=e.target;if(t.dataset&&t.dataset.note!==undefined){const k=S.cands.find(x=>x.id===t.dataset.note);if(!k||!canEdit()||isPub(S,k.cls))return;k.note=t.value;clearTimeout(t._h);t._h=setTimeout(()=>persist({cands:[k]}),500);}});
+document.addEventListener('click',e=>{const tr=e.target.closest('[data-vc]');if(tr){ui.vcls=tr.dataset.vc;route();}});
+
 /* ---------- ROUTER ---------- */
 const curView=()=>{const v=(location.hash||'#dashboard').slice(1);return VIEWS[v]?v:'dashboard';};
-const VIEWS={dashboard:vDashboard,candidates:vCandidates,marks:vMarks,results:vResults,notice:vNotice,scorecards:vScore,admit:vAdmit,setup:vSetup,backup:vBackup};
+const VIEWS={dashboard:vDashboard,candidates:vCandidates,marks:vMarks,results:vResults,review:vReview,notice:vNotice,scorecards:vScore,admit:vAdmit,setup:vSetup,backup:vBackup};
 function route(){
   const v=(location.hash||'#dashboard').slice(1);const view=VIEWS[v]?v:'dashboard';
   document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+view));
@@ -1048,8 +1106,9 @@ const actions={
   copyrules:()=>{try{navigator.clipboard.writeText(RULES_TXT).then(()=>toast('Rules copied'),()=>toast('Select the text and copy it'));}catch(e){toast('Select the text and copy it');}},
   bkp:()=>saveFile('SJS_Entrance_Backup_'+todayISO()+'.json',JSON.stringify(S),'application/json'),
   clear:()=>ask('Delete all '+S.cands.length+' candidates and their marks'+(Live.on?' for everyone in SJS App':'')+'? Download a backup first if you may need them.',()=>{S.cands=[];S.seq={};S.sample=false;save({all:true});route();toast('All candidates cleared');},'Delete all candidates'),
-  sample:()=>ask('Replace current data with sample candidates'+(Live.on?' for everyone in SJS App':'')+'?',()=>{const tm=!!S.teachersMarks;S=sampleState();S.teachersMarks=tm;save({all:true});route();toast('Sample data loaded');},'Load sample')
+  sample:()=>ask('Replace current data with sample candidates'+(Live.on?' for everyone in SJS App':'')+'?',()=>{const tm=!!S.teachersMarks;S=sampleState();S.teachersMarks=tm;S.pub={};save({all:true});route();toast('Sample data loaded');},'Load sample')
 };
+Object.assign(actions,reviewActions);
 document.addEventListener('click',e=>{
   const t=e.target.closest('[data-a],[data-go],[data-edit],[data-del],[data-x],[data-adm1]');
   if(e.target.id==='modal'){closeModal();return;}
@@ -1071,7 +1130,7 @@ document.addEventListener('change',e=>{
   if(t.dataset.set&&t.tagName==='SELECT'){const [g,n]=t.dataset.set.split('.');S[g][n]=t.value;save({meta:true});toast('Tie rule updated');return;}
   if(t.matches('[data-ab]')&&!canMarks()){t.checked=!t.checked;toast('View only');return;}
   if(t.dataset.set&&!canEdit())return;
-  if(t.matches('[data-ab]')){const tr=t.closest('tr'),k=S.cands.find(x=>x.id===tr.dataset.id);k.absent=t.checked;tr.classList.toggle('abs',k.absent);tr.querySelectorAll('[data-m]').forEach(i=>i.disabled=k.absent);save({cands:[k]});refreshMarks();}
+  if(t.matches('[data-ab]')){const tr=t.closest('tr'),k=S.cands.find(x=>x.id===tr.dataset.id);if(isPub(S,k.cls)){t.checked=!t.checked;toast('Result published — locked');return;}k.absent=t.checked;tr.classList.toggle('abs',k.absent);tr.querySelectorAll('[data-m]').forEach(i=>i.disabled=k.absent);save({cands:[k]});refreshMarks();}
 });
 let setT=null;
 document.addEventListener('input',e=>{
@@ -1079,7 +1138,7 @@ document.addEventListener('input',e=>{
   if(t.id==='q'||t.id==='q2'){ui.q=t.value;clearTimeout(setT);setT=setTimeout(()=>{const pos=t.selectionStart,id=t.id;route();const n=document.getElementById(id);if(n){n.focus();try{n.setSelectionRange(pos,pos);}catch(_){}}},250);return;}
   if(t.dataset.m!==undefined&&!canMarks()){toast('View only');return;}
   if((t.dataset.set||t.dataset.cls||t.dataset.sub)&&!canEdit()){toast('View only');return;}
-  if(t.dataset.m!==undefined){const tr=t.closest('tr'),k=S.cands.find(x=>x.id===tr.dataset.id),max=+t.dataset.max,v=t.value.trim();
+  if(t.dataset.m!==undefined){const tr=t.closest('tr'),k=S.cands.find(x=>x.id===tr.dataset.id);if(isPub(S,k.cls)){toast('Result published — marks locked');return;}const max=+t.dataset.max,v=t.value.trim();
     if(v===''){k.marks[+t.dataset.m]=null;t.classList.remove('bad');}
     else{const n=Number(v);if(isNaN(n)||n<0||n>max){t.classList.add('bad');t.title='Enter 0 to '+max;return;}t.classList.remove('bad');k.marks[+t.dataset.m]=n;}
     clearTimeout(setT);setT=setTimeout(()=>{save({cands:[k]});refreshMarks();},300);return;}
