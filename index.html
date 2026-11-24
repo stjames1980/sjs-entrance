@@ -178,6 +178,7 @@ input,select,textarea{border-radius:12px;transition:border-color .15s,box-shadow
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px var(--ring)}
 button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .pill{letter-spacing:.01em}
+label.row{display:flex;flex-wrap:nowrap;align-items:flex-start;gap:10px;color:var(--ink)}label.row>input{margin-top:2px}
 input[type=checkbox],input[type=radio]{min-height:0!important;width:20px!important;height:20px;padding:0;accent-color:var(--blue);cursor:pointer;flex:none}
 input.chk{width:22px!important;height:22px}
 .topbar>.m-only{flex:none}
@@ -191,6 +192,20 @@ input.chk{width:22px!important;height:22px}
 #modal .box h3{font-size:20px;margin-bottom:14px}
 #toast{border-radius:14px;box-shadow:0 12px 30px -10px #0009;font-weight:500}
 .a4wrap{border-radius:18px}
+
+.qbtn{display:inline-flex;align-items:center;gap:8px;margin-left:auto;background:var(--card);border:1px solid var(--line);color:var(--mute);border-radius:12px;padding:8px 12px;min-height:40px;min-width:240px;font-size:13.5px;cursor:pointer;box-shadow:var(--shadow)}
+.qbtn svg{width:17px;height:17px}.qbtn kbd{margin-left:auto;font:600 11px Inter,sans-serif;background:var(--soft);color:var(--blueD);border-radius:6px;padding:2px 6px}
+.qbtn+.sync{margin-left:0}
+.thbtn{display:flex;align-items:center;gap:10px;color:#fff;background:#ffffff14;border:0;border-radius:12px;padding:9px 12px;font-size:13.5px;font-weight:600;cursor:pointer;text-align:left}
+.thbtn:hover{background:#ffffff24}.thbtn svg{width:17px;height:17px}
+.bkgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:14px}
+.bkbox{display:grid;gap:6px;align-content:start;background:var(--soft);border-radius:16px;padding:14px}
+.bkbox>b{font:700 15px Outfit,Inter,sans-serif;color:var(--blueD)}.bkbox>.muted{font-size:13px}.bkbox .row{margin-top:4px}.bkbox .btn:not(.pri){background:var(--card);box-shadow:var(--shadow)}
+.bkopt{display:flex!important;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:14px;padding:12px;cursor:pointer;color:var(--ink)!important}
+.bkopt:has(input:checked){border-color:var(--blue);background:var(--soft)}
+.qf{display:flex;gap:12px;align-items:flex-start;padding:12px 4px;border-bottom:1px solid var(--line)}
+.qfm{flex:none;width:44px;height:54px;border-radius:10px;background:var(--soft);display:grid;place-items:center;overflow:hidden;font:700 18px Outfit,sans-serif;color:var(--blueD)}
+.qfm img{width:100%;height:100%;object-fit:cover}
 /* ---- tablets and phones ---- */
 @media(max-width:1023px){
   .side{display:none}
@@ -205,6 +220,8 @@ input.chk{width:22px!important;height:22px}
   .topbar .back{flex:none;width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:#ffffff1f;color:#fff}
   .topbar .back svg{width:20px;height:20px}
   .sync{background:#ffffff1f;border:0;color:#fff;box-shadow:none;font-size:11.5px;padding:7px 10px;max-width:38vw}
+  .qbtn{min-width:0;width:38px;height:38px;padding:0;justify-content:center;background:#ffffff1f;border:0;color:#fff;box-shadow:none;border-radius:11px}.qbtn span,.qbtn kbd{display:none}.qbtn svg{width:19px;height:19px}
+  .sheetth{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:10px;padding:13px;border-radius:14px;background:var(--soft);color:var(--blueD);font-weight:700;border:0;font-size:15px}.sheetth svg{width:18px;height:18px}
   .k-d{display:none}.k-m{display:inline}
   main{padding:16px 14px calc(96px + env(safe-area-inset-bottom))}
   .bnav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;z-index:16;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-top:1px solid var(--line);padding:6px 6px max(8px,env(safe-area-inset-bottom));box-shadow:0 -10px 30px -18px #0d1b5866}
@@ -247,15 +264,15 @@ input.chk{width:22px!important;height:22px}
 <aside class="side" aria-label="Main menu">
   <div class="sbrand"><img class="logo" id="hLogo" alt="St. James H.S. School logo"><div><b id="hName">SJS Entrance Test</b><small id="hSub"></small></div></div>
   <nav class="navl" id="tabs"><div class="ng">Overview</div><a href="#dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.6"/><rect x="14" y="3" width="7" height="5" rx="1.6"/><rect x="14" y="12" width="7" height="9" rx="1.6"/><rect x="3" y="16" width="7" height="5" rx="1.6"/></svg><span>Dashboard</span></a><div class="ng">Before the test</div><a href="#candidates"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.4"/><path d="M2.8 20c.8-3.5 3.3-5.4 6.2-5.4s5.4 1.9 6.2 5.4"/><path d="M15.8 4.8a3.4 3.4 0 0 1 0 6.5M18 14.9c1.9.8 3 2.5 3.4 5.1"/></svg><span>Candidates</span></a><a href="#forms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg><span>Online Forms</span></a><a href="#admit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.2"/><circle cx="9" cy="11" r="2.2"/><path d="M5.8 16.2c.6-1.4 1.8-2.2 3.2-2.2s2.6.8 3.2 2.2M14.5 10h4M14.5 13.5h3"/></svg><span>Admit Cards</span></a><a href="#examday"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="2.2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4M9 15l2 2 4-4"/></svg><span>Exam Day</span></a><div class="ng">Results</div><a href="#marks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg><span>Marks Entry</span></a><a href="#results"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V11M10 20V5M16 20v-6M21 20H3"/></svg><span>Results</span></a><a href="#review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3.5h6v3H9z"/><path d="M15 5h2a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2"/><path d="M9 14l2 2 4-4"/></svg><span>Review &amp; Publish</span></a><div class="ng">Print &amp; share</div><a href="#notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2.2"/><path d="M8 21l4-4 4 4M7 9h10M7 12.5h6"/></svg><span>Notice Board</span></a><a href="#scorecards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5.5"/><path d="M8.6 13.4L7 21l5-2.5 5 2.5-1.6-7.6"/></svg><span>Score Cards</span></a><div class="ng">Settings</div><a href="#setup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h9M19 6h1M4 12h3M13 12h7M4 18h11M21 18h-1"/><circle cx="16" cy="6" r="2.2"/><circle cx="10" cy="12" r="2.2"/><circle cx="18" cy="18" r="2.2"/></svg><span>Setup</span></a><a href="#backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 8.5a4.8 4.8 0 0 1-.5 9.5z"/><path d="M12 11v5M9.8 13.2L12 11l2.2 2.2"/></svg><span>Online &amp; Backup</span></a></nav>
-  <div class="sfoot"><a href="https://stjames1980.github.io/sjs-school/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Back to SJS App</a></div>
+  <div class="sfoot"><button type="button" class="thbtn" data-theme-btn><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg><span>Theme: Auto</span></button><a href="https://stjames1980.github.io/sjs-school/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Back to SJS App</a></div>
 </aside>
 <div class="mainwrap">
-  <header class="topbar"><a class="back m-only" href="https://stjames1980.github.io/sjs-school/" aria-label="Back to SJS App"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><span class="m-only"><img class="logo" id="mLogo" alt=""></span><div class="tt"><small><span class="k-d" id="pgKick"></span><span class="k-m" id="pgKickM"></span></small><h1 id="pgTitle">Dashboard</h1></div><a class="sync" id="sync" href="#backup">This device only</a></header>
+  <header class="topbar"><a class="back m-only" href="https://stjames1980.github.io/sjs-school/" aria-label="Back to SJS App"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><span class="m-only"><img class="logo" id="mLogo" alt=""></span><div class="tt"><small><span class="k-d" id="pgKick"></span><span class="k-m" id="pgKickM"></span></small><h1 id="pgTitle">Dashboard</h1></div><button type="button" class="qbtn" id="qfBtn" aria-label="Find a candidate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20.5 20.5l-4.3-4.3"/></svg><span>Find a candidate…</span><kbd>/</kbd></button><a class="sync" id="sync" href="#backup">This device only</a></header>
   <main id="app"></main>
 </div>
 </div>
 <nav class="bnav navl" aria-label="Quick menu"><a href="#dashboard"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10.5L12 3.5l8.5 7"/><path d="M5.5 9v11h13V9"/><path d="M10 20v-6h4v6"/></svg></span>Home</a><a href="#candidates"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.4"/><path d="M2.8 20c.8-3.5 3.3-5.4 6.2-5.4s5.4 1.9 6.2 5.4"/><path d="M15.8 4.8a3.4 3.4 0 0 1 0 6.5M18 14.9c1.9.8 3 2.5 3.4 5.1"/></svg></span>Candidates</a><a href="#marks"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></span>Marks</a><a href="#results"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V11M10 20V5M16 20v-6M21 20H3"/></svg></span>Results</a><button type="button" id="moreBtn"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/></svg></span>More</button></nav>
-<div id="sheet" role="dialog" aria-label="All sections"><div class="sheetbox"><div class="grip" data-shx></div><div class="sheethd"><h3>All sections</h3><button class="btn sm" data-shx type="button">Close</button></div><nav class="sgrid navl"><div class="ng">Overview</div><div class="gi"><a href="#dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.6"/><rect x="14" y="3" width="7" height="5" rx="1.6"/><rect x="14" y="12" width="7" height="9" rx="1.6"/><rect x="3" y="16" width="7" height="5" rx="1.6"/></svg><span>Dashboard</span></a></div><div class="ng">Before the test</div><div class="gi"><a href="#candidates"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.4"/><path d="M2.8 20c.8-3.5 3.3-5.4 6.2-5.4s5.4 1.9 6.2 5.4"/><path d="M15.8 4.8a3.4 3.4 0 0 1 0 6.5M18 14.9c1.9.8 3 2.5 3.4 5.1"/></svg><span>Candidates</span></a><a href="#forms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg><span>Online Forms</span></a><a href="#admit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.2"/><circle cx="9" cy="11" r="2.2"/><path d="M5.8 16.2c.6-1.4 1.8-2.2 3.2-2.2s2.6.8 3.2 2.2M14.5 10h4M14.5 13.5h3"/></svg><span>Admit Cards</span></a><a href="#examday"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="2.2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4M9 15l2 2 4-4"/></svg><span>Exam Day</span></a></div><div class="ng">Results</div><div class="gi"><a href="#marks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg><span>Marks Entry</span></a><a href="#results"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V11M10 20V5M16 20v-6M21 20H3"/></svg><span>Results</span></a><a href="#review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3.5h6v3H9z"/><path d="M15 5h2a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2"/><path d="M9 14l2 2 4-4"/></svg><span>Review &amp; Publish</span></a></div><div class="ng">Print &amp; share</div><div class="gi"><a href="#notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2.2"/><path d="M8 21l4-4 4 4M7 9h10M7 12.5h6"/></svg><span>Notice Board</span></a><a href="#scorecards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5.5"/><path d="M8.6 13.4L7 21l5-2.5 5 2.5-1.6-7.6"/></svg><span>Score Cards</span></a></div><div class="ng">Settings</div><div class="gi"><a href="#setup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h9M19 6h1M4 12h3M13 12h7M4 18h11M21 18h-1"/><circle cx="16" cy="6" r="2.2"/><circle cx="10" cy="12" r="2.2"/><circle cx="18" cy="18" r="2.2"/></svg><span>Setup</span></a><a href="#backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 8.5a4.8 4.8 0 0 1-.5 9.5z"/><path d="M12 11v5M9.8 13.2L12 11l2.2 2.2"/></svg><span>Online &amp; Backup</span></a></div></nav><a class="sheetback" href="https://stjames1980.github.io/sjs-school/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Back to SJS App</a></div></div>
+<div id="sheet" role="dialog" aria-label="All sections"><div class="sheetbox"><div class="grip" data-shx></div><div class="sheethd"><h3>All sections</h3><button class="btn sm" data-shx type="button">Close</button></div><nav class="sgrid navl"><div class="ng">Overview</div><div class="gi"><a href="#dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.6"/><rect x="14" y="3" width="7" height="5" rx="1.6"/><rect x="14" y="12" width="7" height="9" rx="1.6"/><rect x="3" y="16" width="7" height="5" rx="1.6"/></svg><span>Dashboard</span></a></div><div class="ng">Before the test</div><div class="gi"><a href="#candidates"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.4"/><path d="M2.8 20c.8-3.5 3.3-5.4 6.2-5.4s5.4 1.9 6.2 5.4"/><path d="M15.8 4.8a3.4 3.4 0 0 1 0 6.5M18 14.9c1.9.8 3 2.5 3.4 5.1"/></svg><span>Candidates</span></a><a href="#forms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg><span>Online Forms</span></a><a href="#admit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.2"/><circle cx="9" cy="11" r="2.2"/><path d="M5.8 16.2c.6-1.4 1.8-2.2 3.2-2.2s2.6.8 3.2 2.2M14.5 10h4M14.5 13.5h3"/></svg><span>Admit Cards</span></a><a href="#examday"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="2.2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4M9 15l2 2 4-4"/></svg><span>Exam Day</span></a></div><div class="ng">Results</div><div class="gi"><a href="#marks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg><span>Marks Entry</span></a><a href="#results"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V11M10 20V5M16 20v-6M21 20H3"/></svg><span>Results</span></a><a href="#review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3.5h6v3H9z"/><path d="M15 5h2a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2"/><path d="M9 14l2 2 4-4"/></svg><span>Review &amp; Publish</span></a></div><div class="ng">Print &amp; share</div><div class="gi"><a href="#notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2.2"/><path d="M8 21l4-4 4 4M7 9h10M7 12.5h6"/></svg><span>Notice Board</span></a><a href="#scorecards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5.5"/><path d="M8.6 13.4L7 21l5-2.5 5 2.5-1.6-7.6"/></svg><span>Score Cards</span></a></div><div class="ng">Settings</div><div class="gi"><a href="#setup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h9M19 6h1M4 12h3M13 12h7M4 18h11M21 18h-1"/><circle cx="16" cy="6" r="2.2"/><circle cx="10" cy="12" r="2.2"/><circle cx="18" cy="18" r="2.2"/></svg><span>Setup</span></a><a href="#backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 8.5a4.8 4.8 0 0 1-.5 9.5z"/><path d="M12 11v5M9.8 13.2L12 11l2.2 2.2"/></svg><span>Online &amp; Backup</span></a></div></nav><button type="button" class="sheetth" data-theme-btn><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg><span>Theme: Auto</span></button><a class="sheetback" href="https://stjames1980.github.io/sjs-school/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Back to SJS App</a></div></div>
 <div id="modal"><div class="box" id="mbox"></div></div>
 <div id="toast"></div>
 <script>
@@ -275,6 +292,11 @@ input.chk{width:22px!important;height:22px}
   });
   function syncSt(){var el=document.getElementById('sync');if(!el)return;var t=el.textContent||'';el.dataset.st=/Saving|Connecting/i.test(t)?'busy':/Live|Saved to your account/i.test(t)?'live':'off';el.title=t;el.setAttribute('aria-label',t);}
   window.addEventListener('DOMContentLoaded',function(){var el=document.getElementById('sync');if(el){new MutationObserver(syncSt).observe(el,{childList:true,characterData:true,subtree:true});syncSt();}});
+  var TH=['auto','light','dark'],THL={auto:'Auto',light:'Light',dark:'Dark'};
+  function thGet(){try{return localStorage.getItem('sjs_entrance_theme')||'auto';}catch(e){return 'auto';}}
+  function thApply(){var t=thGet();if(t==='auto')delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme=t;document.querySelectorAll('[data-theme-btn] span').forEach(function(s){s.textContent='Theme: '+THL[t];});}
+  thApply();window.addEventListener('DOMContentLoaded',thApply);
+  document.addEventListener('click',function(e){if(e.target.closest('[data-theme-btn]')){var t=thGet(),n=TH[(TH.indexOf(t)+1)%3];try{localStorage.setItem('sjs_entrance_theme',n);}catch(err){}thApply();}});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){var sh=document.getElementById('sheet');if(sh)sh.classList.remove('on');}});
 })();
 </script>
@@ -1062,10 +1084,10 @@ async function flush(){
   if(!Live.on||Live.busy)return;Live.busy=true;
   try{
     const main=mainRef();
-    if(Live.full){Live.full=false;Live.meta=false;Live.dirty={};Live.del={};
-      await main.set(metaObj());await pushPublic();for(const c of S.classes)await main.collection('c').doc(c.code).set({cands:candsMap(c.code)});
+    if(Live.full){Live.full=false;Live.meta=false;Live.dirty={};Live.del={};Live.wAll=true;
+      try{await main.set(metaObj());await pushPublic();for(const c of S.classes)await main.collection('c').doc(c.code).set({cands:candsMap(c.code)});
       try{const ps=await main.collection('p').get();for(const d of ps.docs)if(!PHOTOS[d.id])await d.ref.delete();}catch(e){}
-      for(const pid of Object.keys(PHOTOS))if(S.cands.some(k=>k.id===pid))await main.collection('p').doc(pid).set({d:PHOTOS[pid]});}
+      for(const pid of Object.keys(PHOTOS))if(S.cands.some(k=>k.id===pid))await main.collection('p').doc(pid).set({d:PHOTOS[pid]});}finally{Live.wAll=false;}}
     if(Live.meta){Live.meta=false;await main.set(metaObj());await pushPublic();}
     for(const code of Object.keys(Live.dirty)){const ids=[...Live.dirty[code]];delete Live.dirty[code];const upd={};
       ids.forEach(id=>{const k=S.cands.find(x=>x.id===id&&x.cls===code);if(k)upd[id]=plain(k);});
@@ -1136,11 +1158,11 @@ async function liveStart(interactive){
 function unsubAll(){Live.unsub.forEach(f=>{try{f();}catch(e){}});Live.unsub=[];Live.appsOn=false;}
 function subscribe(){
   unsubAll();const main=mainRef();
-  Live.unsub.push(main.onSnapshot(d=>{if(!d.exists||Live.meta||Live.full)return;const m=d.data()||{};
+  Live.unsub.push(main.onSnapshot(d=>{if(!d.exists||Live.meta||Live.full||Live.wAll)return;const m=d.data()||{};
     const n=normalize(Object.assign({},m,{cands:[]}));S.rooms=n.rooms;S.staff=n.staff;S.sched=n.sched;S.duty=n.duty;S.jobs=n.jobs;S.exam=n.exam;S.seatFix=n.seatFix;S.apply=n.apply;
     S.school=n.school;S.test=n.test;S.classes=n.classes;S.seq=m.seq||{};S.sample=!!m.sample;S.teachersMarks=!!m.teachersMarks;S.pub=(m.pub&&typeof m.pub==='object')?m.pub:{};afterRemote();},e=>liveFail(e)));
   Live.unsub.push(main.collection('p').onSnapshot(snap=>{snap.docChanges().forEach(c=>{if(c.type==='removed')delete PHOTOS[c.doc.id];else PHOTOS[c.doc.id]=(c.doc.data()||{}).d;});photosLocal();},()=>{}));
-  Live.unsub.push(main.collection('c').onSnapshot(snap=>{if(Live.full)return;let ch=false;
+  Live.unsub.push(main.collection('c').onSnapshot(snap=>{if(Live.full||Live.wAll)return;let ch=false;
     snap.docChanges().forEach(c=>{applyClass(c.doc.id,c.type==='removed'?{}:((c.doc.data()||{}).cands||{}));ch=true;});if(ch)afterRemote();},e=>liveFail(e)));
 }
 function applyClass(code,map){
@@ -1226,8 +1248,8 @@ function vDashboard(){
     <div class="legend" style="display:grid;margin:0">${parts.map(p=>`<span><i style="background:${p[2]}"></i>${p[0]}: <b>${p[1]}</b></span>`).join('')}</div></div>
     <h3 style="margin-top:18px">Grade distribution</h3><div class="bars">${grades}</div></div></div>
   ${(()=>{const plan=seatPlan(S,R),Dp=dutyPlan(S,plan),uns=plan.sessions.reduce((a,x)=>a+x.unseated.length,0),short=plan.sessions.reduce((a,x)=>a+(x.short||0),0),ph=S.cands.filter(k=>PHOTOS[k.id]).length,pubN=R.order.filter(c=>R.by[c].stats.pub).length,appN=R.order.filter(c=>R.by[c].stats.applied).length;
-    const it=[[(S.rooms||[]).length&&!uns,'Rooms & seats',(S.rooms||[]).length?plan.cap+' seats for '+S.cands.length+' candidates'+(uns?' · '+uns+' without seat':''):'No rooms yet'],[!!S.seatFix,'Seat numbers',S.seatFix?'Frozen':'Not frozen yet'],[Dp.staff.length&&!short,'Invigilation',Dp.staff.length?Dp.staff.length+' teachers'+(short?' · '+short+' places empty':' · all rooms covered'):'No teachers added'],[(S.jobs||[]).length&&!jobPlan(S,Dp).empty,'Other duties',(S.jobs||[]).length?(S.jobs.length+' duties'+(jobPlan(S,Dp).empty?' · '+jobPlan(S,Dp).empty+' without teacher':' · all assigned')):'Not set yet'],[ph===S.cands.length&&ph>0,'Photos',ph+' of '+S.cands.length+' candidates'],[T.pending===0&&T.applied>0,'Marks',T.pending?T.pending+' pending':'All entered'],[pubN===appN&&appN>0,'Results published',pubN+' of '+appN+' classes']];
-    return `<div class="card"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Entrance test checklist</h3><button class="btn sm" data-go="examday">Exam Day</button></div><div class="kpis" style="margin:12px 0 0;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))">${it.map(x=>`<div class="kpi ${x[0]?'g':'a'}" style="padding:10px 12px"><span style="font-weight:700;color:${x[0]?'var(--green)':'var(--amber)'}">${x[0]?'✓':'•'} ${esc(x[1])}</span><div style="font-size:13px;margin-top:2px">${esc(x[2])}</div></div>`).join('')}</div></div>`;})()}
+    const it=[[(S.rooms||[]).length&&!uns,'Rooms & seats',(S.rooms||[]).length?plan.cap+' seats for '+S.cands.length+' candidates'+(uns?' · '+uns+' without seat':''):'No rooms yet'],[!!S.seatFix,'Seat numbers',S.seatFix?'Frozen':'Not frozen yet'],[Dp.staff.length&&!short,'Invigilation',Dp.staff.length?Dp.staff.length+' teachers'+(short?' · '+short+' places empty':' · all rooms covered'):'No teachers added'],[(S.jobs||[]).length&&!jobPlan(S,Dp).empty,'Other duties',(S.jobs||[]).length?(S.jobs.length+' duties'+(jobPlan(S,Dp).empty?' · '+jobPlan(S,Dp).empty+' without teacher':' · all assigned')):'Not set yet'],[ph===S.cands.length&&ph>0,'Photos',ph+' of '+S.cands.length+' candidates'],[T.pending===0&&T.applied>0,'Marks',T.pending?T.pending+' pending':'All entered'],[pubN===appN&&appN>0,'Results published',pubN+' of '+appN+' classes'],[lastDl()&&Date.now()-lastDl()<7*864e5,'Backup',lastDl()?'Downloaded '+ago(lastDl()):'Not downloaded yet']];
+    return `<div class="card"><div class="row" style="justify-content:space-between"><div class="row"><h3 style="margin:0">Entrance test checklist</h3>${(()=>{const dd=Math.round((new Date(S.test.date+'T00:00')-new Date(todayISO()+'T00:00'))/864e5);return isNaN(dd)?'':`<span class="pill ${dd>0?'p-q':dd===0?'p-sel':'p-pen'}">${dd>1?'Test in '+dd+' days':dd===1?'Test tomorrow':dd===0?'Test is today':'Test held '+(-dd)+' day'+(dd===-1?'':'s')+' ago'}</span>`;})()}</div><div class="row"><button class="btn sm" data-go="backup">Backup</button><button class="btn sm" data-go="examday">Exam Day</button></div></div><div class="kpis" style="margin:12px 0 0;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))">${it.map(x=>`<div class="kpi ${x[0]?'g':'a'}" style="padding:10px 12px"><span style="font-weight:700;color:${x[0]?'var(--green)':'var(--amber)'}">${x[0]?'✓':'•'} ${esc(x[1])}</span><div style="font-size:13px;margin-top:2px">${esc(x[2])}</div></div>`).join('')}</div></div>`;})()}
   <div class="card"><h3>Class summary</h3><div class="scroll"><table class="stack"><thead><tr><th>Class</th><th class="n">Seats</th><th class="n">Applied</th><th class="n">Appeared</th><th class="n">Absent</th><th class="n">Qualified</th><th class="n">Selected</th><th class="n">Waiting</th><th class="n">Vacant</th><th class="n">Avg %</th><th>Topper</th><th>Result</th></tr></thead><tbody>${rows}</tbody></table></div></div>
   <div class="grid2"><div class="card"><h3>Top 10 candidates (all classes)</h3><ol class="top10">${top}</ol></div>
    <div class="card"><h3>Applicants profile</h3><div class="bars">${[['Boys',T.gender.Male],['Girls',T.gender.Female]].concat(T.gender.Other?[['Not set',T.gender.Other]]:[]).map(x=>`<div class="bar"><span>${x[0]}</span><div class="t"><i style="width:${x[1]*100/gsum}%;background:var(--blue)"></i></div><span class="n">${x[1]}</span></div>`).join('')}</div>
@@ -1429,11 +1451,10 @@ function vBackup(){
    ${Live.on&&Live.mgr?`<label class="row" style="margin-top:14px"><input type="checkbox" class="chk" id="tmarks" ${S.teachersMarks?'checked':''}> <span><b>Teachers can enter marks</b> — every confirmed SJS App teacher may type marks (only the Admin and Exam In-Charge change setup and candidates).</span></label>`:''}
    <p class="muted" style="font-size:13px;margin-bottom:0">Uses the same logins as SJS App (Staff ID or email + password). If you are already signed in to SJS App on this phone, it connects by itself. Admin and Exam In-Charge: full access · Principal and teachers: view only (or marks entry when allowed).</p></div>
   ${!Live.on||Live.admin?`<details class="card"><summary><b>One-time Firebase setup (Admin)</b></summary><p class="muted">In Firebase console → Firestore Database → Rules, paste this block just above the last two closing braces <code>}</code> <code>}</code>, then Publish.</p><pre style="background:var(--soft);padding:12px;border-radius:10px;overflow:auto;font-size:12px">${esc(RULES_TXT)}</pre><button class="btn" data-a="copyrules">Copy rules</button></details>`:''}
+  ${backupCard()}
   <div class="grid2"><div class="card"><h3>How it works</h3><ol class="steps"><li><span><b>Setup</b> — check school details, test date, seats, waiting list, qualifying % and subjects for each class.</span></li><li><span><b>Candidates</b> — add each applicant, or <b>Download template</b>, fill it in Excel and <b>Upload Excel</b> (the Google Form response file works too). Roll numbers like NUR-001 are given automatically.</span></li><li><span><b>Exam Day</b> — set class timings, add rooms (seat plan is automatic), freeze seat numbers, share invigilation duty and count question booklets.</span></li><li><span><b>Admit cards</b> — print two per A4 sheet with photo, room and seat; print room seat charts, attendance sheets and blank award lists.</span></li><li><span><b>Marks entry</b> — type marks or tick Absent. Total, %, grade, rank, selection and waiting list are worked out at once.</span></li><li><span><b>Review &amp; Publish</b> — check each class, change Select / Waiting list / Not selected where needed, then publish. Until then printouts say PROVISIONAL.</span></li><li><span><b>Notice board / Results / Score cards</b> — download A4 PDF or Excel for the notice board, file copy and parents.</span></li></ol></div>
-  <div class="card"><h3>Keep your data safe</h3><p class="muted">Download a backup file regularly, especially before clearing data or changing devices.</p>
-   <div class="row"><button class="btn pri" data-a="bkp">Download backup (.json)</button>${canEdit()?'<label class="btn" style="display:inline-flex;align-items:center">Restore backup<input type="file" id="restore" accept=".json,application/json" hidden></label>':''}</div>
-   ${canEdit()?`<h3 style="margin-top:20px">Start fresh</h3><div class="row"><button class="btn red" data-a="clear">Clear all candidates</button><button class="btn" data-a="sample">Load sample data</button></div>
-   <p class="muted" style="font-size:13px">Clearing keeps your school details, test details, seats and subjects.${Live.on?' <b>Online: this changes the data for everyone.</b>':''}</p>`:''}</div></div>`;
+  <div class="card"><h3>Start fresh</h3>${canEdit()?`<div class="row"><button class="btn red" data-a="clear">Clear all candidates</button><button class="btn" data-a="sample">Load sample data</button></div>
+   <p class="muted" style="font-size:13px">Clearing keeps your school details, test details, seats and subjects.${Live.on?' <b>Online: this changes the data for everyone.</b>':''}</p>`:'<p class="muted">Only the Admin or Exam In-Charge can clear data.</p>'}</div></div>`;
 }
 const persist=o=>save(o);
 const whoAmI=()=>Live.user?loginName(Live.user.email):'';
@@ -1659,6 +1680,154 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-jobed],[da
   if(t.dataset.jobed){jobForm(t.dataset.jobed);return;}
   const j=(S.jobs||[]).find(x=>x.id===t.dataset.jobdel);if(j)ask('Remove the duty “'+j.name+'”?',()=>{S.jobs=S.jobs.filter(x=>x.id!==j.id);persist({meta:true});route();},'Remove');
 });
+/* ---------- BACKUP & RESTORE: files, automatic restore points on this device, online backups ---------- */
+const hasLive=()=>typeof Live!=='undefined';
+const isLive=()=>hasLive()&&Live.on;
+const isMgr=()=>isLive()&&Live.mgr;
+const saveAll=()=>hasLive()?save({all:true}):save();
+const BKDB={p:null,
+  open(){if(!this.p)this.p=new Promise((res,rej)=>{try{const r=indexedDB.open('sjs_entrance_backups',1);r.onupgradeneeded=()=>{r.result.createObjectStore('snaps',{keyPath:'id'});};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);}catch(e){rej(e);}});return this.p;},
+  async run(mode,fn){const db=await this.open();return new Promise((res,rej)=>{const t=db.transaction('snaps',mode),q=fn(t.objectStore('snaps'));t.oncomplete=()=>res(q&&q.result);t.onerror=()=>rej(t.error);t.onabort=()=>rej(t.error);});},
+  all(){return this.run('readonly',s=>s.getAll());},
+  get(id){return this.run('readonly',s=>s.get(id));},
+  put(o){return this.run('readwrite',s=>s.put(o));},
+  del(id){return this.run('readwrite',s=>s.delete(id));}
+};
+const BK_KEEP=25,BK_LAST=KEY+'_lastbk';
+function bkState(){const o=JSON.parse(JSON.stringify(S));delete o.photos;return o;}
+function bkInfo(st){const cands=st.cands||[];return {n:cands.length,mk:cands.filter(k=>(k.marks||[]).some(v=>v!==null&&v!==''&&v!==undefined)).length,session:(st.test||{}).session||'',sample:!!st.sample};}
+function bkHash(s){let h=0;for(let i=0;i<s.length;i+=7)h=(h*31+s.charCodeAt(i))|0;return s.length+':'+h;}
+let bkLastHash='';
+async function snap(why){
+  try{if(!S||!S.cands)return;const st=bkState(),json=JSON.stringify(st),h=bkHash(json);if(h===bkLastHash)return;
+    const all=await BKDB.all();all.sort((a,b)=>b.id-a.id);if(all[0]&&all[0].h===h){bkLastHash=h;return;}
+    await BKDB.put(Object.assign({id:Date.now(),at:Date.now(),why,h,json},bkInfo(st)));bkLastHash=h;
+    for(const o of all.slice(BK_KEEP-1))await BKDB.del(o.id);
+  }catch(e){}
+}
+function lastDl(){try{return +localStorage.getItem(BK_LAST)||0;}catch(e){return 0;}}
+function markDl(){try{localStorage.setItem(BK_LAST,String(Date.now()));}catch(e){}}
+const ago=t=>{if(!t)return 'never';const m=Math.round((Date.now()-t)/60000);if(m<1)return 'just now';if(m<60)return m+' min ago';const h=Math.round(m/60);if(h<24)return h+' hour'+(h>1?'s':'')+' ago';const d=Math.round(h/24);return d+' day'+(d>1?'s':'')+' ago';};
+const whenTxt=t=>new Date(t).toLocaleString(undefined,{day:'numeric',month:'short',year:'numeric',hour:'numeric',minute:'2-digit'});
+function bkName(photos){const d=new Date(),p=n=>('0'+n).slice(-2);return 'SJS_Entrance_Backup_'+String(S.test.session).replace(/[^0-9A-Za-z-]/g,'')+'_'+p(d.getDate())+'-'+p(d.getMonth()+1)+'-'+d.getFullYear()+'_'+p(d.getHours())+p(d.getMinutes())+(photos?'':'_no_photos')+'.json';}
+function bkDownload(photos,st,name){const o=Object.assign({},st||bkState(),{backupMade:new Date().toISOString(),backupApp:'SJS Entrance Test'});if(photos)o.photos=PHOTOS;saveFile(name||bkName(photos),JSON.stringify(o),'application/json');if(!st){markDl();setTimeout(()=>{if((location.hash||'').slice(1)==='backup')route();},400);}}
+/* online backups (SJS App, managers only) */
+const bkRef=()=>mainRef().collection('bk');
+let BK_ON={list:[],err:'',at:0};
+async function bkOnlineList(){if(!isLive())return [];try{const q=await bkRef().orderBy('at','desc').limit(20).get();BK_ON.list=q.docs.map(d=>{const o=Object.assign({oid:d.id},d.data());if(typeof o.at!=='number')o.at=o.at&&o.at.toDate?o.at.toDate().getTime():(+o.oid||0);return o;}).sort((a,b)=>b.at-a.at);BK_ON.err='';}catch(e){BK_ON.err=(e&&e.code)||'error';}BK_ON.at=Date.now();return BK_ON.list;}
+async function bkOnlineSave(why,quiet){
+  if(!isMgr())return false;const st=bkState(),json=JSON.stringify(st);
+  if(json.length>900000){if(!quiet)toast('Too much data for one online backup — download a backup file instead');return false;}
+  try{const at=Date.now();await bkRef().doc(String(at)).set(Object.assign({at,why,json,by:(Live.user&&Live.user.email)||''},bkInfo(st)));
+    const L=await bkOnlineList();for(const o of L.slice(15))await bkRef().doc(o.oid).delete();if(!quiet)toast('Backup saved online');markDl();return true;}
+  catch(e){if(!quiet)toast('Could not save online ('+((e&&e.code)||'error')+'). The Admin may need to update the Firebase rules.');return false;}
+}
+/* automatic: a restore point every day on this device, an online backup every day (managers) */
+async function bkAuto(){
+  if(!S||!S.cands||!S.cands.length||S.sample)return;
+  try{const all=await BKDB.all();const last=all.reduce((a,o)=>Math.max(a,o.at),0);if(Date.now()-last>20*3600e3)await snap('Daily (automatic)');}catch(e){}
+  if(isMgr()){try{if(!BK_ON.at||Date.now()-BK_ON.at>3600e3)await bkOnlineList();const last=BK_ON.list[0]?BK_ON.list[0].at:0;if(!BK_ON.err&&Date.now()-last>20*3600e3)await bkOnlineSave('Daily (automatic)',true);}catch(e){}}
+}
+setTimeout(bkAuto,6000);setInterval(bkAuto,10*60e3);
+/* screen */
+function backupCard(){
+  const d=lastDl(),old=!d||Date.now()-d>7*864e5,ed=canEdit();
+  setTimeout(bkFill,0);
+  return `<div class="card" id="bkCard"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Backup &amp; restore</h3><span class="pill ${old?'p-wl':'p-sel'}">Last backup: ${esc(ago(d))}</span></div>
+   ${old&&S.cands.length&&!S.sample?`<div class="banner" style="margin:12px 0 0"><span><b>Download a backup now.</b> Keep the file in Google Drive or on a pen drive so nothing is lost if the phone or computer is lost.</span></div>`:''}
+   <div class="bkgrid">
+    <div class="bkbox"><b>⬇ Download backup</b><span class="muted">One file with everything: setup, candidates, marks, review decisions, rooms, duties${Object.keys(PHOTOS).length?' and '+Object.keys(PHOTOS).length+' photos':''}.</span><div class="row"><button class="btn pri" data-a="bkfull">Download full backup</button>${Object.keys(PHOTOS).length?'<button class="btn" data-a="bklite">Without photos (smaller)</button>':''}</div></div>
+    ${ed?`<div class="bkbox"><b>⬆ Restore from a file</b><span class="muted">Choose a backup file. You will see what is inside before anything changes, and a restore point of the current data is kept.</span><div class="row"><label class="btn">Choose backup file<input type="file" id="restore" accept=".json,application/json" hidden></label></div></div>`:''}
+    ${ed?`<div class="bkbox"><b>⟲ Restore points</b><span class="muted">Saved by themselves on this device every day and before clearing, uploading, loading sample or restoring. The last ${BK_KEEP} are kept.</span><div class="row"><button class="btn" data-a="bksnap">Make a restore point now</button></div></div>`:''}
+    ${isMgr()?`<div class="bkbox"><b>☁ Online backups</b><span class="muted">Saved in SJS App's Firebase every day by itself. Restore from any phone or computer, even if this device is lost.</span><div class="row"><button class="btn" data-a="bkonline">Save backup online now</button></div></div>`:''}
+   </div>
+   ${ed?`<h3 style="margin:18px 0 8px">Restore history</h3><div id="bkList"><p class="muted">Loading…</p></div>`:''}</div>`;
+}
+async function bkFill(){
+  const el=document.getElementById('bkList');if(!el)return;
+  let loc=[];try{loc=await BKDB.all();}catch(e){el.innerHTML='<p class="muted">Restore points are not available in this browser. Use Download backup.</p>';return;}
+  let on=[];if(isMgr()){on=await bkOnlineList();}
+  const rows=[...loc.map(o=>Object.assign({src:'dev'},o)),...on.map(o=>Object.assign({src:'on'},o))].sort((a,b)=>b.at-a.at);
+  const el2=document.getElementById('bkList');if(!el2)return;
+  el2.innerHTML=rows.length?`<div class="scroll"><table><thead><tr><th>When</th><th>Why</th><th class="n">Candidates</th><th class="n">With marks</th><th>Kept</th><th></th></tr></thead><tbody>${rows.map(o=>`<tr><td style="white-space:nowrap"><b>${esc(whenTxt(o.at))}</b><div class="muted" style="font-size:12px">${esc(ago(o.at))}</div></td><td>${esc(o.why||'')}${o.sample?' <span class="pill p-pen">sample</span>':''}</td><td class="n">${o.n}</td><td class="n">${o.mk}</td><td>${o.src==='on'?'<span class="pill p-q">☁ Online</span>':'<span class="pill p-pen">This device</span>'}</td>
+    <td class="n" style="white-space:nowrap"><button class="btn sm pri" data-bkr="${o.src}:${esc(String(o.src==='on'?o.oid:o.id))}">Restore</button> <button class="btn sm" data-bkd="${o.src}:${esc(String(o.src==='on'?o.oid:o.id))}" title="Download this as a file" aria-label="Download">⬇</button>${o.src==='dev'||isMgr()?` <button class="btn sm red" data-bkx="${o.src}:${esc(String(o.src==='on'?o.oid:o.id))}" aria-label="Delete">✕</button>`:''}</td></tr>`).join('')}</tbody></table></div>`
+   :'<p class="muted">No restore points yet. One is made by itself every day once you have candidates, or tap <b>Make a restore point now</b>.</p>';
+  if(BK_ON.err&&isMgr())el2.insertAdjacentHTML('beforeend',`<p class="muted" style="color:var(--red)">Online backups could not be read (${esc(BK_ON.err)}).</p>`);
+}
+async function bkGet(key){const [src,id]=key.split(':');if(src==='on'){const o=BK_ON.list.find(x=>x.oid===id)||(await bkRef().doc(id).get()).data();return o;}return BKDB.get(+id);}
+/* restore with preview */
+function restorePreview(raw,label){
+  let st;try{st=normalize(raw);if(!st.classes.length)throw 0;}catch(e){toast('That file is not a valid backup');return;}
+  const ph=(raw.photos&&typeof raw.photos==='object')?Object.keys(raw.photos).length:0,a=bkInfo(st),b=bkInfo(S);
+  const pubN=Object.keys(st.pub||{}).length,line=(l,x,y)=>`<tr><td>${l}</td><td class="n"><b>${x}</b></td><td class="n muted">${y}</td></tr>`;
+  modal(`<h3>Restore backup</h3><p class="muted" style="margin-top:-6px">${esc(label)}</p>
+   <div class="scroll"><table><thead><tr><th></th><th class="n">In backup</th><th class="n">Now</th></tr></thead><tbody>
+    ${line('Session',esc(st.test.session),esc(S.test.session))}${line('Candidates',a.n,b.n)}${line('Candidates with marks',a.mk,b.mk)}${line('Photos',ph||(raw.photos?0:'not included'),Object.keys(PHOTOS).length)}
+    ${line('Rooms · teachers · other duties',`${(st.rooms||[]).length} · ${(st.staff||[]).length} · ${(st.jobs||[]).length}`,`${(S.rooms||[]).length} · ${(S.staff||[]).length} · ${(S.jobs||[]).length}`)}${line('Published classes',pubN,Object.keys(S.pub||{}).length)}
+   </tbody></table></div>
+   ${a.sample?'<div class="banner" style="margin-top:10px"><span>This backup has <b>sample</b> candidates.</span></div>':''}
+   <div style="display:grid;gap:10px;margin:14px 0">
+    <label class="bkopt"><input type="radio" name="rmode" value="all" checked><span><b>Replace everything with the backup</b><br><span class="muted">Current data becomes exactly as in the backup.</span></span></label>
+    <label class="bkopt"><input type="radio" name="rmode" value="merge"><span><b>Add what is missing only</b><br><span class="muted">Keeps current data. Adds candidates that are only in the backup and fills empty marks from it. Good for joining work done on two devices.</span></span></label>
+   </div>
+   ${isLive()?'<div class="banner" style="background:var(--redS);color:var(--red)"><span><b>Online:</b> this changes the data for everyone in SJS App.</span></div>':''}
+   <p class="muted" style="font-size:13px">A restore point of the current data is saved first, so you can go back.</p>
+   <div class="row" style="justify-content:flex-end"><button class="btn" data-x="close">Cancel</button><button class="btn pri" id="rGo">Restore now</button></div>`);
+  $('#rGo').onclick=async()=>{const mode=(document.querySelector('input[name=rmode]:checked')||{}).value;closeModal();await snap('Before restore');bkLastHash='';
+    if(mode==='merge'){const r=mergeBackup(st,raw.photos);saveAll();route();toast(r.add+' candidate(s) added · '+r.fill+' marks filled');}
+    else{const keepTm=!!S.teachersMarks;S=st;S.sample=!!st.sample;if(hasLive())S.teachersMarks=keepTm;if(raw.photos&&typeof raw.photos==='object'){PHOTOS=raw.photos;photosLocal();}saveAll();route();toast('Backup restored');}};
+}
+function mergeBackup(st,photos){
+  const have=new Map(S.cands.map(k=>[k.id,k])),rolls=new Set(S.cands.map(k=>k.cls+'|'+k.roll));let add=0,fill=0;const ch=[];
+  st.cands.forEach(k=>{const c=have.get(k.id);
+    if(!c){if(!S.classes.some(x=>x.code===k.cls))return;const n=JSON.parse(JSON.stringify(k));if(rolls.has(n.cls+'|'+n.roll))n.roll=nextRoll(S,n.cls);rolls.add(n.cls+'|'+n.roll);S.cands.push(n);ch.push(n);add++;
+      if(photos&&photos[k.id]&&!PHOTOS[k.id])PHOTOS[k.id]=photos[k.id];return;}
+    let f=0;(k.marks||[]).forEach((v,i)=>{if(v!==null&&v!==''&&v!==undefined&&(c.marks[i]===null||c.marks[i]===''||c.marks[i]===undefined)){c.marks[i]=v;f++;}});
+    if(f){fill+=f;ch.push(c);}if(photos&&photos[k.id]&&!PHOTOS[k.id])PHOTOS[k.id]=photos[k.id];});
+  ['rooms','staff','jobs'].forEach(f=>{if(!(S[f]||[]).length&&(st[f]||[]).length)S[f]=st[f];});
+  photosLocal();return {add,fill};
+}
+const backupActions={
+  bkp:()=>bkDownload(true),bkfull:()=>bkDownload(true),bklite:()=>bkDownload(false),
+  bksnap:async()=>{bkLastHash='';await snap('Made by hand');toast('Restore point saved');bkFill();},
+  bkonline:async()=>{if(await bkOnlineSave('Saved by hand'))bkFill();}
+};
+document.addEventListener('click',async e=>{const t=e.target.closest('[data-bkr],[data-bkd],[data-bkx]');if(!t)return;
+  try{
+  if(t.dataset.bkr){if(!canEdit())return;const o=await bkGet(t.dataset.bkr);if(!o){toast('Not found');return;}restorePreview(JSON.parse(o.json),(o.why||'Restore point')+' · '+whenTxt(o.at)+(t.dataset.bkr.startsWith('on')?' · online':' · this device'));return;}
+  if(t.dataset.bkd){const o=await bkGet(t.dataset.bkd);if(!o)return;const d=new Date(o.at),p=n=>('0'+n).slice(-2);bkDownload(false,JSON.parse(o.json),'SJS_Entrance_Restore_Point_'+p(d.getDate())+'-'+p(d.getMonth()+1)+'-'+d.getFullYear()+'_'+p(d.getHours())+p(d.getMinutes())+'.json');return;}
+  if(t.dataset.bkx){const [src,id]=t.dataset.bkx.split(':');ask('Delete this restore point?',async()=>{try{if(src==='on')await bkRef().doc(id).delete();else await BKDB.del(+id);}catch(err){toast('Could not delete');}bkFill();},'Delete');}
+  }catch(err){toast('Could not open this backup');}
+});
+/* ---------- QUICK FIND: search any candidate from any page ---------- */
+function quickFind(q0){
+  modal(`<div class="row" style="justify-content:space-between;margin-bottom:10px"><h3 style="margin:0">Find a candidate</h3><button class="btn sm" data-x="close">Close</button></div>
+   <input id="qfIn" type="search" placeholder="Name, roll no., father's name, phone or form no." autocomplete="off" style="width:100%" value="${esc(q0||'')}">
+   <div id="qfRes" style="margin-top:12px"></div>`);
+  const plan=seatPlan(S,R),inp=$('#qfIn');
+  const run=()=>{const q=inp.value.toLowerCase().trim(),el=$('#qfRes');if(!el)return;
+    if(!q){el.innerHTML=`<p class="muted">${S.cands.length} candidates. Start typing to search all classes.</p>`;return;}
+    const d=q.replace(/\D/g,'');
+    const hits=R.all.filter(r=>{const k=r.k;return (k.name+' '+k.roll+' '+(k.father||'')+' '+(k.mother||'')+' '+(k.form||'')).toLowerCase().includes(q)||(d.length>=4&&String(k.phone||'').includes(d));}).slice(0,15);
+    el.innerHTML=hits.length?hits.map(r=>{const k=r.k,st=plan.by[k.id];return `<div class="qf">
+      <div class="qfm">${PHOTOS[k.id]?`<img src="${esc(PHOTOS[k.id])}" alt="">`:`<span>${esc((k.name||'?').trim().charAt(0).toUpperCase())}</span>`}</div>
+      <div style="flex:1;min-width:0"><div><b>${esc(k.name)}</b> ${pill(r)}</div>
+       <div class="muted" style="font-size:12.5px">${esc(k.roll)} · ${esc(r.cls.name)}${k.father?' · F: '+esc(k.father):''}${k.phone?' · '+esc(k.phone):''}</div>
+       <div class="muted" style="font-size:12.5px">${r.rank?`Marks ${r.tot}/${r.max} (${fix2(r.pct)}%) · Rank ${r.rank}`:k.absent?'Absent':'Marks not entered'}${st?` · <b style="color:var(--red)">${esc(st.room.name)}, Seat ${st.seat}</b>`:''}</div>
+       <div class="row" style="margin-top:6px">${canEdit()?`<button class="btn sm" data-qf="edit" data-id="${esc(k.id)}">Edit</button>`:''}<button class="btn sm" data-qf="marks" data-id="${esc(k.id)}">Marks</button><button class="btn sm" data-qf="card" data-id="${esc(k.id)}">Score card</button></div></div></div>`;}).join('')+(hits.length===15?'<p class="muted">Showing the first 15 — type more to narrow down.</p>':'')
+      :'<p class="muted">No candidate found.</p>';};
+  inp.oninput=run;run();setTimeout(()=>inp.focus(),50);
+}
+document.addEventListener('click',e=>{
+  if(e.target.closest('#qfBtn')){quickFind();return;}
+  const t=e.target.closest('[data-qf]');if(!t)return;const k=S.cands.find(x=>x.id===t.dataset.id);if(!k)return;
+  if(t.dataset.qf==='edit'){candForm(k.id);return;}
+  closeModal();
+  if(t.dataset.qf==='marks'){ui.cls=k.cls;if(location.hash==='#marks')route();else location.hash='#marks';}
+  else{ui.scls=k.cls;ui.scand=k.id;if(location.hash==='#scorecards')route();else location.hash='#scorecards';}
+});
+document.addEventListener('keydown',e=>{const a=document.activeElement,typing=a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName);
+  if(((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k')||(e.key==='/'&&!typing)){if($('#modal').classList.contains('on')&&$('#qfIn'))return;e.preventDefault();quickFind();}});
 document.addEventListener('click',e=>{const t=e.target.closest('[data-ex],[data-rmdel],[data-stdel]');if(!t)return;
   if(t.dataset.ex){ui.ex=t.dataset.ex;route();return;}
   if(!canEdit())return;
@@ -1851,6 +2020,7 @@ function impRows(){const seen={};return IMP.recs.map(r=>{const cls=IMP.hasCls?r.
   if(!prob&&!d){const k1=nm(r.name)+'|'+nm(r.father),k2=nm(r.name)+'|'+r.dob;d=(nm(r.father)&&seen[k1])||(r.dob&&seen[k2])||null;seen[k1]=seen[k1]||{roll:'row '+r.line};if(r.dob)seen[k2]=seen[k2]||{roll:'row '+r.line};}
   return Object.assign({},r,{cls,prob,dup:d});});}
 function showImport(){
+  snap('Before Excel upload');
   const rows=impRows(),ok=rows.filter(r=>!r.prob),dups=ok.filter(r=>r.dup),add=ok.filter(r=>!(IMP.skipDup&&r.dup)),bad=rows.filter(r=>r.prob);
   const per={};add.forEach(r=>per[r.cls]=(per[r.cls]||0)+1);
   modal(`<h3>Upload candidates</h3><p class="muted" style="margin-top:4px">${esc(IMP.file)} · sheet “${esc(IMP.sheet)}” · ${rows.length} row${rows.length===1?'':'s'} found</p>
@@ -1900,11 +2070,10 @@ const actions={
   offline:()=>liveStop(false),
   signout:()=>ask('Sign out? This also signs you out of SJS App on this device.',()=>liveStop(true),'Sign out'),
   copyrules:()=>{try{navigator.clipboard.writeText(RULES_TXT).then(()=>toast('Rules copied'),()=>toast('Select the text and copy it'));}catch(e){toast('Select the text and copy it');}},
-  bkp:()=>saveFile('SJS_Entrance_Backup_'+todayISO()+'.json',JSON.stringify(Object.assign({},S,{photos:PHOTOS})),'application/json'),
-  clear:()=>ask('Delete all '+S.cands.length+' candidates and their marks'+(Live.on?' for everyone in SJS App':'')+'? Download a backup first if you may need them.',()=>{S.cands=[];S.seq={};S.sample=false;save({all:true});route();toast('All candidates cleared');},'Delete all candidates'),
-  sample:()=>ask('Replace current data with sample candidates'+(Live.on?' for everyone in SJS App':'')+'?',()=>{const tm=!!S.teachersMarks;S=sampleState();PHOTOS={};photosLocal();S.teachersMarks=tm;S.pub={};save({all:true});route();toast('Sample data loaded');},'Load sample')
+  clear:()=>void snap('Before clearing candidates')||ask('Delete all '+S.cands.length+' candidates and their marks'+(Live.on?' for everyone in SJS App':'')+'? Download a backup first if you may need them.',()=>{S.cands=[];S.seq={};S.sample=false;save({all:true});route();toast('All candidates cleared');},'Delete all candidates'),
+  sample:()=>void snap('Before loading sample')||ask('Replace current data with sample candidates'+(Live.on?' for everyone in SJS App':'')+'?',()=>{const tm=!!S.teachersMarks;S=sampleState();PHOTOS={};photosLocal();S.teachersMarks=tm;S.pub={};save({all:true});route();toast('Sample data loaded');},'Load sample')
 };
-Object.assign(actions,reviewActions,examActions,jobActions,formsActions);
+Object.assign(actions,reviewActions,examActions,jobActions,backupActions,formsActions);
 document.addEventListener('click',e=>{
   const t=e.target.closest('[data-a],[data-go],[data-edit],[data-del],[data-x],[data-adm1]');
   if(e.target.id==='modal'){closeModal();return;}
@@ -1922,7 +2091,7 @@ document.addEventListener('change',e=>{
   if(sets[id]){sets[id](t.value);route();return;}
   if(id==='tmarks'){if(!Live.mgr)return;S.teachersMarks=t.checked;save({meta:true});toast(t.checked?'Teachers can now enter marks':'Only Admin and Exam In-Charge can enter marks');return;}
   if(['nmarks','nfather','nwait'].includes(id)){ui[id]=t.checked;route();return;}
-  if(id==='restore'&&t.files[0]){const fr=new FileReader();fr.onload=()=>{try{const raw=JSON.parse(fr.result),st=normalize(raw);if(!st.classes.length)throw 0;ask('Replace current data with this backup ('+st.cands.length+' candidates)?',()=>{S=st;S.sample=!!st.sample;PHOTOS=(raw.photos&&typeof raw.photos==='object')?raw.photos:{};photosLocal();save({all:true});route();toast('Backup restored');},'Restore');}catch(err){toast('That file is not a valid backup');}};fr.readAsText(t.files[0]);t.value='';return;}
+  if(id==='restore'&&t.files[0]){const fr=new FileReader(),fname=t.files[0].name;fr.onload=()=>{let raw;try{raw=JSON.parse(fr.result);}catch(err){toast('That file is not a valid backup');return;}restorePreview(raw,'File: '+fname);};fr.readAsText(t.files[0]);t.value='';return;}
   if(t.dataset.set&&t.tagName==='SELECT'){const [g,n]=t.dataset.set.split('.');S[g][n]=t.value;save({meta:true});toast('Tie rule updated');return;}
   if(t.matches('[data-ab]')&&!canMarks()){t.checked=!t.checked;toast('View only');return;}
   if(t.dataset.set&&!canEdit())return;
