@@ -574,6 +574,7 @@ function sheetXML(sh){
   var x='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheetPr><pageSetUpPr fitToPage="1"/></sheetPr>'+
     '<sheetViews><sheetView workbookViewId="0" showGridLines="0"><pane ySplit="'+headRow+'" topLeftCell="A'+(headRow+1)+'" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>'+
     '<sheetFormatPr defaultRowHeight="15"/>'+cols+'<sheetData>'+rows.join('')+'</sheetData>'+(merges.length?'<mergeCells count="'+merges.length+'">'+merges.map(function(m){return '<mergeCell ref="'+m+'"/>';}).join('')+'</mergeCells>':'')+
+    (sh.validations&&sh.validations.length?'<dataValidations count="'+sh.validations.length+'">'+sh.validations.map(function(v){return '<dataValidation type="list" allowBlank="1" showErrorMessage="1" sqref="'+v.ref+'"><formula1>"'+xesc(v.list.join(','))+'"</formula1></dataValidation>';}).join('')+'</dataValidations>':'')+
     '<printOptions horizontalCentered="1"/><pageMargins left="0.4" right="0.4" top="0.5" bottom="0.6" header="0.3" footer="0.3"/><pageSetup paperSize="9" orientation="'+(sh.landscape?'landscape':'portrait')+'" fitToWidth="1" fitToHeight="0"/>'+
     '<headerFooter><oddFooter>&amp;L&amp;8'+xesc(sh.footer||'')+'&amp;R&amp;8Page &amp;P of &amp;N</oddFooter></headerFooter></worksheet>';
   return {xml:x,headRow:headRow};
@@ -1034,7 +1035,7 @@ function vCandidates(){
   const q=ui.q.toLowerCase();
   const list=R.all.filter(r=>(!ui.ccls||r.cls.code===ui.ccls)&&(!q||(r.k.name+' '+r.k.roll+' '+r.k.father+' '+r.k.form).toLowerCase().includes(q))).sort((a,b)=>R.order.indexOf(a.cls.code)-R.order.indexOf(b.cls.code)||a.k.roll.localeCompare(b.k.roll));
   const shown=list.slice(0,400);
-  return sampleBanner()+`<div class="lede"><div><h2>Candidates</h2><p>${S.cands.length} registered · roll numbers are given automatically by class</p></div>${canEdit()?'<div class="row"><button class="btn pri" data-a="add">+ Add candidate</button><button class="btn" data-a="bulk">Paste from Excel</button></div>':''}</div>
+  return sampleBanner()+`<div class="lede"><div><h2>Candidates</h2><p>${S.cands.length} registered · roll numbers are given automatically by class</p></div>${canEdit()?'<div class="row"><button class="btn pri" data-a="add">+ Add candidate</button><label class="btn" style="display:inline-flex;align-items:center">⬆ Upload Excel<input type="file" id="upFile" accept=".xlsx,.csv,.tsv,.txt,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv" hidden></label><button class="btn" data-a="tpl">⬇ Download template</button><button class="btn" data-a="bulk">Paste from Excel</button></div>':''}</div>
   ${(()=>{const dp=dupPairs();return dp.length?`<div class="banner"><span><b>${dp.length} possible duplicate${dp.length>1?'s':''}</b> (same name and father's name): ${dp.slice(0,6).map(x=>esc(x[0].roll+' / '+x[1].roll+' '+x[1].name)).join(' · ')}</span></div>`:''})()}<div class="tools"><label>Class<select id="ccls">${clsOpts(ui.ccls,true)}</select></label><label style="flex:1;min-width:200px">Search<input id="q" placeholder="Name, roll no., father's name" value="${esc(ui.q)}"></label><button class="btn" data-a="candxls">Register Excel</button></div>
   <div class="card scroll" style="padding:6px 10px"><table class="stack"><thead><tr><th>Roll No.</th><th>Name</th><th>Class</th><th>Father's name</th><th>Gender</th><th>Contact</th><th>Result</th><th></th></tr></thead><tbody>
   ${shown.map(r=>`<tr><td><b>${esc(r.k.roll)}</b></td><td>${esc(r.k.name)}</td><td>${esc(r.cls.name)}</td><td>${esc(r.k.father)}</td><td>${esc(r.k.gender)}</td><td>${esc(r.k.phone)}</td><td>${pill(r)}</td><td class="n">${canEdit()?`<button class="btn sm" data-edit="${esc(r.k.id)}">Edit</button> <button class="btn sm red" data-del="${esc(r.k.id)}">Delete</button>`:''}</td></tr>`).join('')||'<tr><td colspan="8" class="muted">No candidates yet. Tap “Add candidate”.</td></tr>'}
@@ -1224,7 +1225,7 @@ function vBackup(){
    ${Live.on&&Live.mgr?`<label class="row" style="margin-top:14px"><input type="checkbox" class="chk" id="tmarks" ${S.teachersMarks?'checked':''}> <span><b>Teachers can enter marks</b> — every confirmed SJS App teacher may type marks (only the Admin and Exam In-Charge change setup and candidates).</span></label>`:''}
    <p class="muted" style="font-size:13px;margin-bottom:0">Uses the same logins as SJS App (Staff ID or email + password). If you are already signed in to SJS App on this phone, it connects by itself. Admin and Exam In-Charge: full access · Principal and teachers: view only (or marks entry when allowed).</p></div>
   ${!Live.on||Live.admin?`<details class="card"><summary><b>One-time Firebase setup (Admin)</b></summary><p class="muted">In Firebase console → Firestore Database → Rules, paste this block just above the last two closing braces <code>}</code> <code>}</code>, then Publish.</p><pre style="background:var(--soft);padding:12px;border-radius:10px;overflow:auto;font-size:12px">${esc(RULES_TXT)}</pre><button class="btn" data-a="copyrules">Copy rules</button></details>`:''}
-  <div class="grid2"><div class="card"><h3>How it works</h3><ol class="steps"><li><span><b>Setup</b> — check school details, test date, seats, waiting list, qualifying % and subjects for each class.</span></li><li><span><b>Candidates</b> — add each applicant (or paste a list from Excel). Roll numbers like NUR-001 are given automatically.</span></li><li><span><b>Exam Day</b> — set class timings, add rooms (seat plan is automatic), freeze seat numbers, share invigilation duty and count question booklets.</span></li><li><span><b>Admit cards</b> — print two per A4 sheet with photo, room and seat; print room seat charts, attendance sheets and blank award lists.</span></li><li><span><b>Marks entry</b> — type marks or tick Absent. Total, %, grade, rank, selection and waiting list are worked out at once.</span></li><li><span><b>Review &amp; Publish</b> — check each class, change Select / Waiting list / Not selected where needed, then publish. Until then printouts say PROVISIONAL.</span></li><li><span><b>Notice board / Results / Score cards</b> — download A4 PDF or Excel for the notice board, file copy and parents.</span></li></ol></div>
+  <div class="grid2"><div class="card"><h3>How it works</h3><ol class="steps"><li><span><b>Setup</b> — check school details, test date, seats, waiting list, qualifying % and subjects for each class.</span></li><li><span><b>Candidates</b> — add each applicant, or <b>Download template</b>, fill it in Excel and <b>Upload Excel</b> (the Google Form response file works too). Roll numbers like NUR-001 are given automatically.</span></li><li><span><b>Exam Day</b> — set class timings, add rooms (seat plan is automatic), freeze seat numbers, share invigilation duty and count question booklets.</span></li><li><span><b>Admit cards</b> — print two per A4 sheet with photo, room and seat; print room seat charts, attendance sheets and blank award lists.</span></li><li><span><b>Marks entry</b> — type marks or tick Absent. Total, %, grade, rank, selection and waiting list are worked out at once.</span></li><li><span><b>Review &amp; Publish</b> — check each class, change Select / Waiting list / Not selected where needed, then publish. Until then printouts say PROVISIONAL.</span></li><li><span><b>Notice board / Results / Score cards</b> — download A4 PDF or Excel for the notice board, file copy and parents.</span></li></ol></div>
   <div class="card"><h3>Keep your data safe</h3><p class="muted">Download a backup file regularly, especially before clearing data or changing devices.</p>
    <div class="row"><button class="btn pri" data-a="bkp">Download backup (.json)</button>${canEdit()?'<label class="btn" style="display:inline-flex;align-items:center">Restore backup<input type="file" id="restore" accept=".json,application/json" hidden></label>':''}</div>
    ${canEdit()?`<h3 style="margin-top:20px">Start fresh</h3><div class="row"><button class="btn red" data-a="clear">Clear all candidates</button><button class="btn" data-a="sample">Load sample data</button></div>
@@ -1471,6 +1472,130 @@ document.addEventListener('input',e=>{const t=e.target;
   if((t.id==='apnote'||t.id==='aplast')&&Live.mgr){S.apply=Object.assign({},S.apply,t.id==='apnote'?{note:t.value}:{last:t.value});clearTimeout(t._h);t._h=setTimeout(()=>save({meta:true}),700);}
 });
 
+/* ---------- CANDIDATE EXCEL TEMPLATE + UPLOAD ---------- */
+const TPL_HEAD=['Class *',"Candidate's name *",'Gender','Date of birth (dd-mm-yyyy)',"Father's name","Mother's name",'Mobile','Address / Village','Category','Previous school','Stream (Class XI)','Form No.'];
+function downloadTemplate(){
+  const names=S.classes.map(c=>c.name);
+  const ex=[S.classes[0].name,'Example: Lalrinpuii Darlong','Female','14-05-2022','Lalthangliana Darlong','Zothansangi Darlong','9876543210','Gongrai','ST','','',''];
+  const sheet={name:'Candidates',title:[S.school.name+' - '+S.test.title+' '+S.test.session+' - Candidate list',"Fill one row per child. Class and Candidate's name are needed. Choose Class, Gender and Category from the lists. Delete the example row, then upload this file in Candidates."],
+    header:TPL_HEAD,widths:[13,28,10,15,26,26,14,20,11,24,13,10],rows:[ex.map((v,i)=>({v:v,s:i===1?7:4}))],
+    validations:[{ref:'A5:A2004',list:names},{ref:'C5:C2004',list:['Male','Female','Other']},{ref:'I5:I2004',list:['General','ST','SC','OBC','Other']},{ref:'K5:K2004',list:['Science','Arts','Commerce']}],footer:S.school.name};
+  const cls={name:'Class list',title:['Class names to use in column A'],header:['Class','Roll No. starts with'],widths:[16,20],rows:S.classes.map(c=>[{v:c.name,s:7},{v:c.code+'-001',s:6}])};
+  saveFile('Candidate_Upload_Template_'+fn(S.test.session)+'.xlsx',makeXlsx([sheet,cls]),'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+}
+/* --- read .xlsx (zip) without any library --- */
+async function unzip(buf,want){
+  const dv=new DataView(buf),u8=new Uint8Array(buf);let e=u8.length-22;
+  while(e>=0&&dv.getUint32(e,true)!==0x06054b50)e--;
+  if(e<0)throw new Error('This is not an Excel (.xlsx) file');
+  const n=dv.getUint16(e+10,true),out={};let p=dv.getUint32(e+16,true);
+  for(let i=0;i<n;i++){
+    if(dv.getUint32(p,true)!==0x02014b50)break;
+    const method=dv.getUint16(p+10,true),csize=dv.getUint32(p+20,true),nl=dv.getUint16(p+28,true),xl=dv.getUint16(p+30,true),cl=dv.getUint16(p+32,true),off=dv.getUint32(p+42,true);
+    const name=new TextDecoder().decode(u8.subarray(p+46,p+46+nl));p+=46+nl+xl+cl;
+    if(!want(name))continue;
+    const start=off+30+dv.getUint16(off+26,true)+dv.getUint16(off+28,true),data=u8.subarray(start,start+csize);
+    let bytes=null;
+    if(method===0)bytes=data;
+    else if(method===8){if(typeof DecompressionStream==='undefined')throw new Error('Please update your browser (Chrome) to upload Excel files, or save the file as CSV');
+      bytes=new Uint8Array(await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer());}
+    if(bytes)out[name]=new TextDecoder().decode(bytes);
+  }
+  return out;
+}
+const tags=(node,t)=>Array.from(node.getElementsByTagNameNS('*',t));
+const colIdx=r=>{const m=String(r||'').match(/^[A-Z]+/);if(!m)return -1;let n=0;for(const ch of m[0])n=n*26+ch.charCodeAt(0)-64;return n-1;};
+async function readXlsx(buf){
+  const files=await unzip(buf,n=>/^xl\/(workbook\.xml|sharedStrings\.xml|_rels\/workbook\.xml\.rels|worksheets\/[^/]+\.xml)$/.test(n));
+  const P=x=>new DOMParser().parseFromString(x,'application/xml');
+  const ss=files['xl/sharedStrings.xml']?tags(P(files['xl/sharedStrings.xml']),'si').map(si=>tags(si,'t').map(t=>t.textContent).join('')):[];
+  const rel={};if(files['xl/_rels/workbook.xml.rels'])tags(P(files['xl/_rels/workbook.xml.rels']),'Relationship').forEach(r=>{let t=r.getAttribute('Target');t=t.replace(/^\/?xl\//,'').replace(/^\//,'');rel[r.getAttribute('Id')]='xl/'+t;});
+  const sheets=[];
+  const wb=files['xl/workbook.xml']?P(files['xl/workbook.xml']):null;
+  (wb?tags(wb,'sheet'):[]).forEach((sh,i)=>{const id=sh.getAttribute('r:id')||sh.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships','id');const path=rel[id]||('xl/worksheets/sheet'+(i+1)+'.xml');if(files[path])sheets.push({name:sh.getAttribute('name'),xml:files[path]});});
+  if(!sheets.length)Object.keys(files).filter(k=>k.startsWith('xl/worksheets/')).forEach(k=>sheets.push({name:k,xml:files[k]}));
+  return sheets.map(sh=>{const rows=[];tags(P(sh.xml),'row').forEach(rw=>{const ri=(+rw.getAttribute('r')||rows.length+1)-1,row=[];
+      tags(rw,'c').forEach((c,ci)=>{const t=c.getAttribute('t'),i=c.getAttribute('r')?colIdx(c.getAttribute('r')):ci;const v=tags(c,'v')[0];let val='';
+        if(t==='s')val=v?ss[+v.textContent]||'':'';else if(t==='inlineStr')val=tags(c,'t').map(x=>x.textContent).join('');else if(t==='b')val=v&&v.textContent==='1'?'TRUE':'FALSE';else if(v)val=t==='str'||t==='e'?v.textContent:(isNaN(+v.textContent)?v.textContent:+v.textContent);
+        row[i]=val;});
+      rows[ri]=row;});
+    return {name:sh.name,rows:Array.from(rows,r=>r||[])};});
+}
+function readCsv(text){
+  text=text.replace(/^﻿/,'');const first=text.split(/\r?\n/)[0]||'';const d=(first.match(/\t/g)||[]).length>(first.match(/,/g)||[]).length?'\t':(first.match(/;/g)||[]).length>(first.match(/,/g)||[]).length?';':',';
+  const rows=[];let row=[],cell='',q=false;
+  for(let i=0;i<text.length;i++){const ch=text[i];
+    if(q){if(ch==='"'){if(text[i+1]==='"'){cell+='"';i++;}else q=false;}else cell+=ch;}
+    else if(ch==='"')q=true;else if(ch===d){row.push(cell);cell='';}else if(ch==='\n'||ch==='\r'){if(ch==='\r'&&text[i+1]==='\n')i++;row.push(cell);rows.push(row);row=[];cell='';}else cell+=ch;}
+  if(cell||row.length){row.push(cell);rows.push(row);}
+  return [{name:'CSV',rows}];
+}
+function mapHeaders(row){const m={};(row||[]).forEach((h,i)=>{const t=String(h==null?'':h).toLowerCase().trim();if(!t)return;
+  if(m.stream==null&&/stream/.test(t))m.stream=i;
+  else if(m.father==null&&/father/.test(t))m.father=i;
+  else if(m.mother==null&&/mother/.test(t))m.mother=i;
+  else if(m.name==null&&/name/.test(t)&&!/school|guardian|parent/.test(t))m.name=i;
+  else if(m.cls==null&&/class/.test(t)&&!/previous|last/.test(t))m.cls=i;
+  else if(m.gender==null&&/gender|\bsex\b/.test(t))m.gender=i;
+  else if(m.dob==null&&/birth|\bdob\b|d\.o\.b/.test(t))m.dob=i;
+  else if(m.phone==null&&/mobile|phone|contact|whatsapp/.test(t)&&!/alternate|\balt\b|second/.test(t))m.phone=i;
+  else if(m.address==null&&/address|village|locality/.test(t))m.address=i;
+  else if(m.category==null&&/categor|caste/.test(t))m.category=i;
+  else if(m.prev==null&&/previous|school/.test(t))m.prev=i;
+  else if(m.form==null&&/form|application/.test(t)&&/no|number|#|id/.test(t))m.form=i;});return m;}
+function matchClass(v){let t=String(v==null?'':v).trim().toLowerCase().replace(/^(class|std|standard|grade)\s*/,'').replace(/[^a-z0-9]/g,'');if(!t)return null;
+  const rom={'1':'i','2':'ii','3':'iii','4':'iv','5':'v','6':'vi','7':'vii','8':'viii','9':'ix','10':'x','11':'xi','12':'xii'};t=rom[t]||t;
+  const al={nursery:'nur',nur:'nur',kg1:'lkg',kgi:'lkg',lowerkg:'lkg',kg2:'ukg',kgii:'ukg',upperkg:'ukg'};t=al[t]||t;
+  const c=S.classes.find(c=>c.code.toLowerCase()===t||c.name.toLowerCase().replace(/^class\s*/,'').replace(/[^a-z0-9]/g,'')===t);return c?c.code:null;}
+const pad2=n=>('0'+n).slice(-2);
+function toISO(v){if(v==null||v==='')return '';
+  if(typeof v==='number'&&v>2000&&v<80000){const d=new Date(Date.UTC(1899,11,30)+Math.round(v)*86400000);return d.getUTCFullYear()+'-'+pad2(d.getUTCMonth()+1)+'-'+pad2(d.getUTCDate());}
+  const s=String(v).trim();let m=s.match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/);if(m)return m[1]+'-'+pad2(m[2])+'-'+pad2(m[3]);
+  m=s.match(/^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{2,4})$/);if(m){let y=+m[3];if(y<100)y+=y>40?1900:2000;return y+'-'+pad2(m[2])+'-'+pad2(m[1]);}
+  const d=new Date(s);return isNaN(d)?'':d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate());}
+const clean=v=>String(v==null?'':v).replace(/\s+/g,' ').trim();
+function normGender(v){const t=clean(v).toLowerCase();return /^(f|girl|w)/.test(t)?'Female':/^(m|boy)/.test(t)?'Male':t?'Other':'';}
+function normCat(v){const t=clean(v);if(!t)return 'General';const u=t.toUpperCase();return u==='GEN'||u==='GENERAL'?'General':['ST','SC','OBC'].includes(u)?u:t;}
+function normPhone(v){let t=typeof v==='number'?String(Math.round(v)):clean(v);t=t.replace(/[^\d+]/g,'');return t;}
+let IMP=null;
+async function startUpload(file){
+  try{const buf=await file.arrayBuffer();const isCsv=/\.(csv|txt|tsv)$/i.test(file.name);
+    const sheets=isCsv?readCsv(new TextDecoder().decode(buf)):await readXlsx(buf);
+    let best=null;
+    sheets.forEach(sh=>{for(let r=0;r<Math.min(15,sh.rows.length);r++){const filled=(sh.rows[r]||[]).filter(x=>clean(x)).length;if(filled<2)continue;const m=mapHeaders(sh.rows[r]);if(m.name==null)continue;const score=(m.cls!=null?10:0)+Object.keys(m).length;if(!best||score>best.score)best={sh,r,m,score};break;}});
+    if(!best){toast('Could not find a "Name" column. Use the template from Download template.');return;}
+    const recs=[];
+    best.sh.rows.slice(best.r+1).forEach((row,i)=>{const g=k=>best.m[k]!=null?row[best.m[k]]:'';const name=clean(g('name'));
+      if(!name&&!clean(g('father'))&&!clean(g('cls')))return;
+      recs.push({line:best.r+i+2,name,clsRaw:clean(g('cls')),cls:best.m.cls!=null?matchClass(g('cls')):null,gender:normGender(g('gender')),dob:toISO(g('dob')),father:clean(g('father')),mother:clean(g('mother')),phone:normPhone(g('phone')),address:clean(g('address')),category:normCat(g('category')),prev:clean(g('prev')),stream:clean(g('stream')),form:clean(g('form'))});});
+    IMP={file:file.name,sheet:best.sh.name,hasCls:best.m.cls!=null,recs,def:ui.ccls||ui.cls||S.classes[0].code,skipDup:true};
+    showImport();
+  }catch(e){toast('Could not read the file: '+(e.message||e));}
+}
+function impRows(){const seen={};return IMP.recs.map(r=>{const cls=IMP.hasCls?r.cls:IMP.def;let prob='';
+  if(/^example/i.test(r.name))prob='Example row (skipped)';else if(!r.name)prob="No candidate's name";else if(!cls)prob='Unknown class "'+r.clsRaw+'"';
+  let d=prob?null:dupOf({name:r.name,father:r.father,dob:r.dob},null);
+  if(!prob&&!d){const k1=nm(r.name)+'|'+nm(r.father),k2=nm(r.name)+'|'+r.dob;d=(nm(r.father)&&seen[k1])||(r.dob&&seen[k2])||null;seen[k1]=seen[k1]||{roll:'row '+r.line};if(r.dob)seen[k2]=seen[k2]||{roll:'row '+r.line};}
+  return Object.assign({},r,{cls,prob,dup:d});});}
+function showImport(){
+  const rows=impRows(),ok=rows.filter(r=>!r.prob),dups=ok.filter(r=>r.dup),add=ok.filter(r=>!(IMP.skipDup&&r.dup)),bad=rows.filter(r=>r.prob);
+  const per={};add.forEach(r=>per[r.cls]=(per[r.cls]||0)+1);
+  modal(`<h3>Upload candidates</h3><p class="muted" style="margin-top:4px">${esc(IMP.file)} · sheet “${esc(IMP.sheet)}” · ${rows.length} row${rows.length===1?'':'s'} found</p>
+   ${IMP.hasCls?'':`<div class="tools"><label>This file has no Class column. Add all to class<select id="impCls">${S.classes.map(c=>`<option value="${c.code}"${c.code===IMP.def?' selected':''}>${esc(c.name)}</option>`).join('')}</select></label></div>`}
+   <div class="kpis" style="margin:10px 0"><div class="kpi g"><b>${add.length}</b><span>Will be added</span></div><div class="kpi a"><b>${dups.length}</b><span>Already registered / repeated</span></div><div class="kpi r"><b>${bad.length}</b><span>Need fixing / skipped</span></div></div>
+   ${dups.length?`<label class="row" style="margin-bottom:8px;flex-wrap:nowrap;align-items:flex-start;color:var(--ink)"><input type="checkbox" class="chk" id="impSkip" ${IMP.skipDup?'checked':''}> <span>Skip children already registered or repeated in the file (same name and father's name or date of birth)</span></label>`:''}
+   ${Object.keys(per).length?`<p style="margin:6px 0"><b>By class:</b> ${R.order.filter(c=>per[c]).map(c=>esc(clsName(c))+' '+per[c]).join(' · ')}</p>`:''}
+   ${bad.length?`<details style="margin:8px 0"><summary><b>${bad.length} row(s) not added</b> — tap to see</summary><div class="scroll"><table><tbody>${bad.slice(0,60).map(r=>`<tr><td>Row ${r.line}</td><td>${esc(r.name||'—')}</td><td style="color:var(--red)">${esc(r.prob)}</td></tr>`).join('')}</tbody></table></div></details>`:''}
+   <div class="scroll" style="max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:10px"><table><thead><tr><th>Row</th><th>Class</th><th>Name</th><th>Father</th><th>DOB</th><th>Mobile</th><th></th></tr></thead><tbody>${ok.slice(0,200).map(r=>`<tr style="${IMP.skipDup&&r.dup?'opacity:.5':''}"><td>${r.line}</td><td>${esc(clsName(r.cls))}</td><td><b>${esc(r.name)}</b></td><td>${esc(r.father)}</td><td>${esc(fmtDMY(r.dob))}</td><td>${esc(r.phone)}</td><td>${r.dup?'<span class="pill p-wl">already '+esc(r.dup.roll)+'</span>':''}</td></tr>`).join('')||'<tr><td colspan="7" class="muted">Nothing to add.</td></tr>'}</tbody></table></div>
+   <div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn" data-x="close">Cancel</button><button class="btn pri" id="impGo" ${add.length?'':'disabled'}>Add ${add.length} candidate${add.length===1?'':'s'}</button></div>`);
+  const ic=$('#impCls');if(ic)ic.onchange=()=>{IMP.def=ic.value;showImport();};
+  const sk=$('#impSkip');if(sk)sk.onchange=()=>{IMP.skipDup=sk.checked;showImport();};
+  $('#impGo').onclick=()=>{const added=[];
+    add.forEach(r=>{const k={id:uid(),cls:r.cls,roll:nextRoll(S,r.cls),form:r.form,name:r.name,gender:r.gender,dob:r.dob,father:r.father,mother:r.mother,phone:r.phone,address:r.address,category:r.category,prev:r.prev,stream:r.cls==='XI'?r.stream:'',absent:false,marks:[null,null,null,null,null]};S.cands.push(k);added.push(k);});
+    persist({meta:true,cands:added});closeModal();IMP=null;route();toast(added.length+' candidate(s) added with roll numbers');};
+}
+document.addEventListener('change',e=>{const t=e.target;if(t.id==='upFile'&&t.files&&t.files[0]){if(canEdit())startUpload(t.files[0]);t.value='';}});
+
 /* ---------- ROUTER ---------- */
 const curView=()=>{const v=(location.hash||'#dashboard').slice(1);return VIEWS[v]?v:'dashboard';};
 const VIEWS={dashboard:vDashboard,candidates:vCandidates,marks:vMarks,results:vResults,review:vReview,examday:vExam,forms:vForms,notice:vNotice,scorecards:vScore,admit:vAdmit,setup:vSetup,backup:vBackup};
@@ -1486,7 +1611,7 @@ const actions={
   sumpdf:()=>saveFile('Entrance_Summary_'+fn(S.test.session)+'.pdf',summaryPDF(S,R),'application/pdf'),
   allxls:()=>xlsOut([summarySheet(S,R),candidatesSheet(S,R)].concat(R.order.filter(c=>R.by[c].stats.applied).map(c=>classResultSheet(S,R,c))),'Entrance_Result_All_Classes_'+fn(S.test.session)+'.xlsx'),
   candxls:()=>xlsOut([candidatesSheet(S,R)],'Entrance_Candidates_Register_'+fn(S.test.session)+'.xlsx'),
-  add:()=>candForm(null),bulk:bulkForm,
+  add:()=>candForm(null),bulk:bulkForm,tpl:()=>downloadTemplate(),
   award:()=>pdfOut(awardPDF(S,R,ui.cls),'Award_List_'+fn(clsName(ui.cls))+'.pdf'),
   respdf:()=>pdfOut(resultPDF(S,R,[ui.rcls]),'Result_Sheet_'+fn(clsName(ui.rcls))+'.pdf'),
   resxls:()=>xlsOut([classResultSheet(S,R,ui.rcls),meritSheet(S,R,ui.rcls)],'Result_'+fn(clsName(ui.rcls))+'_'+fn(S.test.session)+'.xlsx'),
